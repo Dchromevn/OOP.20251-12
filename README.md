@@ -11,10 +11,10 @@ The project is primarily implemented in **Java**, focusing on designing a flexib
 
 | No. | Name               | Student ID  | Cohort |
 |:---:|-------------------|------------|:---:|
-| 1   | Vũ Đức Duy         | 202416686  | K69 |
+| 1   | Võ Chiến Huy         | 20215208  | K66 |
 | 2   | Vũ Đỗ Minh Thảo    | 202416752  | K69 |
 | 3   | Nguyễn Minh Dũng   | 202416682  | K69 |
-| 4   | Võ Chiến Huy       | 20215208   | K66 |
+| 4   | Vũ Đức Duy       | 202416686   | K69 |
 
 ## Technologies
 
