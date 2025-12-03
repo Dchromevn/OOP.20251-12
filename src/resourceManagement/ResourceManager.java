@@ -2,42 +2,42 @@ package resourceManagement;
 
 public class ResourceManager {
     private int globalWaterLevel;
-    private int globalNutrientLevel;
+    private int globalFertilizerLevel;
     private static final int MIN_WATER_LEVEL = 0;
     private static final int MAX_WATER_LEVEL = 1000;
-    private static final int MIN_NUTRIENT_LEVEL = 0;
-    private static final int MAX_NUTRIENT_LEVEL = 1000;
+    private static final int MIN_FERTILIZER_LEVEL = 0;
+    private static final int MAX_FERTILIZER_LEVEL = 1000;
     private static final int DAILY_WATER_DEPLETION = 10;
-    private static final int DAILY_NUTRIENT_DEPLETION = 5;
+    private static final int DAILY_FERTILIZER_DEPLETION = 5;
     private static final int REPLENISH_WATER_AMOUNT = 50;
-    private static final int REPLENISH_NUTRIENT_AMOUNT = 30;
+    private static final int REPLENISH_FERTILIZER_AMOUNT = 30;
     
     public ResourceManager(int initialWater, int initialNutrients) {
         this.globalWaterLevel = Math.max(MIN_WATER_LEVEL, 
                                 Math.min(MAX_WATER_LEVEL, initialWater));
-        this.globalNutrientLevel = Math.max(MIN_NUTRIENT_LEVEL, 
-                                   Math.min(MAX_NUTRIENT_LEVEL, initialNutrients));
+        this.globalFertilizerLevel = Math.max(MIN_FERTILIZER_LEVEL, 
+                                   Math.min(MAX_FERTILIZER_LEVEL, initialNutrients));
     }
     
     public void updateResources() {
         globalWaterLevel -= DAILY_WATER_DEPLETION;
-        globalNutrientLevel -= DAILY_NUTRIENT_DEPLETION;
+        globalFertilizerLevel -= DAILY_FERTILIZER_DEPLETION;
         globalWaterLevel = Math.max(MIN_WATER_LEVEL, 
                            Math.min(MAX_WATER_LEVEL, globalWaterLevel));
-        globalNutrientLevel = Math.max(MIN_NUTRIENT_LEVEL, 
-                              Math.min(MAX_NUTRIENT_LEVEL, globalNutrientLevel));
+        globalFertilizerLevel = Math.max(MIN_FERTILIZER_LEVEL, 
+                              Math.min(MAX_FERTILIZER_LEVEL, globalFertilizerLevel));
         if (globalWaterLevel < 100) {
             System.out.println("⚠️ Global water reserves are running low!");
         }
         
-        if (globalNutrientLevel < 100) {
+        if (globalFertilizerLevel < 100) {
             System.out.println("⚠️ Soil nutrients are depleting!");
         }
     }
     
     public void updateResourcesWithWeather(String weatherType) {
         globalWaterLevel -= DAILY_WATER_DEPLETION;
-        globalNutrientLevel -= DAILY_NUTRIENT_DEPLETION;
+        globalFertilizerLevel -= DAILY_FERTILIZER_DEPLETION;
         if (weatherType != null) {
             switch (weatherType.toLowerCase()) {
                 case "rainy":
@@ -54,13 +54,13 @@ public class ResourceManager {
         }
         globalWaterLevel = Math.max(MIN_WATER_LEVEL, 
                            Math.min(MAX_WATER_LEVEL, globalWaterLevel));
-        globalNutrientLevel = Math.max(MIN_NUTRIENT_LEVEL, 
-                              Math.min(MAX_NUTRIENT_LEVEL, globalNutrientLevel));
+        globalFertilizerLevel = Math.max(MIN_FERTILIZER_LEVEL, 
+                              Math.min(MAX_FERTILIZER_LEVEL, globalFertilizerLevel));
         if (globalWaterLevel < 100) {
             System.out.println("⚠️ Warning: Global water reserves are running low!");
         }
         
-        if (globalNutrientLevel < 100) {
+        if (globalFertilizerLevel < 100) {
             System.out.println("⚠️ Warning: Soil nutrients are depleting!");
         }
     }
@@ -75,14 +75,14 @@ public class ResourceManager {
     }
     
     public boolean replenishResources() {
-        if (globalWaterLevel < 50 || globalNutrientLevel < 30) {
+        if (globalWaterLevel < 50 || globalFertilizerLevel < 30) {
             System.out.println("❌ Cannot replenish: Global resources too low!");
             return false;
         }
         int waterToAdd = Math.min(REPLENISH_WATER_AMOUNT, globalWaterLevel / 2);
-        int nutrientToAdd = Math.min(REPLENISH_NUTRIENT_AMOUNT, globalNutrientLevel / 2);
+        int nutrientToAdd = Math.min(REPLENISH_FERTILIZER_AMOUNT, globalFertilizerLevel / 2);
         globalWaterLevel -= waterToAdd;
-        globalNutrientLevel -= nutrientToAdd;
+        globalFertilizerLevel -= nutrientToAdd;
         
         System.out.println(String.format("✅ Resources replenished! +%d water, +%d fertilizer", 
                                         waterToAdd, nutrientToAdd));
@@ -93,8 +93,8 @@ public class ResourceManager {
         return globalWaterLevel;
     }
 
-    public int getNutrientLevel() {
-        return globalNutrientLevel;
+    public int getFertilizerLevel() {
+        return globalFertilizerLevel;
     }
 
     public void setWaterLevel(int waterLevel) {
@@ -102,9 +102,9 @@ public class ResourceManager {
                                 Math.min(MAX_WATER_LEVEL, waterLevel));
     }
 
-    public void setNutrientLevel(int nutrientLevel) {
-        this.globalNutrientLevel = Math.max(MIN_NUTRIENT_LEVEL, 
-                                   Math.min(MAX_NUTRIENT_LEVEL, nutrientLevel));
+    public void setFertilizerLevel(int fertilizerLevel) {
+        this.globalFertilizerLevel = Math.max(MIN_FERTILIZER_LEVEL, 
+                                   Math.min(MAX_FERTILIZER_LEVEL, fertilizerLevel));
     }
 
     public void addWater(int amount) {
@@ -112,13 +112,13 @@ public class ResourceManager {
         System.out.println("Added " + amount + " water to global reserves");
     }
 
-    public void addNutrients(int amount) {
-        globalNutrientLevel = Math.min(MAX_NUTRIENT_LEVEL, globalNutrientLevel + amount);
+    public void addFertilizer(int amount) {
+        globalFertilizerLevel = Math.min(MAX_FERTILIZER_LEVEL, globalFertilizerLevel + amount);
         System.out.println("Added " + amount + " nutrients to soil");
     }
 
     public boolean isCriticalState() {
-        return globalWaterLevel < 100 || globalNutrientLevel < 100;
+        return globalWaterLevel < 100 || globalFertilizerLevel < 100;
     }
 
     public String getResourceStatus() {
@@ -126,8 +126,8 @@ public class ResourceManager {
         status.append("=== Global Resource Status ===\n");
         status.append(String.format("Water Level: %d/%d ", globalWaterLevel, MAX_WATER_LEVEL));
         status.append(getResourceBar(globalWaterLevel, MAX_WATER_LEVEL)).append("\n");
-        status.append(String.format("Nutrient Level: %d/%d ", globalNutrientLevel, MAX_NUTRIENT_LEVEL));
-        status.append(getResourceBar(globalNutrientLevel, MAX_NUTRIENT_LEVEL)).append("\n");
+        status.append(String.format("Fertilizer Level: %d/%d ", globalFertilizerLevel, MAX_FERTILIZER_LEVEL));
+        status.append(getResourceBar(globalFertilizerLevel, MAX_FERTILIZER_LEVEL)).append("\n");
         if (isCriticalState()) {
             status.append("⚠️ Resources running low!\n");
         }
@@ -151,7 +151,7 @@ public class ResourceManager {
 
     public void resetResources() {
         this.globalWaterLevel = 500;
-        this.globalNutrientLevel = 500;
+        this.globalFertilizerLevel = 500;
         System.out.println("Global resources reset to default levels");
     }
 }
