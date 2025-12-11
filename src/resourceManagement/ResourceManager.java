@@ -27,11 +27,11 @@ public class ResourceManager {
         globalFertilizerLevel = Math.max(MIN_FERTILIZER_LEVEL, 
                               Math.min(MAX_FERTILIZER_LEVEL, globalFertilizerLevel));
         if (globalWaterLevel < 100) {
-            System.out.println("⚠️ Global water reserves are running low!");
+            System.out.println("Global water reserves are running low!");
         }
         
         if (globalFertilizerLevel < 100) {
-            System.out.println("⚠️ Soil nutrients are depleting!");
+            System.out.println("Soil nutrients are depleting!");
         }
     }
     
@@ -42,11 +42,11 @@ public class ResourceManager {
             switch (weatherType.toLowerCase()) {
                 case "rainy":
                     globalWaterLevel += 25;
-                    System.out.println("🌧️ Rain has replenished water reserves!");
+                    System.out.println("Rain has replenished water reserves!");
                     break;
                 case "drought":
                     globalWaterLevel -= 20;
-                    System.out.println("☀️ Drought is depleting water faster!");
+                    System.out.println("Drought is depleting water faster!");
                     break;
                 case "sunny":
                     break;
@@ -70,13 +70,13 @@ public class ResourceManager {
             System.out.println("Error: Cannot check balance for null player");
             return null;
         }
-        
+
         return new BalanceReport(player);
     }
     
     public boolean replenishResources() {
         if (globalWaterLevel < 50 || globalFertilizerLevel < 30) {
-            System.out.println("❌ Cannot replenish: Global resources too low!");
+            System.out.println("Cannot replenish: Global resources too low!");
             return false;
         }
         int waterToAdd = Math.min(REPLENISH_WATER_AMOUNT, globalWaterLevel / 2);
@@ -84,7 +84,7 @@ public class ResourceManager {
         globalWaterLevel -= waterToAdd;
         globalFertilizerLevel -= nutrientToAdd;
         
-        System.out.println(String.format("✅ Resources replenished! +%d water, +%d fertilizer", 
+        System.out.println(String.format("Resources replenished! +%d water, +%d fertilizer",
                                         waterToAdd, nutrientToAdd));
         return true;
     }
@@ -129,7 +129,7 @@ public class ResourceManager {
         status.append(String.format("Fertilizer Level: %d/%d ", globalFertilizerLevel, MAX_FERTILIZER_LEVEL));
         status.append(getResourceBar(globalFertilizerLevel, MAX_FERTILIZER_LEVEL)).append("\n");
         if (isCriticalState()) {
-            status.append("⚠️ Resources running low!\n");
+            status.append("Resources running low!\n");
         }
         return status.toString();
     }

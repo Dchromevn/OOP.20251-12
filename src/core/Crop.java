@@ -108,6 +108,9 @@ public abstract class Crop extends Entity {
     protected boolean hasEnoughResources() {
         return waterLevel > 0;
     }
+    public boolean isDamaged() {
+        return isDamaged;
+    }
     protected void checkHealthStatus() {
         if (waterLevel <= 0) {
             takeDamage(15);
