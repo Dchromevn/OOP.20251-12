@@ -4,8 +4,8 @@ import utility.CropType;
 import utility.Point;
 
 public class Wheat extends Crop{
-    public Wheat(String id, Point position, CropType cropType) {
-        super(id, position, cropType);
+    public Wheat(String id, Point position) {
+        super(id, position, CropType.PUMPKIN);
         this.dayPerStage = new int[]{1,1,1};
         this.maxWaterLevel=90;
         this.maxFertilizerLevel= 80;

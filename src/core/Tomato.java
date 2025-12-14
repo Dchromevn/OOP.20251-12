@@ -4,8 +4,8 @@ import utility.CropType;
 import utility.Point;
 
 public class Tomato extends Crop{
-    public Tomato (String id, Point position, CropType cropType) {
-        super(id, position, cropType);
+    public Tomato (String id, Point position) {
+        super(id, position, CropType.TOMATO);
         this.dayPerStage = new int[]{2,3,2};
         this.maxWaterLevel=100;
         this.maxFertilizerLevel= 100;

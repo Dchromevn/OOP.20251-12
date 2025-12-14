@@ -7,11 +7,11 @@ public class CropFactory {
     public static Crop createCrop(CropType type, Point position) {
         String id = type.getCropName() + "_" + (++cropIdCounter);
         return switch (type) {
-            case WHEAT -> new Wheat(id, position, CropType.WHEAT);
-            case CORN -> new Corn(id, position, CropType.CORN);
-            case TOMATO -> new Tomato(id, position, CropType.TOMATO);
-            case CARROT -> new Carrot(id, position, CropType.CARROT);
-            case PUMPKIN -> new Pumpkin(id, position, CropType.PUMPKIN);
+            case WHEAT -> new Wheat(id, position);
+            case CORN -> new Corn(id, position);
+            case TOMATO -> new Tomato(id, position);
+            case CARROT -> new Carrot(id, position);
+            case PUMPKIN -> new Pumpkin(id, position);
         };
     }
     public static String getCropInfo(CropType type) {
