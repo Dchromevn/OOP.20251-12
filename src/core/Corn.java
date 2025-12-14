@@ -4,8 +4,8 @@ import utility.CropType;
 import utility.Point;
 
 public class Corn extends Crop{
-    public Corn(String id, Point position, CropType cropType) {
-        super(id, position, cropType);
+    public Corn(String id, Point position) {
+        super(id, position, CropType.CORN);
         this.dayPerStage = new int[]{1,2,2};
         this.maxWaterLevel=110;
         this.maxFertilizerLevel= 90;

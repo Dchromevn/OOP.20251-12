@@ -1,5 +1,5 @@
 package resourceManagement;
-
+import player.Player;
 public class ResourceManager {
     private int globalWaterLevel;
     private int globalFertilizerLevel;
