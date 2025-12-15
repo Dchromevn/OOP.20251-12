@@ -121,11 +121,12 @@ public class Farm {
         }
     }
     public void advanceDay(RandomEventManager eventManager) {
+        System.out.println("Day " + currentDay + " ended.");
         currentDay++;
         System.out.println("\nDay " + currentDay + " begins...");
         eventManager.triggerRandomEvent(this);
         updateAllCrops();
-        System.out.println("Day " + currentDay + " ended.");
+
     }
     public void updateAllCrops() {
         List<Crop> crops = getAllCrops();

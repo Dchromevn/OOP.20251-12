@@ -16,7 +16,7 @@ public class Corn extends Crop{
     }
     @Override
     protected void consumeResource() {
-        waterLevel = Math.max(0, this.waterLevel - 15);
+        waterLevel = Math.max(0, this.waterLevel - 10);
         fertilizerLevel =Math.max(0, this.fertilizerLevel -10);
     }
     @Override

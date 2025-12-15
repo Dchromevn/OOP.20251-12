@@ -1,4 +1,6 @@
-package utility;
+package core;
+
+import utility.Point;
 
 public abstract class Entity {
     protected String id;
