@@ -1,7 +1,7 @@
 package core;
 
 import utility.Point;
-
+import controller.RandomEventManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,9 +120,10 @@ public class Farm {
             crop.takeDamage(damageAmount);
         }
     }
-    public void advanceDay() {
+    public void advanceDay(RandomEventManager eventManager) {
         currentDay++;
         System.out.println("\nDay " + currentDay + " begins...");
+        eventManager.triggerRandomEvent(this);
         updateAllCrops();
         System.out.println("Day " + currentDay + " ended.");
     }

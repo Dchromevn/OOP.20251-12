@@ -5,7 +5,7 @@ import utility.Point;
 
 public class Wheat extends Crop{
     public Wheat(String id, Point position) {
-        super(id, position, CropType.PUMPKIN);
+        super(id, position, CropType.WHEAT);
         this.dayPerStage = new int[]{1,1,1};
         this.maxWaterLevel=90;
         this.maxFertilizerLevel= 80;

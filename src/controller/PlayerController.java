@@ -1,5 +1,4 @@
 package controller;
-
 import core.Farm;
 import core.FarmCell;
 import core.Crop;
@@ -66,8 +65,8 @@ public class PlayerController {
     	player.addSeed(type, amount);
     	return true;
     }
-    public void nextDay() {
-        farm.advanceDay();
+    public void nextDay(RandomEventManager eventManager) {
+        farm.advanceDay(eventManager);
     }
     public void displayInventory() {
     	player.showInventory();
