@@ -1,6 +1,6 @@
 package app;
 
-import controller.PlayerController;
+import controller.*;
 import core.Farm;
 import player.Player;
 import utility.*;
@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-
+        RandomEventManager eventManager = new RandomEventManager();
         Player player = new Player();
         Farm farm = new Farm(5, 5);  // 5x5 farm
         PlayerController controller = new PlayerController(player, farm);
@@ -41,7 +41,7 @@ public class Main {
 
             switch (choice) {
 
-                case 1: // Plant crop
+                case 1: 
                     System.out.println("Available crops: ");
                     for (CropType t : CropType.values())
                         System.out.println("- " + t);
@@ -60,7 +60,7 @@ public class Main {
                     System.out.println(planted ? "Planted!" : "Failed to plant.");
                     break;
 
-                case 2: // Water crop
+                case 2:
                     System.out.print("Enter X: ");
                     x = scanner.nextInt();
                     System.out.print("Enter Y: ");
@@ -70,7 +70,7 @@ public class Main {
                     System.out.println(watered ? "Watered!" : "Failed to water.");
                     break;
 
-                case 3: // Fertilize crop
+                case 3:
                     System.out.print("Enter X: ");
                     x = scanner.nextInt();
                     System.out.print("Enter Y: ");
@@ -80,7 +80,7 @@ public class Main {
                     System.out.println(fertilized ? "Fertilized!" : "Failed to fertilize.");
                     break;
 
-                case 4: // Harvest crop
+                case 4: 
                     System.out.print("Enter X: ");
                     x = scanner.nextInt();
                     System.out.print("Enter Y: ");
@@ -90,7 +90,7 @@ public class Main {
                     System.out.println(harvested ? "Harvested!" : "Cannot harvest.");
                     break;
 
-                case 5: // Buy seeds
+                case 5: 
                     System.out.println("Available seeds: ");
                     for (CropType t : CropType.values())
                         System.out.println(t + " : " + t.getSeedPrice() + " coins");
@@ -109,16 +109,15 @@ public class Main {
                 	controller.displayInventory();
                 	break;
 
-                case 7: // Next day
-                    controller.nextDay();
-                    System.out.println("A new day begins...");
+                case 7: 
+                	farm.advanceDay(eventManager);
                     break;
 
-                case 8: // View farm
+                case 8: 
                     controller.printFarmStatus();
                     break;
 
-                case 9: // View player info
+                case 9: 
                     controller.printPlayerStatus();
                     break;
 

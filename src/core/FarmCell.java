@@ -19,7 +19,7 @@ public class FarmCell {
             return false;
         }
         this.crop=crop;
-        System.out.println("You have planted"+ crop.getCropType().getCropName()+"at "+ position);
+        System.out.println("You have planted "+ crop.getCropType().getCropName()+" at "+ position);
         return true;
     }
     public Crop getCrop() {

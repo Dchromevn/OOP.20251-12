@@ -55,7 +55,7 @@ public abstract class Crop extends Entity {
             return;
         }
         waterLevel=Math.min(this.maxWaterLevel,this.waterLevel+amount);
-        System.out.println(cropType.getCropName()+"is watered. Water level is: "+waterLevel);
+        System.out.println(cropType.getCropName()+" is watered. Water level is: "+waterLevel);
     }
     public void fertilize(int amount){
         if (isDead()){
@@ -63,7 +63,7 @@ public abstract class Crop extends Entity {
             return;
         }
         fertilizerLevel=Math.min(this.maxFertilizerLevel,this.fertilizerLevel+amount);
-        System.out.println(cropType.getCropName()+"is fertilized. Fertilizer level is: "+fertilizerLevel);
+        System.out.println(cropType.getCropName()+" is fertilized. Fertilizer level is: "+fertilizerLevel);
     }
     public int recycle(){
         if (!isDead()){
