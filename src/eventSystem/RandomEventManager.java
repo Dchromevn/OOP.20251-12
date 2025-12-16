@@ -11,7 +11,7 @@ public class RandomEventManager {
             return new Rain();
         } else if (roll < 30) {
             return new Drought();
-        } else if (roll < 40) {
+        } else if (roll < 35) {
             return new PestAttack();
         } else {
             return null;

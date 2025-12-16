@@ -22,11 +22,10 @@ public class Carrot extends Crop{
     @Override
     public int harvest() {
         if (!isHarvestable()) {
-            System.out.println("Carrot is not ready for harvesting");
+            System.out.println("❌ Not ready to harvest.");
             return 0;
         }
-        int value = calculateHarvestValue();
-        System.out.println("Harvested Carrot: $" + value);
-        return value;
+        int amount = calculateYield();
+        return amount;
     }
 }

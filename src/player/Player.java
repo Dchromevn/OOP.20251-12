@@ -1,24 +1,22 @@
 package player;
 
-import java.util.HashMap;
-import java.util.Map;
+import core.Inventory;
 import utility.CropType;
 
 public class Player {
     private int money;
     private int waterSupply;
     private int fertilizerSupply;
-    private final Map<CropType, Integer> seedInventory;
+    private Inventory inventory;
+    public static final int BACKPACK_CAPACITY = 100; 
+
     public Player(int initialMoney, int initialWater, int initialFertilizer) {
         this.money = initialMoney;
         this.waterSupply = initialWater;
         this.fertilizerSupply = initialFertilizer;
-        this.seedInventory = new HashMap<>();
-
-        // Initialize all seeds to 0
-        for (CropType type : CropType.values()) {
-            seedInventory.put(type, 0);
-        }
+        
+        // Initialize the new Inventory system
+        this.inventory = new Inventory(BACKPACK_CAPACITY);
     }
 
     public Player() {
@@ -36,21 +34,18 @@ public class Player {
         return fertilizerSupply;
     }
 
-    public int getSeedCount(CropType cropType) {
-        return seedInventory.getOrDefault(cropType, 0);
-    }
-    public void addSeed(CropType cropType, int amount) {
-        seedInventory.put(cropType, getSeedCount(cropType) + amount);
+    public boolean addSeed(CropType cropType, int amount) {
+        return inventory.addSeed(cropType, amount);
     }
 
     public boolean removeSeed(CropType cropType, int amount) {
-        int current = getSeedCount(cropType);
-        if (current >= amount) {
-            seedInventory.put(cropType, current - amount);
-            return true;
-        }
-        return false;
+        return inventory.removeSeed(cropType, amount);
     }
+
+    public int getSeedCount(CropType cropType) {
+        return inventory.getSeedCount(cropType);
+    }
+    
     public boolean spendMoney(int amount) {
         if (money >= amount) {
             money -= amount;
@@ -84,13 +79,29 @@ public class Player {
     public void addFertilizer(int amount) {
         fertilizerSupply += amount;
     }
+    
+    public boolean addHarvestedCrop(CropType cropType, int amount) {
+        return inventory.addProduct(cropType, amount);
+    }
+
+    public boolean removeHarvestedCrop(CropType cropType, int amount) {
+        return inventory.removeProduct(cropType, amount);
+    }
+
+    public int getHarvestedCropCount(CropType cropType) {
+        return inventory.getProductCount(cropType);
+    }
+    
+    public Inventory getInventory() {
+        return inventory;
+    }
+    
     @Override
     public String toString() {
         return "Player{" +
                 "money=" + money +
                 ", waterSupply=" + waterSupply +
                 ", fertilizerSupply=" + fertilizerSupply +
-                ", seedInventory=" + seedInventory +
                 '}';
     }
     public void showInventory() {
@@ -99,10 +110,8 @@ public class Player {
         System.out.println("Water: " + waterSupply);
         System.out.println("Fertilizer: " + fertilizerSupply);
 
-        System.out.println("\n--- Seeds ---");
-        for (CropType type : seedInventory.keySet()) {
-            System.out.println(type + ": " + seedInventory.get(type));
-        }
+        System.out.println();
+        System.out.println(inventory.toString());
     }
 
 }

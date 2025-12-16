@@ -130,15 +130,11 @@ public abstract class Crop extends Entity {
             System.out.println(cropType.getCropName() + " has died!");
         }
     }
-    protected int calculateHarvestValue(){
-        if(!isHarvestable()){
-            return 0;
-        }
-        double value = basePrice;
-        if (health<=50&& health>0){
-            return (int) Math.round(value);
-        }
-        return (int) Math.round(value+(health/100.0)*value);
+    protected int calculateYield() {
+        if (this.isDead()) return 0;
+        if (getHealth() >= 80) return 3;
+        if (getHealth() >= 40) return 2;
+        return 1;
     }
     @Override
     public void update() {

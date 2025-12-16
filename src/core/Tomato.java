@@ -22,11 +22,10 @@ public class Tomato extends Crop{
     @Override
     public int harvest() {
         if (!isHarvestable()) {
-            System.out.println("Tomato is not ready for harvesting");
+            System.out.println("❌ Not ready to harvest.");
             return 0;
         }
-        int value = calculateHarvestValue();
-        System.out.println("Harvested Tomato: $" + value);
-        return value;
+        int amount = calculateYield();
+        return amount;
     }
 }

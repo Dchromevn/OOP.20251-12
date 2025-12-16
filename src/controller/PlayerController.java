@@ -55,15 +55,12 @@ public class PlayerController {
     	if (cell == null || cell.isEmpty()) return false;
     	Crop crop = cell.getCrop();
     	if (!crop.isHarvestable()) return false;
-    	int moneyEarned = crop.harvest();
-    	player.earnMoney(moneyEarned);
+    	int yield = crop.harvest();
+    	if (!player.getInventory().hasSpace(yield)) return false;
+    	crop.harvest();
+    	CropType type = crop.getCropType();
+        player.addHarvestedCrop(type, yield);
     	cell.removeCrop();
-    	return true;
-    }
-    public boolean buySeed(CropType type, int amount) {
-    	int cost = type.getSeedPrice() * amount;
-    	if (!player.spendMoney(cost)) return false;
-    	player.addSeed(type, amount);
     	return true;
     }
     public void nextDay(RandomEventManager eventManager) {
