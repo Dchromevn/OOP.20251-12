@@ -2,8 +2,7 @@ package app;
 
 import java.util.Scanner;
 import controller.*;
-import core.Farm;
-import core.Store;
+import core.*;
 import resourceManagement.ResourceManager;
 import eventSystem.RandomEventManager;
 import player.Player;
@@ -20,7 +19,6 @@ public class Main {
         PlayerController controller = new PlayerController(player, farm);
 
         System.out.println("Welcome to SmartFarm!");
-
         while (true) {
             System.out.println("\n===== SMART FARM MENU =====");
             System.out.println("1. Plant Crop");
@@ -31,7 +29,8 @@ public class Main {
             System.out.println("6. View Inventory");
             System.out.println("7. Next Day");
             System.out.println("8. View Farm");
-            System.out.println("9. View Player Info");
+            System.out.println("9. View Cell");
+            System.out.println("10. View Player Info");
             System.out.println("0. Exit");
             System.out.print("Select option: ");
 
@@ -147,11 +146,24 @@ public class Main {
                     controller.printFarmStatus();
                     break;
                 case 9: 
+                    System.out.print("Enter X: ");
+                    x = scanner.nextInt();
+                    System.out.print("Enter Y: ");
+                    y = scanner.nextInt();
+                    Crop c = farm.getCrop(x, y);   
+                    if (c != null) {
+                        System.out.println("---------------------------");
+                        System.out.println(c); 
+                        System.out.println("---------------------------");
+                    } else {
+                        System.out.println("No crop found at (" + x + ", " + y + ")");
+                    }
+                    break;
+                case 10: 
                 	System.out.println(resourceManager.getResourceStatus());
                     resourceManagement.BalanceReport report = resourceManager.checkBalance(player);
                     System.out.println(report.toString());
                     break;
-
                 default:
                     System.out.println("Invalid choice.");
             }

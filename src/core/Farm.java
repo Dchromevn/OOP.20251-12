@@ -35,6 +35,14 @@ public class Farm {
     public FarmCell getCell(Point position){
         return getCell(position.getX(),position.getY());
     }
+    
+    public Crop getCrop(int x, int y) {
+        FarmCell cell = getCell(x, y);
+        if (cell != null && !cell.isEmpty()) {
+            return cell.getCrop();
+        }
+        return null;
+    }
     public int getWidth() {
         return width;
     }
