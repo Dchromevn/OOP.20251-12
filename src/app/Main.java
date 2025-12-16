@@ -2,6 +2,7 @@ package app;
 
 import controller.*;
 import core.Farm;
+import eventSystem.RandomEventManager;
 import player.Player;
 import utility.*;
 
@@ -116,7 +117,6 @@ public class Main {
                 case 8: 
                     controller.printFarmStatus();
                     break;
-
                 case 9: 
                     controller.printPlayerStatus();
                     break;

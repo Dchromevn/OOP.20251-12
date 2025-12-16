@@ -1,7 +1,7 @@
 package core;
 
 import utility.Point;
-import controller.RandomEventManager;
+import eventSystem.RandomEventManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,7 +124,7 @@ public class Farm {
         System.out.println("Day " + currentDay + " ended.");
         currentDay++;
         System.out.println("\nDay " + currentDay + " begins...");
-        eventManager.triggerRandomEvent(this);
+        eventManager.triggerRandomEvent();
         updateAllCrops();
 
     }
