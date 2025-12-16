@@ -48,37 +48,31 @@ public class Main {
                     System.out.println("Available crops: ");
                     for (CropType t : CropType.values())
                         System.out.println("- " + t);
-
                     System.out.print("Enter crop type: ");
                     String typeInput = scanner.next().toUpperCase();
                     CropType type = CropType.valueOf(typeInput);
-
-                    System.out.print("Enter X: ");
+                    System.out.print("Enter X (" + farm.getWidth() + " or more for entire row Y): ");
                     int x = scanner.nextInt();
-
-                    System.out.print("Enter Y: ");
+                    System.out.print("Enter Y (" + farm.getHeight() + " or more for entire column X): ");
                     int y = scanner.nextInt();
-
                     boolean planted = controller.plantCrop(type, new Point(x, y));
                     System.out.println(planted ? "Planted!" : "Failed to plant.");
                     break;
 
                 case 2:
-                    System.out.print("Enter X: ");
+                    System.out.print("Enter X (" + farm.getWidth() + " or more for entire row Y): ");
                     x = scanner.nextInt();
-                    System.out.print("Enter Y: ");
+                    System.out.print("Enter Y (" + farm.getHeight() + " or more for entire column X): ");
                     y = scanner.nextInt();
-
                     boolean watered = controller.waterCrop(new Point(x, y), 10);
                     System.out.println(watered ? "Watered!" : "Failed to water.");
                     break;
 
                 case 3:
-                    System.out.print("Enter X: ");
+                    System.out.print("Enter X (" + farm.getWidth() + " or more for entire row Y): ");
                     x = scanner.nextInt();
-                    System.out.print("Enter Y: ");
+                    System.out.print("Enter Y (" + farm.getHeight() + " or more for entire column X): ");
                     y = scanner.nextInt();
-
                     boolean fertilized = controller.fertilizeCrop(new Point(x, y), 5);
                     System.out.println(fertilized ? "Fertilized!" : "Failed to fertilize.");
                     break;

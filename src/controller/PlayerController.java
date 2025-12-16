@@ -6,6 +6,8 @@ import eventSystem.RandomEventManager;
 import player.Player;
 import utility.CropType;
 import utility.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerController {
 
@@ -16,39 +18,90 @@ public class PlayerController {
         this.player = player;
         this.farm = farm;
     }
+    
+    private List<Point> getTargetPoints(Point inputPos) {
+        List<Point> targets = new ArrayList<>();
+        int w = farm.getWidth();  
+        int h = farm.getHeight(); 
+        int x = inputPos.getX();
+        int y = inputPos.getY();
+
+        // Check if input is a "Magic Number" (>= Width/Height)
+        if (x >= w && y >= h) { // ALL FARM
+            for (int i = 0; i < w; i++) {
+                for (int j = 0; j < h; j++) {
+                    targets.add(new Point(i, j));
+                }
+            }
+        } else if (x >= w) { // ENTIRE ROW y
+            if (y >= 0 && y < h) {
+                for (int i = 0; i < w; i++) {
+                    targets.add(new Point(i, y));
+                }
+            }
+        } else if (y >= h) { // ENTIRE COLUMN x
+            if (x >= 0 && x < w) {
+                for (int j = 0; j < h; j++) {
+                    targets.add(new Point(x, j));
+                }
+            }
+        } else { // SINGLE CELL
+            if (farm.isValidPosition(inputPos)) {
+                targets.add(inputPos);
+            }
+        }
+        return targets;
+    }
 
     public boolean plantCrop(CropType type, Point position) {
-        if (player.getSeedCount(type) <= 0) return false;
-
-        FarmCell cell = farm.getCell(position);
-        if (cell == null || !cell.isEmpty()) return false;
-
-        Crop crop = utility.CropFactory.createCrop(type, position);
-        cell.plantCrop(crop);
-
-        player.removeSeed(type, 1);
-        return true;
+        List<Point> targets = getTargetPoints(position);
+        int count = 0;
+        for (Point p : targets) {
+            if (player.getSeedCount(type) <= 0) {
+                System.out.println("⚠️ Ran out of seeds! Stopped at " + p);
+                break;
+            }
+            FarmCell cell = farm.getCell(p);
+            if (cell == null || !cell.isEmpty()) continue; 
+            Crop crop = utility.CropFactory.createCrop(type, p);
+            cell.plantCrop(crop);
+            player.removeSeed(type, 1);
+            count++;
+        }
+        
+        return count > 0;
     }
 
     public boolean waterCrop(Point position, int amount) {
-        FarmCell cell = farm.getCell(position);
-        if (cell == null || cell.isEmpty()) return false;
-
-        if (player.useWater(amount)) {
+        List<Point> targets = getTargetPoints(position);
+        int count = 0;
+        for (Point p : targets) {
+            FarmCell cell = farm.getCell(p);
+            if (cell == null || cell.isEmpty()) continue;
+            if (!player.useWater(amount)) {
+                 System.out.println("⚠️ Ran out of water! Stopped at " + p);
+                 break;
+            }
             cell.getCrop().water(amount);
-            return true;
+            count++;
         }
-
-        return false;
+        return count > 0;
     }
+    
     public boolean fertilizeCrop(Point position, int amount) {
-    	FarmCell cell = farm.getCell(position);
-    	if (cell == null || cell.isEmpty()) return false;
-    	if (player.useFertilizer(amount)) {
-    		cell.getCrop().fertilize(amount);
-    		return true;
-    	}
-    	return false;
+        List<Point> targets = getTargetPoints(position);
+        int count = 0;
+        for (Point p : targets) {
+            FarmCell cell = farm.getCell(p);
+            if (cell == null || cell.isEmpty()) continue;
+            if (!player.useFertilizer(amount)) {
+                System.out.println("⚠️ Ran out of fertilizer! Stopped at " + p);
+                break; 
+            }
+            cell.getCrop().fertilize(amount);
+            count++;
+        }
+        return count > 0;
     }
     public boolean harvestCrop(Point position) {
     	FarmCell cell = farm.getCell(position);
