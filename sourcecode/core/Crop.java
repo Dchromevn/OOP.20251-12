@@ -130,9 +130,7 @@ public abstract class Crop extends Entity {
     }
     protected int calculateHarvestValue(){
         if(!isHarvestable()){
-        	throw new IllegalStateException(
-        		cropType.getCropName() + " is not ready to harvest"
-        			);
+        	return 0;
         }
         double value = basePrice;
         if (health<=50&& health>0){
