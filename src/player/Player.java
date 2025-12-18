@@ -84,7 +84,7 @@ public class Player {
         return inventory.addProduct(cropType, amount);
     }
 
-    public boolean removeHarvestedCrop(CropType cropType, int amount) {
+    public int removeHarvestedCrop(CropType cropType, int amount) {
         return inventory.removeProduct(cropType, amount);
     }
 
@@ -113,5 +113,4 @@ public class Player {
         System.out.println();
         System.out.println(inventory.toString());
     }
-
 }

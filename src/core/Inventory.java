@@ -1,15 +1,14 @@
 package core;
 
 import utility.CropType;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class Inventory {
 	private final int maxCapacity;
     private int currentLoad;
     private final Map<CropType, Integer> seeds;
-    private final Map<CropType, Integer> products;
+    private final Map<CropType, List<Integer>> products;
     
 	public Inventory(int maxCapacity) {
 		this.maxCapacity = maxCapacity;
@@ -18,7 +17,7 @@ public class Inventory {
         this.products = new HashMap<>();
         for (CropType type : CropType.values()) {
             seeds.put(type, 0);
-            products.put(type, 0);
+            products.put(type, new ArrayList<>());
         }
 	}
 	
@@ -51,26 +50,29 @@ public class Inventory {
         return seeds.get(type);
     }
     
-    public boolean addProduct(CropType type, int amount) {
-        if (!hasSpace(amount)) {
+    public boolean addProduct(CropType type, int healthAdjustedValue) {
+        if (!hasSpace(1)) {
             System.out.println("❌ Inventory full! Cannot harvest " + type.getCropName());
             return false;
         }
-        products.put(type, products.get(type) + amount);
-        currentLoad += amount;
+        products.get(type).add(healthAdjustedValue);
+        currentLoad++;
         return true;
     }
-    public boolean removeProduct(CropType type, int amount) {
-        int current = products.get(type);
-        if (current >= amount) {
-            products.put(type, current - amount);
-            currentLoad -= amount;
-            return true;
+    public int removeProduct(CropType type, int amount) {
+    	List<Integer> list = products.get(type);
+        int totalValue = 0;
+        for (int i = 0; i < amount && !list.isEmpty(); i++) {
+            totalValue += list.remove(list.size() - 1); // Remove and accumulate
+            currentLoad--;
         }
-        return false;
+        return totalValue;
     }
     public int getProductCount(CropType type) {
-        return products.get(type);
+    	return products.get(type).size();
+    }
+    public int getTotalBaseValue(CropType type) {
+        return products.get(type).stream().mapToInt(Integer::intValue).sum();
     }
     
     @Override
@@ -94,9 +96,15 @@ public class Inventory {
         
         sb.append("║ 📦 HARVESTED CROPS:            ║\n");
         boolean hasProducts = false;
-        for (Map.Entry<CropType, Integer> entry : products.entrySet()) {
-            if (entry.getValue() > 0) {
-                sb.append(String.format("║    %-10s x%-3d             ║\n", entry.getKey().getCropName(), entry.getValue()));
+        for (Map.Entry<CropType, List<Integer>> entry : products.entrySet()) {
+            List<Integer> values = entry.getValue();
+            if (!values.isEmpty()) {
+                int totalCropValue = values.stream().mapToInt(Integer::intValue).sum();
+                
+                sb.append(String.format("║    %-10s x%-3d (Base Val: $%4d)        ║\n", 
+                        entry.getKey().getCropName(), 
+                        values.size(), 
+                        totalCropValue));
                 hasProducts = true;
             }
         }

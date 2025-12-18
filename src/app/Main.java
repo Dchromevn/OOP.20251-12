@@ -7,6 +7,7 @@ import resourceManagement.ResourceManager;
 import eventSystem.RandomEventManager;
 import player.Player;
 import utility.*;
+import notification.NotificationManager;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,6 +17,7 @@ public class Main {
         Store store = new Store();
         Player player = new Player();
         Farm farm = new Farm(5, 5);
+        NotificationManager notificationManager= new NotificationManager();
         PlayerController controller = new PlayerController(player, farm);
         int waterPrice = Store.getWaterPrice();
         int fertilizerPrice = Store.getFertilizerPrice();
@@ -138,10 +140,13 @@ public class Main {
                 	controller.displayInventory();
                 	break;
 
-                case 7: 
-                	farm.advanceDay(eventManager);
-                	resourceManager.updateResources();
-                    store.updateMarketPrices();
+                case 7:
+                    String result= farm.advanceDay(eventManager);
+                    if (result != null) {
+                        notificationManager.addNotification(result, NotificationType.EVENT, farm.getCurrentDay());
+                    } else {
+                        notificationManager.addNotification("Just a normal day", NotificationType.INFO, farm.getCurrentDay());
+                    }
                     break;
 
                 case 8: 
@@ -160,9 +165,7 @@ public class Main {
                     }
                     break;
                 case 10: 
-                	System.out.println(resourceManager.getResourceStatus());
-                    resourceManagement.BalanceReport report = resourceManager.checkBalance(player);
-                    System.out.println(report.toString());
+                	controller.printPlayerStatus();
                     break;
                 default:
                     System.out.println("Invalid choice.");
