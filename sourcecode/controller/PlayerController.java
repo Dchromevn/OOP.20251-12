@@ -69,20 +69,26 @@ public class PlayerController {
         try {
             FarmCell cell = farm.getCell(position);
             Crop crop = cell.requireCrop();
+
+            if (!crop.isHarvestable()) {
+                System.out.println(
+                    crop.getCropType().getCropName() + " is not ready for harvesting"
+                );
+                return false;
+            }
+
             int moneyEarned = crop.harvest();
             player.earnMoney(moneyEarned);
             cell.removeCrop();
 
             return true;
 
-        } catch (InvalidPositionException |
-                 IllegalStateException e) {
-
+        } catch (InvalidPositionException | IllegalStateException e) {
             System.out.println(e.getMessage());
             return false;
         }
-    
-}
+    }
+
     public boolean buySeed(CropType type, int amount) {
     	try{
     		int cost = type.getSeedPrice() * amount;
