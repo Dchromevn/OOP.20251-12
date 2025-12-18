@@ -22,10 +22,11 @@ public class Wheat extends Crop{
     @Override
     public int harvest() {
         if (!isHarvestable()) {
-            System.out.println("❌ Not ready to harvest.");
+            System.out.println("Not ready for harvesting");
             return 0;
         }
+        int value = calculateHarvestValue();
         int amount = calculateYield();
-        return amount;
+        return value * amount;
     }
 }

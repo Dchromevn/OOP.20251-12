@@ -4,6 +4,7 @@ import utility.Point;
 import eventSystem.RandomEventManager;
 import java.util.ArrayList;
 import java.util.List;
+import eventSystem.GameEvent;
 
 public class Farm {
     private FarmCell[][] grid;
@@ -128,13 +129,17 @@ public class Farm {
             crop.takeDamage(damageAmount);
         }
     }
-    public void advanceDay(RandomEventManager eventManager) {
+    public String advanceDay(RandomEventManager eventManager) {
         System.out.println("Day " + currentDay + " ended.");
         currentDay++;
         System.out.println("\nDay " + currentDay + " begins...");
-        eventManager.triggerRandomEvent();
+        GameEvent event = eventManager.triggerRandomEvent();
+        String eventResult = null;
+        if(event!= null){
+            eventResult=event.triggerEvent(this);
+        }
         updateAllCrops();
-
+        return eventResult;
     }
     public void updateAllCrops() {
         List<Crop> crops = getAllCrops();
@@ -178,4 +183,3 @@ public class Farm {
         );
     }
 }
-

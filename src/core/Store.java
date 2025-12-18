@@ -29,17 +29,21 @@ public class Store {
 		return FERTILIZER_PRICE;
 	}
 
-    public void updateMarketPrices() {
-        for (CropType type : CropType.values()) {
-            double fluctuation = 0.5 + (random.nextDouble() * 1.0);
-            priceMultipliers.put(type, fluctuation);
-        }
-    }
+	public void updateMarketPrices() {
+	    for (CropType type : CropType.values()) {
+	        double fluctuation = 0.8 + (random.nextDouble() * 0.5); 
 
-    public int getSellPrice(CropType type) {
-        int basePrice = type.getBasePriceCrop();
-        double multiplier = priceMultipliers.get(type);
-        return (int) (basePrice * multiplier);
+	        if (random.nextDouble() < 0.05) {
+	            fluctuation += 0.5;
+	        }
+
+	        priceMultipliers.put(type, fluctuation);
+	    }
+	}
+
+    public int getSellPrice(CropType type, int healthAdjustedBase) {
+        double multiplier = priceMultipliers.getOrDefault(type, 1.0);
+        return (int) (healthAdjustedBase * multiplier);
     }
     public int getSeedCost(CropType type) {
         return type.getSeedPrice();
@@ -91,54 +95,59 @@ public class Store {
     }
 
     public boolean sellProduct(Player player, CropType type, int amount) {
-        // 1. Check if player has the items to sell
         int currentStock = player.getHarvestedCropCount(type);
         if (currentStock < amount) {
             System.out.println("❌ Transaction Failed: You don't have enough " + type.getCropName());
             return false;
         }
-
-        // 2. Calculate earnings based on DYNAMIC prices
-        int unitPrice = getSellPrice(type);
-        int totalEarnings = unitPrice * amount;
-
-        // 3. Execute Transaction
-        player.removeHarvestedCrop(type, amount);
+        int combinedBaseValue = player.removeHarvestedCrop(type, amount);
+        double multiplier = priceMultipliers.get(type);
+        int totalEarnings = (int) (combinedBaseValue * multiplier);
         player.earnMoney(totalEarnings);
-        System.out.println("✅ Sold " + amount + " " + type.getCropName() + " for $" + totalEarnings + " (@ $" + unitPrice + "/unit)");
+        System.out.println("✅ Sold for $" + totalEarnings + " (Market Factor: " + String.format("%.2f", multiplier) + "x)");
         return true;
     }
 
     public void showStoreInterface(Player player) {
-        System.out.println("\n╔═══════════════════════════════════════════════╗");
-        System.out.println("║            🏘️  STORE  🏘️              ║");
-        System.out.println("╠═══════════════════════════════════════════════╣");
-        System.out.printf("║ WALLET: $%-32d ║\n", player.getMoney());
-        System.out.printf("║ BACKPACK:    %2d/%-2d slots used                  ║\n", 
-                (Player.BACKPACK_CAPACITY - player.getInventory().getRemainingSpace()), Player.BACKPACK_CAPACITY );
-        System.out.println("╠═══════════════════════════════════════════════╣");
-        System.out.println("║ 1. SELL CROPS (Current Market Prices):        ║");
+        System.out.println("\n╔═══════════════════════════════════════════════════╗");
+        System.out.println("║             🏘️  MARKET & STORE  🏘️               ║");
+        System.out.println("╠═══════════════════════════════════════════════════╣");
+        System.out.printf("║ WALLET: $%-12d  CAPACITY: %2d/%-2d slots  ║\n", 
+                player.getMoney(), 
+                (player.getInventory().getRemainingSpace() == Player.BACKPACK_CAPACITY ? 0 : Player.BACKPACK_CAPACITY - player.getInventory().getRemainingSpace()), 
+                Player.BACKPACK_CAPACITY);
+        System.out.println("╠═══════════════════════════════════════════════════╣");
+        System.out.println("║ 1. SELL INVENTORY (Current Market Trends):        ║");
+        
         for (CropType type : CropType.values()) {
-            int base = type.getBasePriceCrop();
-            int current = getSellPrice(type);
-            String trend = getTrendIndicator(base, current);
-            System.out.printf("║  %-10s : $%3d %-20s ║\n", type.getCropName(), current, trend);
+            double multiplier = priceMultipliers.getOrDefault(type, 1.0);
+            int count = player.getHarvestedCropCount(type);
+
+            int totalBaseValue = player.getInventory().getTotalBaseValue(type);
+            int potentialEarnings = getSellPrice(type, totalBaseValue);
+            
+            String trend = getTrendIndicator(multiplier);
+
+            System.out.printf("║  %-10s : x%-2d -> Value: $%4d  %-11s ║\n", 
+                    type.getCropName(), count, potentialEarnings, trend);
         }
-        System.out.println("╠═══════════════════════════════════════════════╣");
-        System.out.println("║ 2. BUY SEEDS:                                 ║");
+        
+        System.out.println("╠═══════════════════════════════════════════════════╣");
+        System.out.println("║ 2. BUY SEEDS:                                     ║");
         for (CropType type : CropType.values()) {
-             System.out.printf("║  %-10s : $%3d                             ║\n", type.getCropName(), type.getSeedPrice());
+             System.out.printf("║  %-10s : $%3d                                 ║\n", 
+                     type.getCropName(), type.getSeedPrice());
         }
-        System.out.println("╠═══════════════════════════════════════════════╣");
-        System.out.println("║ 3. BUY RESOURCES:                             ║");
-        System.out.printf("║  💧 Water      : $%d / unit                      ║\n", WATER_PRICE);
-        System.out.printf("║  🧪 Fertilizer : $%d / unit                      ║\n", FERTILIZER_PRICE);
-        System.out.println("╚═══════════════════════════════════════════════╝");
+        System.out.println("╠═══════════════════════════════════════════════════╣");
+        System.out.println("║ 3. BUY RESOURCES:                                 ║");
+        System.out.printf("║  💧 Water      : $%d / unit                          ║\n", WATER_PRICE);
+        System.out.printf("║  🧪 Fertilizer : $%d / unit                          ║\n", FERTILIZER_PRICE);
+        System.out.println("╚═══════════════════════════════════════════════════╝");
     }
 
-    private String getTrendIndicator(int base, int current) {
-        if (current > base) return "🔺 (Up)";
-        if (current < base) return "🔻 (Down)";
-        return "   (Normal)";
+    private String getTrendIndicator(double multiplier) {
+    	if (multiplier > 1.1) return "🔺 (High)";
+        if (multiplier < 0.9) return "🔻 (Low)";
+        return "   (Stable)";
     }
 }
