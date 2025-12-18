@@ -9,10 +9,11 @@ public class PlayerController {
 
     private Player player;
     private Farm farm;
-
+    private NotificationManager notificationManager;
     public PlayerController(Player player, Farm farm, NotificationManager notificationManager) {
         this.player = player;
         this.farm = farm;
+        this.notificationManager=notificationManager;
     }
     public boolean plantCrop(CropType type, Point position) {
         try {
