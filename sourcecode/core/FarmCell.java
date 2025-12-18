@@ -17,8 +17,7 @@ public class FarmCell {
         	throw new CellOccupiedException("Cell "+ position +" is already occupied.");
 
         }
-        this.crop=crop;
-        
+        this.crop=crop; 
     }
     public Crop getCrop() {
         return crop;

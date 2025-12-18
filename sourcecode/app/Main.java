@@ -66,8 +66,9 @@ public class Main {
                     x = scanner.nextInt();
                     System.out.print("Enter Y: ");
                     y = scanner.nextInt();
-
-                    boolean watered = controller.waterCrop(new Point(x, y), 10);
+                    System.out.print("Enter amount: ");
+                    int amount = scanner.nextInt();
+                    boolean watered = controller.waterCrop(new Point(x, y), amount);
                     System.out.println(watered ? "Watered!" : "Failed to water.");
                     break;
 
@@ -76,8 +77,9 @@ public class Main {
                     x = scanner.nextInt();
                     System.out.print("Enter Y: ");
                     y = scanner.nextInt();
-
-                    boolean fertilized = controller.fertilizeCrop(new Point(x, y), 5);
+                    System.out.print("Enter amount: ");
+                    amount = scanner.nextInt();
+                    boolean fertilized = controller.fertilizeCrop(new Point(x, y), amount);
                     System.out.println(fertilized ? "Fertilized!" : "Failed to fertilize.");
                     break;
 
@@ -101,7 +103,7 @@ public class Main {
                     type = CropType.valueOf(typeInput);
 
                     System.out.print("Amount: ");
-                    int amount = scanner.nextInt();
+                    amount = scanner.nextInt();
 
                     boolean bought = controller.buySeed(type, amount);
                     System.out.println(bought ? "Purchased!" : "Not enough money!");

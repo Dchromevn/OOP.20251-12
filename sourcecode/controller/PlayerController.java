@@ -38,9 +38,7 @@ public class PlayerController {
             Crop crop = cell.requireCrop();
             player.useWater(amount);
             crop.water(amount);
-
             return true;
-
         } catch (InvalidPositionException |
                  NotEnoughResourceException |
                  IllegalStateException e) {
