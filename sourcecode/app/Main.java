@@ -36,7 +36,10 @@ public class Main {
             System.out.println("7. Next Day");
             System.out.println("8. View Farm");
             System.out.println("9. View Notification");
-            System.out.println("10. Recycle crop");
+            System.out.println("10. View Plant Status");
+            System.out.println("11. Recycle crop");
+
+
             System.out.println("0. Exit");
             System.out.print("Select option: ");
 
@@ -140,10 +143,17 @@ public class Main {
                     }
                     break;
                 case 10:
+                    System.out.print("Enter X: "); int sx = scanner.nextInt();
+                    System.out.print("Enter Y: "); int sy = scanner.nextInt();
+                    controller.showCropStatus(new Point(sx, sy));
+                    break;
+
+                case 11:
                     System.out.print("Enter X: "); int rx = scanner.nextInt();
                     System.out.print("Enter Y: "); int ry = scanner.nextInt();
                     controller.recycleCrop(new Point(rx, ry));
                     break;
+
                 default:
                     System.out.println("Invalid choice.");
             }
