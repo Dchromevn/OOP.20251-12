@@ -1,46 +1,45 @@
 package resourceManagement;
 
-import player.Player;
+import exceptions.NotEnoughResourceException;
+import player.Inventory;
+import utility.CropType;
 
 public class ResourceManager {
-    private int systemWaterReserve;
-    private int systemFertilizerReserve;
-    private static final int MAX_CAPACITY = 2000;
+    private static final int WATER_PRICE = 2;
+    private static final int FERTILIZER_PRICE = 5;
 
-    public ResourceManager(int initialWater, int initialFertilizer) {
-        this.systemWaterReserve = initialWater;
-        this.systemFertilizerReserve = initialFertilizer;
+    public ResourceManager() {
     }
 
-    public boolean sellWaterToPlayer(Player player, int amount, int pricePerUnit) {
-        int totalCost = amount * pricePerUnit;
-        if (player.getMoney() >= totalCost && systemWaterReserve >= amount) {
-            player.spendMoney(totalCost);
-            player.gainWater(amount);
-            systemWaterReserve -= amount;
+    public boolean sellWaterToPlayer(Inventory inventory, int amount) {
+        int totalCost = amount * WATER_PRICE;
+        if (inventory.getMoney() >= totalCost) {
+            inventory.spendMoney(totalCost);
+            inventory.gainWater(amount);
             return true;
         }
         return false;
     }
 
-    public boolean sellFertilizerToPlayer(Player player, int amount, int pricePerUnit) {
-        int totalCost = amount * pricePerUnit;
-        if (player.getMoney() >= totalCost && systemFertilizerReserve >= amount) {
-            player.spendMoney(totalCost);
-            player.gainFertilizer(amount);
-            systemFertilizerReserve -= amount;
+    public boolean sellFertilizerToPlayer(Inventory inventory, int amount) {
+        int totalCost = amount * FERTILIZER_PRICE;
+        if (inventory.getMoney() >= totalCost) {
+            inventory.spendMoney(totalCost);
+            inventory.gainFertilizer(amount);
             return true;
         }
         return false;
     }
 
-    public void replenishSystemReserves() {
-        this.systemWaterReserve = Math.min(MAX_CAPACITY, systemWaterReserve + 100);
-        this.systemFertilizerReserve = Math.min(MAX_CAPACITY, systemFertilizerReserve + 50);
-    }
-
-    public String getStatus() {
-        return String.format("Inventory: Water [%d/%d], Fertilizer [%d/%d]", 
-                systemWaterReserve, MAX_CAPACITY, systemFertilizerReserve, MAX_CAPACITY);
+    public boolean sellSeedToPlayer(Inventory inventory,CropType type, int amount) {
+        try{
+            int cost = type.getSeedPrice() * amount;
+            inventory.spendMoney(cost);
+            inventory.addSeed(type,amount);
+            return true;
+        }catch (NotEnoughResourceException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 }
