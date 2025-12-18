@@ -31,12 +31,12 @@ public class Main {
             System.out.println("2. Water Crop");
             System.out.println("3. Fertilize Crop");
             System.out.println("4. Harvest Crop");
-            System.out.println("5. Buy Seeds");
+            System.out.println("5. View Store");
             System.out.println("6. View Inventory");
             System.out.println("7. Next Day");
             System.out.println("8. View Farm");
-            System.out.println("9. View Player Info");
-            System.out.println("10. View Notification");
+            System.out.println("9. View Notification");
+            System.out.println("10. Recycle crop");
             System.out.println("0. Exit");
             System.out.print("Select option: ");
 
@@ -128,9 +128,6 @@ public class Main {
                     controller.printFarmStatus();
                     break;
                 case 9:
-                    controller.printPlayerStatus();
-                    break;
-                case 10:
                     System.out.println("Notification:");
                     List<Notification> allNotifications = notificationManager.getAllNotifications();
 
@@ -141,6 +138,11 @@ public class Main {
                             System.out.println(n.toString());
                         }
                     }
+                    break;
+                case 10:
+                    System.out.print("Enter X: "); int rx = scanner.nextInt();
+                    System.out.print("Enter Y: "); int ry = scanner.nextInt();
+                    controller.recycleCrop(new Point(rx, ry));
                     break;
                 default:
                     System.out.println("Invalid choice.");
