@@ -12,11 +12,13 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         RandomEventManager eventManager = new RandomEventManager();
-        ResourceManager resourceManager = new ResourceManager(1000, 1000); 
+        ResourceManager resourceManager = new ResourceManager(1000, 1000);
         Store store = new Store();
         Player player = new Player();
         Farm farm = new Farm(5, 5);
         PlayerController controller = new PlayerController(player, farm);
+        int waterPrice = Store.getWaterPrice();
+        int fertilizerPrice = Store.getFertilizerPrice();
 
         System.out.println("Welcome to SmartFarm!");
         while (true) {
@@ -117,7 +119,7 @@ public class Main {
                             } catch (Exception e) { System.out.println("Invalid Input"); }
                         } else if (storeChoice == 3) {
                             // Buy Supplies
-                            System.out.println("[1] Water ($" + Store.WATER_PRICE + ")  [2] Fertilizer ($" + Store.FERTILIZER_PRICE + ")");
+                            System.out.println("[1] Water ($" + waterPrice + ")  [2] Fertilizer ($" + fertilizerPrice + ")");
                             int supplyChoice = scanner.nextInt();
                             System.out.print("Amount: ");
                             int amount = scanner.nextInt();

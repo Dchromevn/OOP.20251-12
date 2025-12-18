@@ -134,7 +134,7 @@ public abstract class Crop extends Entity {
         if (this.isDead()) return 0;
         if (getHealth() >= 80) return 3;
         if (getHealth() >= 40) return 2;
-        return 1;
+        else return 1;
     }
     @Override
     public void update() {

@@ -10,9 +10,8 @@ public class Store {
     private final Map<CropType, Double> priceMultipliers;
     private final Random random;
     
-    public static final int WATER_PRICE = 1;
-    public static final int FERTILIZER_PRICE = 2;
-
+    private static final int WATER_PRICE = 1;
+	private static final int FERTILIZER_PRICE = 2;
     public Store() {
         this.random = new Random();
         this.priceMultipliers = new HashMap<>();
@@ -21,6 +20,14 @@ public class Store {
             priceMultipliers.put(type, 1.0);
         }
     }
+    
+    public static int getWaterPrice() {
+		return WATER_PRICE;
+	}
+
+	public static int getFertilizerPrice() {
+		return FERTILIZER_PRICE;
+	}
 
     public void updateMarketPrices() {
         for (CropType type : CropType.values()) {
