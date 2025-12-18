@@ -6,8 +6,9 @@ import eventSystem.RandomEventManager;
 import notification.Notification;
 import notification.NotificationManager;
 import player.Player;
+import resourceManagement.ResourceManager;
+import resourceManagement.Store;
 import utility.*;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,9 +19,10 @@ public class Main {
         RandomEventManager eventManager = new RandomEventManager();
         Player player = new Player();
         Farm farm = new Farm(5, 5);// 5x5 farm
+        ResourceManager shopLogic = new ResourceManager();
         NotificationManager notificationManager= new NotificationManager();
-        PlayerController controller = new PlayerController(player, farm, notificationManager);
-
+        PlayerController controller = new PlayerController(player, farm, notificationManager,shopLogic);
+        Store store=new Store(controller);
         System.out.println("Welcome to SmartFarm!");
 
         while (true) {
@@ -99,20 +101,7 @@ public class Main {
                     break;
 
                 case 5:
-                    System.out.println("Available seeds: ");
-                    for (CropType t : CropType.values())
-                        System.out.println(t + " : " + t.getSeedPrice() + " coins");
-
-                    System.out.print("Choose seed type: ");
-                    typeInput = scanner.next().toUpperCase();
-                    type = CropType.valueOf(typeInput);
-
-                    System.out.print("Amount: ");
-                    amount = scanner.nextInt();
-
-                    boolean bought = controller.buySeed(type, amount);
-                    System.out.println(bought ? "Purchased!" : "Not enough money!");
-                    break;
+                    store.openStore(scanner,player);
                 case 6:
                     controller.displayInventory();
                     break;

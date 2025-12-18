@@ -5,15 +5,18 @@ import notification.NotificationManager;
 import player.Player;
 import utility.*;
 import exceptions.*;
+import resourceManagement.ResourceManager;
 public class PlayerController {
 
     private Player player;
     private Farm farm;
+    private ResourceManager shop;
     private NotificationManager notificationManager;
-    public PlayerController(Player player, Farm farm, NotificationManager notificationManager) {
+    public PlayerController(Player player, Farm farm, NotificationManager notificationManager,ResourceManager shop) {
         this.player = player;
         this.farm = farm;
         this.notificationManager=notificationManager;
+        this.shop=shop;
     }
     public boolean plantCrop(CropType type, Point position) {
         try {
@@ -21,7 +24,7 @@ public class PlayerController {
             Crop crop = CropFactory.createCrop(type, position);
 
             cell.plantCrop(crop);     
-            player.removeSeed(type, 1); 
+            player.getInventory().removeSeed(type, 1);
 
             return true;
 
@@ -38,7 +41,7 @@ public class PlayerController {
         try {
             FarmCell cell = farm.getCell(position);
             Crop crop = cell.requireCrop();
-            player.useWater(amount);
+            player.getInventory().useWater(amount);
             crop.water(amount);
             return true;
         } catch (InvalidPositionException |
@@ -55,7 +58,7 @@ public class PlayerController {
             FarmCell cell = farm.getCell(position);
             Crop crop =  cell.requireCrop();
 
-            player.useFertilizer(amount);
+            player.getInventory().useFertilizer(amount);
             crop.fertilize(amount);
             return true;
         } catch (InvalidPositionException |
@@ -79,7 +82,7 @@ public class PlayerController {
             }
 
             int moneyEarned = crop.harvest();
-            player.earnMoney(moneyEarned);
+            player.getInventory().earnMoney(moneyEarned);
             cell.removeCrop();
 
             return true;
@@ -91,21 +94,47 @@ public class PlayerController {
     }
 
     public boolean buySeed(CropType type, int amount) {
-    	try{
-    		int cost = type.getSeedPrice() * amount;
-    		player.spendMoney(cost);
-    		player.addSeed(type,amount);
-    		return true;
-    	}catch (NotEnoughResourceException e) {
-    		System.out.println(e.getMessage());
-    		return false;
-    	}
+        boolean success = shop.sellSeedToPlayer(player.getInventory(),type, amount);
+        if (success) {
+            // 2. Sửa thông báo từ "water units" thành "seeds" cho đúng ngữ cảnh
+            notificationManager.addNotification(
+                    "Purchased " + amount + " " + type.getCropName() + " seeds",
+                    NotificationType.SUCCESS,
+                    farm.getCurrentDay()
+            );
+        } else {
+            notificationManager.addNotification(
+                    "Failed to buy seeds: Not enough money",
+                    NotificationType.ERROR,
+                    farm.getCurrentDay()
+            );
+        }
+        return success;
     }
+    public boolean buyWater(int amount) {
+        boolean success = shop.sellWaterToPlayer(player.getInventory(), amount);
+        if (success) {
+            notificationManager.addNotification("You have bought " + amount + " water units", NotificationType.SUCCESS, farm.getCurrentDay());
+        } else {
+            notificationManager.addNotification("Failed to buy, not enough money", NotificationType.ERROR, farm.getCurrentDay());
+        }
+        return success;
+    }
+    public boolean buyFertilizer(int amount) {
+        boolean success = shop.sellFertilizerToPlayer(player.getInventory(), amount);
+        if (success) {
+            notificationManager.addNotification("You have bought " + amount + " fertilizer units", NotificationType.SUCCESS, farm.getCurrentDay());
+        } else {
+            notificationManager.addNotification("Failed to buy, not enough money", NotificationType.ERROR, farm.getCurrentDay());
+        }
+        return success;
+    }
+
     public void nextDay(RandomEventManager eventManager) {
         farm.advanceDay(eventManager);
     }
     public void displayInventory() {
-    	player.showInventory();
+    	player.getInventory().showInventory();
     }
     public void printPlayerStatus() {
     	System.out.println(player);
