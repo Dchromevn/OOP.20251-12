@@ -7,17 +7,17 @@ public class Wheat extends Crop{
     public Wheat(String id, Point position) {
         super(id, position, CropType.WHEAT);
         this.dayPerStage = new int[]{1,1,1};
-        this.maxWaterLevel=90;
-        this.maxFertilizerLevel= 80;
-        this.waterNeedThreshold = 20;
-        this.fertilizerNeedThreshold = 20;
-        this.waterLevel = this.maxWaterLevel / 3;
+        this.maxWaterLevel=50;
+        this.maxFertilizerLevel= 30;
+        this.waterNeedThreshold = 15;
+        this.fertilizerNeedThreshold = 10;
+        this.waterLevel = this.maxWaterLevel / 2;
         this.fertilizerLevel = this.maxFertilizerLevel / 2;
     }
     @Override
     protected void consumeResource() {
-       waterLevel = Math.max(0, this.waterLevel - 6);
-       fertilizerLevel =Math.max(0, this.fertilizerLevel -4);
+       waterLevel = Math.max(0, this.waterLevel - 4);
+       fertilizerLevel =Math.max(0, this.fertilizerLevel -2);
     }
     @Override
     public int harvest() {

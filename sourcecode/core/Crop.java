@@ -13,8 +13,6 @@ public abstract class Crop extends Entity {
     protected int maxWaterLevel;
     protected int maxFertilizerLevel;
     protected final int MAX_HEALTH =100;
-    protected int waterPerDay;
-    protected int fertilizerPerDay;
     protected int basePrice;
     protected int []dayPerStage;
     protected int waterNeedThreshold;
@@ -95,9 +93,6 @@ public abstract class Crop extends Entity {
     public int getHealth() {
         return health;
     }
-    public int getDaysInCurrentStage() {
-        return daysCurrentStage;
-    }
     public CropType getCropType() {
         return cropType;
     }
@@ -112,10 +107,12 @@ public abstract class Crop extends Entity {
     protected void checkHealthStatus() {
         if (waterLevel <= 0) {
             takeDamage(15);
-        } else if (waterLevel < 20) {
-            takeDamage(5);
+        } else if (waterLevel < waterNeedThreshold) {
+            takeDamage(10);
         }
-        if (fertilizerLevel <= 10) {
+        if (fertilizerLevel <= fertilizerNeedThreshold) {
+            takeDamage(10);
+        } else if (fertilizerLevel<=0) {
             takeDamage(15);
         }
     }
