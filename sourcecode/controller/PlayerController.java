@@ -40,6 +40,14 @@ public class PlayerController {
         try {
             FarmCell cell = farm.getCell(position);
             Crop crop = cell.requireCrop();
+            if (crop.isHarvestable()) {
+                notificationManager.addNotification(
+                        crop.getCropType().getCropName() + " is harvestable. Cannot water",
+                        NotificationType.WARNING,
+                        farm.getCurrentDay()
+                );
+                return false;
+            }
             player.getInventory().useWater(amount);
             crop.water(amount);
             return true;
@@ -51,12 +59,18 @@ public class PlayerController {
             return false;
         }
     }
-
     public boolean fertilizeCrop(Point position, int amount) {
         try {
             FarmCell cell = farm.getCell(position);
             Crop crop =  cell.requireCrop();
-
+            if (crop.isHarvestable()) {
+                notificationManager.addNotification(
+                        crop.getCropType().getCropName() + " is harvestable. Cannot fertilize",
+                        NotificationType.WARNING,
+                        farm.getCurrentDay()
+                );
+                return false;
+            }
             player.getInventory().useFertilizer(amount);
             crop.fertilize(amount);
             return true;
@@ -144,9 +158,6 @@ public class PlayerController {
     }
     public void displayInventory() {
     	player.getInventory().showInventory();
-    }
-    public void printPlayerStatus() {
-    	System.out.println(player);
     }
     public void printFarmStatus() {
     	farm.printFarm();

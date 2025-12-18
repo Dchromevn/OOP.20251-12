@@ -52,6 +52,17 @@ public class NotificationManager {
         }
         System.out.println("All notifications marked as read");
     }
+    public void markAsRead(int index) {
+        List<Notification> all = getAllNotifications();
+        if (index >= 0 && index < all.size()) {
+            all.get(index).markAsRead();
+        }
+    }
+
+    // Xóa các thông báo đã đọc (để UI không hiển thị nữa)
+    public void clearReadNotifications() {
+        notifications.removeIf(Notification::isRead);
+    }
     public int getUnreadCount() {
         return (int) notifications.stream().filter(n -> !n.isRead()).count();
     }
