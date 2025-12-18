@@ -102,6 +102,7 @@ public class Main {
 
                 case 5:
                     store.openStore(scanner,player);
+                    break;
                 case 6:
                     controller.displayInventory();
                     break;
