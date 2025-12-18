@@ -117,7 +117,7 @@ public class Main {
                             } catch (Exception e) { System.out.println("Invalid Input"); }
                         } else if (storeChoice == 3) {
                             // Buy Supplies
-                            System.out.println("[1] Water ($1)  [2] Fertilizer ($2)");
+                            System.out.println("[1] Water ($" + Store.WATER_PRICE + ")  [2] Fertilizer ($" + Store.FERTILIZER_PRICE + ")");
                             int supplyChoice = scanner.nextInt();
                             System.out.print("Amount: ");
                             int amount = scanner.nextInt();
@@ -152,9 +152,7 @@ public class Main {
                     y = scanner.nextInt();
                     Crop c = farm.getCrop(x, y);   
                     if (c != null) {
-                        System.out.println("---------------------------");
                         System.out.println(c); 
-                        System.out.println("---------------------------");
                     } else {
                         System.out.println("No crop found at (" + x + ", " + y + ")");
                     }

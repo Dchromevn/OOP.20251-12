@@ -10,8 +10,8 @@ public class Store {
     private final Map<CropType, Double> priceMultipliers;
     private final Random random;
     
-    private static final int WATER_PRICE = 1;
-    private static final int FERTILIZER_PRICE = 2;
+    public static final int WATER_PRICE = 1;
+    public static final int FERTILIZER_PRICE = 2;
 
     public Store() {
         this.random = new Random();
@@ -130,7 +130,7 @@ public class Store {
     }
 
     private String getTrendIndicator(int base, int current) {
-        if (current > base) return "📈 (Up)";
+        if (current > base) return "🔺 (Up)";
         if (current < base) return "🔻 (Down)";
         return "   (Normal)";
     }
