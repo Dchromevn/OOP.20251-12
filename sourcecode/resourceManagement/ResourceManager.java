@@ -1,6 +1,4 @@
 package resourceManagement;
-
-import exceptions.NotEnoughResourceException;
 import player.Inventory;
 import utility.CropType;
 
@@ -11,35 +9,23 @@ public class ResourceManager {
     public ResourceManager() {
     }
 
-    public boolean sellWaterToPlayer(Inventory inventory, int amount) {
+    public void sellWaterToPlayer(Inventory inventory, int amount) {
         int totalCost = amount * WATER_PRICE;
-        if (inventory.getMoney() >= totalCost) {
-            inventory.spendMoney(totalCost);
-            inventory.gainWater(amount);
-            return true;
-        }
-        return false;
+        inventory.spendMoney(totalCost);
+        inventory.gainWater(amount);
+
     }
 
-    public boolean sellFertilizerToPlayer(Inventory inventory, int amount) {
+    public void sellFertilizerToPlayer(Inventory inventory, int amount) {
         int totalCost = amount * FERTILIZER_PRICE;
-        if (inventory.getMoney() >= totalCost) {
-            inventory.spendMoney(totalCost);
-            inventory.gainFertilizer(amount);
-            return true;
-        }
-        return false;
+        inventory.spendMoney(totalCost);
+        inventory.gainFertilizer(amount);
+
     }
 
-    public boolean sellSeedToPlayer(Inventory inventory,CropType type, int amount) {
-        try{
-            int cost = type.getSeedPrice() * amount;
-            inventory.spendMoney(cost);
-            inventory.addSeed(type,amount);
-            return true;
-        }catch (NotEnoughResourceException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
+    public void sellSeedToPlayer(Inventory inventory,CropType type, int amount) {
+        int cost = type.getSeedPrice() * amount;
+        inventory.spendMoney(cost);
+        inventory.addSeed(type,amount);
     }
 }
