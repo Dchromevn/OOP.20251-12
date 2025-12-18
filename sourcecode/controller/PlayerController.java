@@ -1,6 +1,7 @@
 package controller;
 import core.*;
 import eventSystem.RandomEventManager;
+import notification.NotificationManager;
 import player.Player;
 import utility.*;
 import exceptions.*;
@@ -9,7 +10,7 @@ public class PlayerController {
     private Player player;
     private Farm farm;
 
-    public PlayerController(Player player, Farm farm) {
+    public PlayerController(Player player, Farm farm, NotificationManager notificationManager) {
         this.player = player;
         this.farm = farm;
     }
