@@ -55,7 +55,7 @@ public class PlayerController {
     public boolean fertilizeCrop(Point position, int amount) {
         try {
             FarmCell cell = farm.getCell(position);
-            Crop crop =  cell.requireCrop();
+            Crop crop = cell.requireCrop();
 
             player.getInventory().useFertilizer(amount);
             crop.fertilize(amount);
@@ -142,6 +142,24 @@ public class PlayerController {
             notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
         }
     }
+    public void showCropStatus(Point position) {
+        try {
+            FarmCell cell = farm.getCell(position);
+
+            if (cell.isEmpty()) {
+                System.out.println("Cell " + position + " is empty.");
+                return;
+            }
+
+            CropStatus status = cell.getCrop().getStatus();
+            System.out.println("Crop status at " + position + ":");
+            System.out.println(status);
+
+        } catch (InvalidPositionException e) {
+            System.out.println("Invalid position: " + position);
+        }
+    }
+
     public void displayInventory() {
     	player.getInventory().showInventory();
     }

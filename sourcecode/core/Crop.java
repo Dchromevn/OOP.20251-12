@@ -115,8 +115,8 @@ public abstract class Crop extends Entity {
         } else if (waterLevel < 20) {
             takeDamage(5);
         }
-        if (fertilizerLevel <= 0) {
-            takeDamage(5);
+        if (fertilizerLevel <= 10) {
+            takeDamage(15);
         }
     }
     public void takeDamage(int damageAmount) {
