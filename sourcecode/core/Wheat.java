@@ -11,7 +11,7 @@ public class Wheat extends Crop{
         this.maxFertilizerLevel= 80;
         this.waterNeedThreshold = 20;
         this.fertilizerNeedThreshold = 20;
-        this.waterLevel = this.maxWaterLevel / 2;
+        this.waterLevel = this.maxWaterLevel / 3;
         this.fertilizerLevel = this.maxFertilizerLevel / 2;
     }
     @Override
