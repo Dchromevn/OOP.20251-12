@@ -1,5 +1,6 @@
 package core;
 
+import eventSystem.GameEvent;
 import utility.Point;
 import eventSystem.RandomEventManager;
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ public class Farm {
         return grid[y][x];
     }
     public FarmCell getCell(Point position){
-    	if (position == null) {
-    		throw new InvalidPositionException("Position cannot be null");
-    	}
+        if (position == null) {
+            throw new InvalidPositionException("Position cannot be null");
+        }
         return getCell(position.getX(),position.getY());
     }
     public int getWidth() {
@@ -94,41 +95,17 @@ public class Farm {
         }
         return emptyCells;
     }
-    public void applyRain(int waterAmount) {
-        List<Crop> crops = getAllCrops();
-
-        if (crops.isEmpty()) {
-            System.out.println(" Rain falls on empty farm...");
-            return;
-        }
-
-        System.out.println(" Rain! All crops gain +" + waterAmount + " water");
-
-        for (Crop crop : crops) {
-            crop.water(waterAmount);
-        }
-    }
-    public void applyDrought(int damageAmount) {
-        List<Crop> crops = getAllCrops();
-
-        if (crops.isEmpty()) {
-            System.out.println("Drought... but no crops to affect.");
-            return;
-        }
-
-        System.out.println("Drought! All crops take " + damageAmount + " damage");
-
-        for (Crop crop : crops) {
-            crop.takeDamage(damageAmount);
-        }
-    }
-    public void advanceDay(RandomEventManager eventManager) {
+    public String advanceDay(RandomEventManager eventManager) {
         System.out.println("Day " + currentDay + " ended.");
         currentDay++;
         System.out.println("\nDay " + currentDay + " begins...");
-        eventManager.triggerRandomEvent();
+        GameEvent event = eventManager.triggerRandomEvent();
+        String eventResult = null;
+        if(event!= null){
+            eventResult=event.triggerEvent(this);
+        }
         updateAllCrops();
-
+        return eventResult;
     }
     public void updateAllCrops() {
         List<Crop> crops = getAllCrops();

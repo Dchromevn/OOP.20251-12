@@ -3,9 +3,12 @@ package app;
 import controller.*;
 import core.Farm;
 import eventSystem.RandomEventManager;
+import notification.Notification;
+import notification.NotificationManager;
 import player.Player;
 import utility.*;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -14,8 +17,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         RandomEventManager eventManager = new RandomEventManager();
         Player player = new Player();
-        Farm farm = new Farm(5, 5);  // 5x5 farm
-        PlayerController controller = new PlayerController(player, farm);
+        Farm farm = new Farm(5, 5);// 5x5 farm
+        NotificationManager notificationManager= new NotificationManager();
+        PlayerController controller = new PlayerController(player, farm, notificationManager);
 
         System.out.println("Welcome to SmartFarm!");
 
@@ -30,6 +34,7 @@ public class Main {
             System.out.println("7. Next Day");
             System.out.println("8. View Farm");
             System.out.println("9. View Player Info");
+            System.out.println("10. View Notification");
             System.out.println("0. Exit");
             System.out.print("Select option: ");
 
@@ -42,7 +47,7 @@ public class Main {
 
             switch (choice) {
 
-                case 1: 
+                case 1:
                     System.out.println("Available crops: ");
                     for (CropType t : CropType.values())
                         System.out.println("- " + t);
@@ -83,7 +88,7 @@ public class Main {
                     System.out.println(fertilized ? "Fertilized!" : "Failed to fertilize.");
                     break;
 
-                case 4: 
+                case 4:
                     System.out.print("Enter X: ");
                     x = scanner.nextInt();
                     System.out.print("Enter Y: ");
@@ -93,7 +98,7 @@ public class Main {
                     System.out.println(harvested ? "Harvested!" : "Cannot harvest.");
                     break;
 
-                case 5: 
+                case 5:
                     System.out.println("Available seeds: ");
                     for (CropType t : CropType.values())
                         System.out.println(t + " : " + t.getSeedPrice() + " coins");
@@ -108,21 +113,45 @@ public class Main {
                     boolean bought = controller.buySeed(type, amount);
                     System.out.println(bought ? "Purchased!" : "Not enough money!");
                     break;
-                case 6: 
-                	controller.displayInventory();
-                	break;
-
-                case 7: 
-                	farm.advanceDay(eventManager);
+                case 6:
+                    controller.displayInventory();
                     break;
 
-                case 8: 
+                case 7:
+                    String result= farm.advanceDay(eventManager);
+                    if (result != null) {
+                        notificationManager.addNotification(
+                                result,
+                                NotificationType.EVENT,
+                                farm.getCurrentDay()
+                        );
+                    } else {
+                        notificationManager.addNotification(
+                                "Just a normal day",
+                                NotificationType.INFO,
+                                farm.getCurrentDay()
+                        );
+                    }
+                    break;
+
+                case 8:
                     controller.printFarmStatus();
                     break;
-                case 9: 
+                case 9:
                     controller.printPlayerStatus();
                     break;
+                case 10:
+                    System.out.println("Notification:");
+                    List<Notification> allNotifications = notificationManager.getAllNotifications();
 
+                    if (allNotifications.isEmpty()) {
+                        System.out.println("There is no notification");
+                    } else {
+                        for (Notification n : allNotifications) {
+                            System.out.println(n.toString());
+                        }
+                    }
+                    break;
                 default:
                     System.out.println("Invalid choice.");
             }
