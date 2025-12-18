@@ -28,8 +28,6 @@ public abstract class Crop extends Entity {
         this.health=MAX_HEALTH;
         this.waterLevel=this.maxWaterLevel/2;
         this.fertilizerLevel=this.maxFertilizerLevel/2;
-        this.waterPerDay=10;
-        this.fertilizerPerDay=5;
         this.waterNeedThreshold=20;
         this.fertilizerNeedThreshold=10;
         this.daysCurrentStage=0;
@@ -127,7 +125,7 @@ public abstract class Crop extends Entity {
 
         if (isDead()) {
             currentStage = CropStage.DEAD;
-            System.out.println(cropType.getCropName() + " has died!");
+            System.out.println(cropType.getCropName() + " has died");
         }
     }
     protected int calculateHarvestValue(){
