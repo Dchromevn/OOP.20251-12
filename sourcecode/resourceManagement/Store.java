@@ -17,8 +17,8 @@ public class Store {
             System.out.println("\nFARM SHOP");
             System.out.println("Current Balance: $" + player.getInventory().getMoney());
             System.out.println("1. Buy Seeds");
-            System.out.println("2. Buy Water ($2 per unit)");
-            System.out.println("3. Buy Fertilizer ($5 per bag)");
+            System.out.println("2. Buy Water ($2 per 25 units)");
+            System.out.println("3. Buy Fertilizer ($3 per 25 units)");
             System.out.println("4. Buy Recovery Health Package ($50 per package)");
             System.out.println("0. Back to Main Menu");
             System.out.print("Select item to buy: ");

@@ -6,13 +6,6 @@ import utility.Point;
 public class Pumpkin extends Crop{
     public Pumpkin(String id, Point position) {
         super(id, position, CropType.PUMPKIN);
-        this.dayPerStage = new int[]{3,3,3};
-        this.maxWaterLevel=150;
-        this.maxFertilizerLevel= 120;
-        this.waterNeedThreshold = 40;
-        this.fertilizerNeedThreshold = 30;
-        this.waterLevel = this.maxWaterLevel / 2;
-        this.fertilizerLevel = this.maxFertilizerLevel / 2;
     }
     @Override
     protected void consumeResource() {
