@@ -1,7 +1,8 @@
-package utility;
+package save;
 
-import app.GameState;
 import java.io.*;
+
+import core.GameState;
 
 public class GameSaveManager {
     private static final String DEFAULT_SAVE_FILE = "savegame.dat";

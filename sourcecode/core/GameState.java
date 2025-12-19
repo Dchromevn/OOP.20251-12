@@ -1,6 +1,5 @@
-package app;
+package core;
 
-import core.Farm;
 import player.Player;
 import notification.NotificationManager;
 import eventSystem.RandomEventManager;
