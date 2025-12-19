@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class Inventory {
     private int money;
+    private int medicine;
     private int water;
     private int fertilizer;
     private final Map<CropType, Integer> seeds;
@@ -14,6 +15,7 @@ public class Inventory {
     public Inventory(int initialMoney, int initialWater, int initialFertilizer) {
         this.money = initialMoney;
         this.water = initialWater;
+        this.medicine = 0;
         this.fertilizer = initialFertilizer;
         this.seeds = new HashMap<>();
         for (CropType type : CropType.values()) {
@@ -24,12 +26,12 @@ public class Inventory {
     public int getMoney() { return money; }
 
     public void earnMoney(int amount) {
-        validatePositive(amount, "Money");
+        validatePositive(amount, "Money: ");
         this.money += amount;
     }
 
     public void spendMoney(int amount) {
-        validatePositive(amount, "Money");
+        validatePositive(amount, "Money: ");
         if (this.money < amount) {
             throw new NotEnoughResourceException("Not enough money. Required: " + amount + ", available: " + money);
         }
@@ -38,14 +40,14 @@ public class Inventory {
     public int getWater() { return water; }
 
     public void gainWater(int amount) {
-        validatePositive(amount, "Water");
+        validatePositive(amount, "Water: ");
         this.water += amount;
     }
 
     public void useWater(int amount) {
         validatePositive(amount, "Water");
         if (this.water < amount) {
-            throw new NotEnoughResourceException("Not enough water");
+            throw new NotEnoughResourceException("Not enough water.");
         }
         this.water -= amount;
     }
@@ -57,9 +59,9 @@ public class Inventory {
     }
 
     public void useFertilizer(int amount) {
-        validatePositive(amount, "Fertilizer");
+        validatePositive(amount, "Fertilizer: ");
         if (this.fertilizer < amount) {
-            throw new NotEnoughResourceException("Not enough fertilize");
+            throw new NotEnoughResourceException("Not enough fertilizer.");
         }
         this.fertilizer -= amount;
     }
@@ -76,9 +78,23 @@ public class Inventory {
         validatePositive(amount, "Seed amount: ");
         int current = getSeedCount(type);
         if (current < amount) {
-            throw new NotEnoughResourceException("Not enough seeds for " + type.getCropName());
+            throw new NotEnoughResourceException("Not enough seeds for " + type.getCropName() + " .");
         }
         seeds.put(type, current - amount);
+    }
+    public int getMedicine() {
+    	return medicine;
+    }
+    public void gainMedicine(int amount) {
+    	validatePositive(amount, "Medicine: ");
+    	this.medicine += amount;
+    }
+    public void useMedicine(int amount) {
+    	validatePositive(amount, "Medicine: ");
+    	if (this.medicine < amount) {
+    		throw new NotEnoughResourceException("Not enough medicine!");
+    	}
+    	this.medicine -= amount;
     }
     private void validatePositive(int amount, String name) {
         if (amount <= 0) {
@@ -87,7 +103,7 @@ public class Inventory {
     }
 
     public String getStatusString() {
-        return String.format("[ Money: $%d | Water: %d | Fertilizer: %d ]", money, water, fertilizer);
+        return String.format("[ Money: $%d | Water: %d | Fertilizer: %d |Medicine: %d]", money, water, fertilizer,medicine);
     }
 
     public void showInventory() {

@@ -28,4 +28,10 @@ public class ResourceManager {
         inventory.spendMoney(cost);
         inventory.addSeed(type,amount);
     }
+    public void sellMedicineToPLayer(Inventory inventory, int amount) {
+    	int MEDICINE_PRICE = 50;
+    	int totalCost = MEDICINE_PRICE * amount;
+    	inventory.spendMoney(totalCost);
+    	inventory.gainMedicine(amount);
+    }
 }
