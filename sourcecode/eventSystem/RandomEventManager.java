@@ -1,8 +1,8 @@
 package eventSystem;
-
+import java.io.Serializable;
 import java.util.Random;
 
-public class RandomEventManager {
+public class RandomEventManager implements Serializable {
     private final Random random = new Random();
 
     public GameEvent triggerRandomEvent() {

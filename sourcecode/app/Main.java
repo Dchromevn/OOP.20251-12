@@ -39,6 +39,8 @@ public class Main {
             System.out.println("10. View Plant Status");
             System.out.println("11. Recycle Crop");
             System.out.println("12. Recover Crop");
+            System.out.println("13. Save game");
+            System.out.println("14. Continue game");
 
 
             System.out.println("0. Exit");
@@ -161,6 +163,26 @@ public class Main {
                 	int cy = scanner.nextInt();
                 	controller.cureCrop(new Point(cx, cy));
                 	break;
+                case 13:
+                    // Save Game
+                    GameState gameState = new GameState(farm, player, notificationManager, eventManager);
+                    GameSaveManager.saveGame(gameState, "Game saved successfully.");
+                    break;
+
+                case 14:
+                    // Load Game
+                    GameState loadedState = GameSaveManager.loadGame("smartfarm_save.dat");
+                    if (loadedState != null) {
+                        farm = loadedState.getFarm();
+                        player = loadedState.getPlayer();
+                        notificationManager = loadedState.getNotificationManager();
+                        eventManager = loadedState.getEventManager();
+                        // Re-initialize controller and store with new objects
+                        controller = new PlayerController(player, farm, notificationManager, shopLogic);
+                        store = new Store(controller);
+                        System.out.println("Game loaded successfully.");
+                    }
+                    break;
                 default:
                     System.out.println("Invalid choice.");
             }
