@@ -80,18 +80,6 @@ public class Player {
         fertilizerSupply += amount;
     }
     
-    public boolean addHarvestedCrop(CropType cropType, int amount) {
-        return inventory.addProduct(cropType, amount);
-    }
-
-    public int removeHarvestedCrop(CropType cropType, int amount) {
-        return inventory.removeProduct(cropType, amount);
-    }
-
-    public int getHarvestedCropCount(CropType cropType) {
-        return inventory.getProductCount(cropType);
-    }
-    
     public Inventory getInventory() {
         return inventory;
     }

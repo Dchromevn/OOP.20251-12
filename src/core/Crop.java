@@ -13,8 +13,6 @@ public abstract class Crop extends Entity {
     protected int maxWaterLevel;
     protected int maxFertilizerLevel;
     protected final int MAX_HEALTH =100;
-    protected int waterPerDay;
-    protected int fertilizerPerDay;
     protected int basePrice;
     protected int []dayPerStage;
     protected int waterNeedThreshold;
@@ -28,10 +26,6 @@ public abstract class Crop extends Entity {
         this.health=MAX_HEALTH;
         this.waterLevel=this.maxWaterLevel/2;
         this.fertilizerLevel=this.maxFertilizerLevel/2;
-        this.waterPerDay=10;
-        this.fertilizerPerDay=5;
-        this.waterNeedThreshold=20;
-        this.fertilizerNeedThreshold=10;
         this.daysCurrentStage=0;
         this.isDamaged = false;
         this.basePrice = cropType.getBasePriceCrop();
@@ -104,9 +98,15 @@ public abstract class Crop extends Entity {
         return cropType;
     }
     protected abstract void consumeResource();
-    public abstract int harvest();
     protected boolean hasEnoughResources() {
         return waterLevel > 0;
+    }
+    public int harvest() {
+        if (!isHarvestable()) {
+            System.out.println("Not ready for harvesting");
+            return 0;
+        }
+        return calculateHarvestValue();
     }
     public boolean isDamaged() {
         return isDamaged;
@@ -137,11 +137,6 @@ public abstract class Crop extends Entity {
         }
         double value = basePrice;
         return (int) Math.round(value+(health/100.0)*value);
-    }
-    protected int calculateYield() {
-        if (this.isDead()) return 0;
-        if (getHealth() == MAX_HEALTH) return 2;
-        else return 1;
     }
     @Override
     public void update() {

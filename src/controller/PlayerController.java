@@ -4,8 +4,7 @@ import core.FarmCell;
 import core.Crop;
 import eventSystem.RandomEventManager;
 import player.Player;
-import utility.CropType;
-import utility.Point;
+import utility.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,17 +103,20 @@ public class PlayerController {
         return count > 0;
     }
     public boolean harvestCrop(Point position) {
-    	FarmCell cell = farm.getCell(position);
-    	if (cell == null || cell.isEmpty()) return false;
-    	Crop crop = cell.getCrop();
-    	if (!crop.isHarvestable()) return false;
-    	int yield = crop.harvest();
-    	if (!player.getInventory().hasSpace(yield)) return false;
-    	crop.harvest();
-    	CropType type = crop.getCropType();
-        player.addHarvestedCrop(type, yield);
-    	cell.removeCrop();
-    	return true;
+        List<Point> targets = getTargetPoints(position);
+        int harvestSuccessCount = 0;
+        for (Point p : targets) {
+            FarmCell cell = farm.getCell(p);
+            if (cell == null || cell.isEmpty()) continue;        
+            Crop crop = cell.getCrop();
+            if (!crop.isHarvestable()) continue;
+            int moneyEarned = crop.harvest(); 
+            player.earnMoney(moneyEarned);
+            cell.removeCrop();
+            harvestSuccessCount++;        
+            System.out.println("💰 Harvested " + crop.getCropType().getCropName() + " and sold for $" + moneyEarned);
+        }
+        return harvestSuccessCount > 0;
     }
     public void nextDay(RandomEventManager eventManager) {
         farm.advanceDay(eventManager);

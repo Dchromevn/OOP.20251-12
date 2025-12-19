@@ -19,14 +19,4 @@ public class Tomato extends Crop{
         waterLevel = Math.max(0, this.waterLevel - 12);
         fertilizerLevel =Math.max(0, this.fertilizerLevel -8);
     }
-    @Override
-    public int harvest() {
-        if (!isHarvestable()) {
-            System.out.println("Not ready for harvesting");
-            return 0;
-        }
-        int value = calculateHarvestValue();
-        int amount = calculateYield();
-        return value * amount;
-    }
 }

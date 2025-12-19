@@ -19,14 +19,4 @@ public class Wheat extends Crop{
        waterLevel = Math.max(0, this.waterLevel - 6);
        fertilizerLevel =Math.max(0, this.fertilizerLevel -4);
     }
-    @Override
-    public int harvest() {
-        if (!isHarvestable()) {
-            System.out.println("Not ready for harvesting");
-            return 0;
-        }
-        int value = calculateHarvestValue();
-        int amount = calculateYield();
-        return value * amount;
-    }
 }

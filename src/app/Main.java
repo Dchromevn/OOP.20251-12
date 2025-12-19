@@ -3,7 +3,6 @@ package app;
 import java.util.Scanner;
 import controller.*;
 import core.*;
-import resourceManagement.ResourceManager;
 import eventSystem.RandomEventManager;
 import player.Player;
 import utility.*;
@@ -13,7 +12,6 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         RandomEventManager eventManager = new RandomEventManager();
-        ResourceManager resourceManager = new ResourceManager(1000, 1000);
         Store store = new Store();
         Player player = new Player();
         Farm farm = new Farm(5, 5);
@@ -81,11 +79,10 @@ public class Main {
                     break;
 
                 case 4: 
-                    System.out.print("Enter X: ");
+                    System.out.print("Enter X (" + farm.getWidth() + " or more for entire row Y): ");
                     x = scanner.nextInt();
-                    System.out.print("Enter Y: ");
+                    System.out.print("Enter Y (" + farm.getHeight() + " or more for entire column X): ");
                     y = scanner.nextInt();
-
                     boolean harvested = controller.harvestCrop(new Point(x, y));
                     System.out.println(harvested ? "Harvested!" : "Cannot harvest.");
                     break;
@@ -94,7 +91,7 @@ public class Main {
                 	boolean inStore = true;
                     while(inStore) {
                         store.showStoreInterface(player);
-                        System.out.println("\n[1] Buy Seeds  [2] Sell Crops [3] Buy Supplies  [0] Exit Store");
+                        System.out.println("\n[1] Buy Seeds [2] Buy Supplies  [0] Exit Store");
                         int storeChoice = scanner.nextInt();
                         
                         if (storeChoice == 0) {
@@ -110,16 +107,6 @@ public class Main {
                                 store.buySeed(player, sType, amt);
                             } catch (Exception e) { System.out.println("Invalid Input"); }
                         } else if (storeChoice == 2) {
-                            // Sell Crops
-                            System.out.print("Crop Type to Sell: ");
-                            String sellIn = scanner.next().toUpperCase();
-                            try {
-                                CropType sType = CropType.valueOf(sellIn);
-                                System.out.print("Amount: ");
-                                int amt = scanner.nextInt();
-                                store.sellProduct(player, sType, amt);
-                            } catch (Exception e) { System.out.println("Invalid Input"); }
-                        } else if (storeChoice == 3) {
                             // Buy Supplies
                             System.out.println("[1] Water ($" + waterPrice + ")  [2] Fertilizer ($" + fertilizerPrice + ")");
                             int supplyChoice = scanner.nextInt();
