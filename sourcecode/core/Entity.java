@@ -1,8 +1,9 @@
 package core;
+import java.io.Serializable;
 
 import utility.Point;
 
-public abstract class Entity {
+public abstract class Entity implements Serializable {
     protected String id;
     protected Point position;
     public Entity(String id,Point position){

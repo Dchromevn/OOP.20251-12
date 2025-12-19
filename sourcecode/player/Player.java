@@ -1,6 +1,7 @@
 package player;
+import java.io.Serializable;
 
-public class Player {
+public class Player implements Serializable  {
     private Inventory inventory;
 
     public Player() {

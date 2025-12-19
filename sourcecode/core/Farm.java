@@ -1,4 +1,5 @@
 package core;
+import java.io.Serializable;
 
 import utility.Point;
 import eventSystem.RandomEventManager;
@@ -6,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import eventSystem.GameEvent;
 
-public class Farm {
+public class Farm implements Serializable  {
     private FarmCell[][] grid;
     private int width;
     private int height;

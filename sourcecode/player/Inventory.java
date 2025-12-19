@@ -1,11 +1,12 @@
 package player;
+import java.io.Serializable;
 
 import utility.CropType;
 import exceptions.NotEnoughResourceException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Inventory {
+public class Inventory implements Serializable {
     private int money;
     private int medicine;
     private int water;
