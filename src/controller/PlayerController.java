@@ -1,4 +1,5 @@
 package controller;
+
 import core.Farm;
 import core.FarmCell;
 import core.Crop;
@@ -7,11 +8,14 @@ import player.Player;
 import utility.*;
 import java.util.ArrayList;
 import java.util.List;
+import exceptions.*;
+import notification.NotificationManager;
 
 public class PlayerController {
 
     private Player player;
     private Farm farm;
+    private NotificationManager notificationManager;
 
     public PlayerController(Player player, Farm farm) {
         this.player = player;
@@ -117,6 +121,39 @@ public class PlayerController {
             System.out.println("💰 Harvested " + crop.getCropType().getCropName() + " and sold for $" + moneyEarned);
         }
         return harvestSuccessCount > 0;
+    }
+    public void recycleCrop(Point position) {
+        try {
+            FarmCell cell = farm.getCell(position);
+            Crop crop = cell.requireCrop();
+            if (crop.canBeRecycled()) {
+                int fertilizerGained = crop.recycle();
+                player.gainFertilizer(fertilizerGained);
+                cell.removeCrop();
+                notificationManager.addNotification("You have recycled dead crop and gain " + fertilizerGained + " fertilizer unit.", NotificationType.SUCCESS, farm.getCurrentDay());
+            } else {
+                notificationManager.addNotification("Crop is still healthy", NotificationType.WARNING, farm.getCurrentDay());
+            }
+        } catch (Exception e) {
+            notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
+        }
+    }
+    public void showCropStatus(Point position) {
+        try {
+            FarmCell cell = farm.getCell(position);
+
+            if (cell.isEmpty()) {
+                System.out.println("Cell " + position + " is empty.");
+                return;
+            }
+
+            CropStatus status = cell.getCrop().getStatus();
+            System.out.println("Crop status at " + position + ":");
+            System.out.println(status);
+
+        } catch (InvalidPositionException e) {
+            System.out.println("Invalid position: " + position);
+        }
     }
     public void nextDay(RandomEventManager eventManager) {
         farm.advanceDay(eventManager);

@@ -103,7 +103,6 @@ public abstract class Crop extends Entity {
     }
     public int harvest() {
         if (!isHarvestable()) {
-            System.out.println("Not ready for harvesting");
             return 0;
         }
         return calculateHarvestValue();

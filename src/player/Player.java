@@ -65,7 +65,7 @@ public class Player {
         return false;
     }
 
-    public void addWater(int amount) {
+    public void gainWater(int amount) {
         waterSupply += amount;
     }
     public boolean useFertilizer(int amount) {
@@ -76,7 +76,7 @@ public class Player {
         return false;
     }
 
-    public void addFertilizer(int amount) {
+    public void gainFertilizer(int amount) {
         fertilizerSupply += amount;
     }
     

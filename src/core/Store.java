@@ -2,10 +2,7 @@ package core;
 
 import player.Player;
 import utility.CropType;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
+import java.util.*;
 public class Store {
     private final Map<CropType, Double> priceMultipliers;
     private final Random random;
@@ -71,7 +68,7 @@ public class Store {
         }
 
         player.spendMoney(totalCost);
-        player.addWater(amount);
+        player.gainWater(amount);
         System.out.println("💧 Purchased " + amount + "L Water for $" + totalCost);
         return true;
     }
@@ -85,7 +82,7 @@ public class Store {
         }
 
         player.spendMoney(totalCost);
-        player.addFertilizer(amount);
+        player.gainFertilizer(amount);
         System.out.println("🧪 Purchased " + amount + "kg Fertilizer for $" + totalCost);
         return true;
     }
@@ -106,5 +103,42 @@ public class Store {
         System.out.printf("║  💧 Water      : $%d / unit                          ║\n", WATER_PRICE);
         System.out.printf("║  🧪 Fertilizer : $%d / unit                          ║\n", FERTILIZER_PRICE);
         System.out.println("╚═══════════════════════════════════════════════════╝");
+    }
+    
+    public void openStore(Scanner scanner, Player player) {
+    	boolean inStore = true;
+        while(inStore) {
+            showStoreInterface(player);
+            System.out.println("\n[1] Buy Seeds [2] Buy Supplies  [0] Exit Store");
+            int storeChoice = scanner.nextInt();
+            
+            if (storeChoice == 0) {
+                inStore = false;
+            } else if (storeChoice == 1) {
+                // Buy Seeds
+                System.out.print("Seed Type to Buy: ");
+                String seedIn = scanner.next().toUpperCase();
+                try {
+                    CropType sType = CropType.valueOf(seedIn);
+                    System.out.print("Amount: ");
+                    int amt = scanner.nextInt();
+                    buySeed(player, sType, amt);
+                } catch (Exception e) { System.out.println("Invalid Input"); }
+            } else if (storeChoice == 2) {
+                // Buy Supplies
+                System.out.println("[1] Water ($" + WATER_PRICE + ")  [2] Fertilizer ($" + FERTILIZER_PRICE + ")");
+                int supplyChoice = scanner.nextInt();
+                System.out.print("Amount: ");
+                int amount = scanner.nextInt();
+                
+                if (supplyChoice == 1) {
+                    buyWater(player, amount);
+                } else if (supplyChoice == 2) {
+                    buyFertilizer(player, amount);
+                } else {
+                    System.out.println("Invalid input.");
+                }
+            }
+        }
     }
 }

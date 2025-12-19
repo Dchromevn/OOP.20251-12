@@ -1,6 +1,7 @@
 package core;
 
 import utility.Point;
+import exceptions.*;
 
 public class FarmCell {
     private Point position;
@@ -9,31 +10,33 @@ public class FarmCell {
         this.position=position;
         this.crop=null;
     }
-    public boolean plantCrop(Crop crop){
+    public void plantCrop(Crop crop){
         if(crop==null){
-            System.out.println("Cannot plant in null crop");
-            return false;
+        	throw new IllegalArgumentException("Crop cannot be null");
         }
         if(!isEmpty()){
-            System.out.println("This cell has already been planted");
-            return false;
+        	throw new CellOccupiedException("Cell "+ position +" is already occupied.");
+
         }
-        this.crop=crop;
-        System.out.println("You have planted "+ crop.getCropType().getCropName()+" at "+ position);
-        return true;
+        this.crop=crop; 
     }
     public Crop getCrop() {
         return crop;
     }
+    public Crop requireCrop() {
+    	if (crop == null) {
+    		throw new IllegalStateException("No crop at "+ position);
+    	}
+    	return crop;
+    }
     public Crop removeCrop() {
         if (crop == null) {
-            return null;
+        	throw new IllegalStateException("Cannot remove crop from empty cell.");
         }
         Crop removed = this.crop;
         this.crop = null;
 
-        System.out.println("Removed " + removed.getCropType().getCropName() +
-                " from " + position);
+        System.out.println("Removed " + removed.getCropType().getCropName() + " from " + position);
         return removed;
     }
     public boolean isEmpty(){

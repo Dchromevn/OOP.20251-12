@@ -88,45 +88,11 @@ public class Main {
                     break;
 
                 case 5: 
-                	boolean inStore = true;
-                    while(inStore) {
-                        store.showStoreInterface(player);
-                        System.out.println("\n[1] Buy Seeds [2] Buy Supplies  [0] Exit Store");
-                        int storeChoice = scanner.nextInt();
-                        
-                        if (storeChoice == 0) {
-                            inStore = false;
-                        } else if (storeChoice == 1) {
-                            // Buy Seeds
-                            System.out.print("Seed Type to Buy: ");
-                            String seedIn = scanner.next().toUpperCase();
-                            try {
-                                CropType sType = CropType.valueOf(seedIn);
-                                System.out.print("Amount: ");
-                                int amt = scanner.nextInt();
-                                store.buySeed(player, sType, amt);
-                            } catch (Exception e) { System.out.println("Invalid Input"); }
-                        } else if (storeChoice == 2) {
-                            // Buy Supplies
-                            System.out.println("[1] Water ($" + waterPrice + ")  [2] Fertilizer ($" + fertilizerPrice + ")");
-                            int supplyChoice = scanner.nextInt();
-                            System.out.print("Amount: ");
-                            int amount = scanner.nextInt();
-                            
-                            if (supplyChoice == 1) {
-                                store.buyWater(player, amount);
-                            } else if (supplyChoice == 2) {
-                                store.buyFertilizer(player, amount);
-                            } else {
-                                System.out.println("Invalid input.");
-                            }
-                        }
-                    }
+                	store.openStore(scanner,player);
                     break;
                 case 6: 
                 	controller.displayInventory();
                 	break;
-
                 case 7:
                     String result= farm.advanceDay(eventManager);
                     if (result != null) {
