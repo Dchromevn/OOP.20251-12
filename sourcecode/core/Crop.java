@@ -21,14 +21,17 @@ public abstract class Crop extends Entity {
         super(id, position);
         this.cropType = cropType;
         this.currentStage=CropStage.SEED;
-        this.maxWaterLevel=50;
-        this.maxFertilizerLevel=50;
+        this.maxWaterLevel=cropType.getMaxWaterLevel();
+        this.maxFertilizerLevel=cropType.getMaxFertilizerLevel();
+        this.waterNeedThreshold=cropType.getWaterNeedThreshold();
+        this.fertilizerNeedThreshold=cropType.getFertilizerNeedThreshold();
         this.health=MAX_HEALTH;
         this.waterLevel=this.maxWaterLevel/2;
         this.fertilizerLevel=this.maxFertilizerLevel/2;
         this.daysCurrentStage=0;
         this.isDamaged = false;
         this.basePrice = cropType.getBasePriceCrop();
+        this.dayPerStage=cropType.getDayPerStage();
     }
     public void grow(){
         if(isDead()){
