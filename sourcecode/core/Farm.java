@@ -1,11 +1,11 @@
 package core;
 
-import eventSystem.GameEvent;
 import utility.Point;
 import eventSystem.RandomEventManager;
 import java.util.ArrayList;
 import java.util.List;
-import exceptions.*;
+import eventSystem.GameEvent;
+
 public class Farm {
     private FarmCell[][] grid;
     private int width;
@@ -28,15 +28,21 @@ public class Farm {
     }
     public FarmCell getCell(int x, int y){
         if(!isValidPosition(x,y)){
-            throw new InvalidPositionException("Invalid farm position.");
+            System.out.println("Invalid position");
+            return null;
         }
         return grid[y][x];
     }
     public FarmCell getCell(Point position){
-        if (position == null) {
-            throw new InvalidPositionException("Position cannot be null");
-        }
         return getCell(position.getX(),position.getY());
+    }
+    
+    public Crop getCrop(int x, int y) {
+        FarmCell cell = getCell(x, y);
+        if (cell != null && !cell.isEmpty()) {
+            return cell.getCrop();
+        }
+        return null;
     }
     public int getWidth() {
         return width;
@@ -95,6 +101,34 @@ public class Farm {
         }
         return emptyCells;
     }
+    public void applyRain(int waterAmount) {
+        List<Crop> crops = getAllCrops();
+
+        if (crops.isEmpty()) {
+            System.out.println(" Rain falls on empty farm...");
+            return;
+        }
+
+        System.out.println(" Rain! All crops gain +" + waterAmount + " water");
+
+        for (Crop crop : crops) {
+            crop.water(waterAmount);
+        }
+    }
+    public void applyDrought(int damageAmount) {
+        List<Crop> crops = getAllCrops();
+
+        if (crops.isEmpty()) {
+            System.out.println("Drought... but no crops to affect.");
+            return;
+        }
+
+        System.out.println("Drought! All crops take " + damageAmount + " damage");
+
+        for (Crop crop : crops) {
+            crop.takeDamage(damageAmount);
+        }
+    }
     public String advanceDay(RandomEventManager eventManager) {
         System.out.println("Day " + currentDay + " ended.");
         currentDay++;
@@ -149,4 +183,3 @@ public class Farm {
         );
     }
 }
-

@@ -1,11 +1,11 @@
 package utility;
 
 public enum CropType {
-    WHEAT("Wheat",4, 15),
-    CORN("Corn",10,30),
-    CARROT("Carrot",15,50),
-    TOMATO("Tomato",20,75),
-    PUMPKIN("Pumpkin",30,160);
+    WHEAT("Wheat",5, 10),
+    CORN("Corn",8,20),
+    CARROT("Carrot",15,32),
+    TOMATO("Tomato",20,45),
+    PUMPKIN("Pumpkin",30,80);
     private final String cropName;
     private final int seedPrice;
     private final int basePriceCrop;

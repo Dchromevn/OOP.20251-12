@@ -1,15 +1,18 @@
 package notification;
 
 import utility.NotificationType;
+import java.time.LocalDateTime;
 
 public class Notification {
     private String message;
     private NotificationType type;
+    private LocalDateTime timestamp;
     private boolean isRead;
     private int gameDay;
     public Notification(String message, NotificationType type, int gameDay){
         this.message = message;
         this.type = type;
+        this.timestamp = LocalDateTime.now();
         this.isRead = false;
         this.gameDay = gameDay;
     }

@@ -7,11 +7,11 @@ public class RandomEventManager {
 
     public GameEvent triggerRandomEvent() {
         int roll = random.nextInt(100);
-        if (roll < 35) {
+        if (roll < 20) {
             return new Rain();
-        } else if (roll < 55) {
+        } else if (roll < 30) {
             return new Drought();
-        } else if (roll < 65) {
+        } else if (roll < 35) {
             return new PestAttack();
         } else {
             return null;
