@@ -6,18 +6,24 @@ import player.*;
 import utility.*;
 import exceptions.*;
 import resourceManagement.ResourceManager;
-
+import java.util.stream.Collectors;
+import eventSystem.RandomEventManager;
+import save.GameSaveManager;
+import java.io.*;
 public class PlayerController {
     private Player player;
     private Farm farm;
     private ResourceManager shop;
     private NotificationManager notificationManager;
-
-    public PlayerController(Player player, Farm farm, NotificationManager notificationManager, ResourceManager shop) {
+    private GameSaveManager gameSaveManager;
+    private RandomEventManager eventManager;
+    public PlayerController(Player player, Farm farm, NotificationManager notificationManager, ResourceManager shop, RandomEventManager eventManager) {
         this.player = player;
         this.farm = farm;
         this.notificationManager = notificationManager;
         this.shop = shop;
+        this.gameSaveManager = new GameSaveManager();
+        this.eventManager = eventManager;
     }
     public boolean plantCrop(CropType type, Point position) {
         try {
@@ -133,8 +139,6 @@ public class PlayerController {
             return false;
         }
     }
-
-    // --- 5. CURE CROP ---
     public boolean cureCrop(Point position) {
         try {
             FarmCell cell = farm.getCell(position);
@@ -228,18 +232,41 @@ public class PlayerController {
     public void showCropStatus(Point position) {
         try {
             FarmCell cell = farm.getCell(position);
-            if (cell.isEmpty()) {
-                System.out.println("Cell " + position + " is empty.");
-                return;
-            }
-            CropStatus status = cell.getCrop().getStatus();
-            System.out.println("Crop status at " + position + ":");
-            System.out.println(status);
-        } catch (InvalidPositionException e) {
-            System.out.println("Invalid position: " + position);
+            Crop crop = cell.requireCrop();
+            CropStatus status = crop.getStatus();
+            String indentedStatus = status.toString().lines() .map(line -> "\t" + line).collect(Collectors.joining("\n"));
+            notificationManager.addNotification("Crop status at " +position + ":\n "+ indentedStatus,NotificationType.INFO,farm.getCurrentDay());
+        } catch (InvalidPositionException |IllegalStateException e) {
+        	notificationManager.addNotification(e.getMessage(),NotificationType.ERROR, farm.getCurrentDay());
+        }
+    }
+    public void saveGameCommand() {
+        try {
+            GameState state = new GameState(this.farm, this.player, this.notificationManager,this.eventManager);
+            gameSaveManager.saveGame(state);
+            notificationManager.addNotification("Save successfully.", NotificationType.SUCCESS, farm.getCurrentDay());
+
+        } catch (IOException e) {
+            notificationManager.addNotification("Save failed: " + e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
         }
     }
 
+    public void loadGameCommand() {
+        try {
+            GameState loadState = gameSaveManager.loadGame();
+            this.farm = loadState.getFarm();
+            this.player = loadState.getPlayer();
+            this.notificationManager = loadState.getNotificationManager();
+            this.eventManager = loadState.getEventManager();
+            notificationManager.addNotification("Welcome back! " , NotificationType.SUCCESS, farm.getCurrentDay());
+            
+
+        } catch (FileNotFoundException e) {
+            notificationManager.addNotification("Cannot find saved game.", NotificationType.WARNING, farm.getCurrentDay());
+        } catch (IOException | ClassNotFoundException e) {
+        	notificationManager.addNotification("Load failed: " + e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
+        }
+    }
     public void displayInventory() {
         player.getInventory().showInventory();
     }

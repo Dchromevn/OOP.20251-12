@@ -1,34 +1,30 @@
 package save;
-
 import java.io.*;
-
 import core.GameState;
-
 public class GameSaveManager {
-    private static final String DEFAULT_SAVE_FILE = "savegame.dat";
+    private static final String SAVE_FOLDER = "saves/";
+    private static final String FILE_EXTENSION = "smartfarm_save.dat";
 
-    public static void saveGame(GameState state, String filename) {
-        String file = (filename == null || filename.isEmpty()) ? DEFAULT_SAVE_FILE : filename;
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
-            oos.writeObject(state);
-            System.out.println("Game saved successfully to " + file);
-        } catch (IOException e) {
-            System.out.println("Failed to save game: " + e.getMessage());
+    public GameSaveManager() {
+        File directory = new File(SAVE_FOLDER);
+        if (!directory.exists()) {
+            directory.mkdirs();
         }
     }
-
-    public static GameState loadGame(String filename) {
-        String file = (filename == null || filename.isEmpty()) ? DEFAULT_SAVE_FILE : filename;
-        File f = new File(file);
-        if (!f.exists()) {
-            System.out.println("No save file found.");
-            return null;
+    public void saveGame(GameState state) throws IOException {
+        String fullPath = SAVE_FOLDER + FILE_EXTENSION;
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fullPath))) {
+            oos.writeObject(state);
         }
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+    }
+    public GameState loadGame() throws IOException, ClassNotFoundException {
+        String fullPath = SAVE_FOLDER + FILE_EXTENSION;
+        File file = new File(fullPath);
+        if (!file.exists()) {
+            throw new FileNotFoundException("No saved file found.");
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fullPath))) {
             return (GameState) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Failed to load game: " + e.getMessage());
-            return null;
         }
     }
 }

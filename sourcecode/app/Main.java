@@ -23,7 +23,7 @@ public class Main {
         Farm farm = new Farm(5, 5);// 5x5 farm
         ResourceManager shopLogic = new ResourceManager();
         NotificationManager notificationManager= new NotificationManager();
-        PlayerController controller = new PlayerController(player, farm, notificationManager,shopLogic);
+        PlayerController controller = new PlayerController(player, farm, notificationManager,shopLogic,eventManager);
         Store store=new Store(controller);
         System.out.println("Welcome to SmartFarm!");
 
@@ -166,24 +166,13 @@ public class Main {
                 	controller.cureCrop(new Point(cx, cy));
                 	break;
                 case 13:
-                    // Save Game
-                    GameState gameState = new GameState(farm, player, notificationManager, eventManager);
-                    GameSaveManager.saveGame(gameState, "Game saved successfully.");
+                	System.out.println("Saving game...");
+                    controller.saveGameCommand(); 
                     break;
 
                 case 14:
-                    // Load Game
-                    GameState loadedState = GameSaveManager.loadGame("smartfarm_save.dat");
-                    if (loadedState != null) {
-                        farm = loadedState.getFarm();
-                        player = loadedState.getPlayer();
-                        notificationManager = loadedState.getNotificationManager();
-                        eventManager = loadedState.getEventManager();
-                        // Re-initialize controller and store with new objects
-                        controller = new PlayerController(player, farm, notificationManager, shopLogic);
-                        store = new Store(controller);
-                        System.out.println("Game loaded successfully.");
-                    }
+                	System.out.println("Loading saved game...");
+                    controller.loadGameCommand();
                     break;
                 default:
                     System.out.println("Invalid choice.");
