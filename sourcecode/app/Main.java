@@ -167,12 +167,12 @@ public class Main {
                 	break;
                 case 13:
                 	System.out.println("Saving game...");
-                    controller.saveGameCommand(); 
+                    controller.saveGameCommand("smartfarm_save"); 
                     break;
 
                 case 14:
                 	System.out.println("Loading saved game...");
-                    controller.loadGameCommand();
+                    controller.loadGameCommand("smartfarm_save");
                     break;
                 default:
                     System.out.println("Invalid choice.");
