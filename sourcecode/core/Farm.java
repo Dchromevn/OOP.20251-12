@@ -6,7 +6,7 @@ import eventSystem.RandomEventManager;
 import java.util.ArrayList;
 import java.util.List;
 import eventSystem.GameEvent;
-
+import exceptions.*;
 public class Farm implements Serializable  {
     private FarmCell[][] grid;
     private int width;
@@ -29,8 +29,7 @@ public class Farm implements Serializable  {
     }
     public FarmCell getCell(int x, int y){
         if(!isValidPosition(x,y)){
-            System.out.println("Invalid position");
-            return null;
+        	throw new InvalidPositionException("Invalid position: "+x+ ", "+y);
         }
         return grid[y][x];
     }

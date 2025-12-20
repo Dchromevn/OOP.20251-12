@@ -4,9 +4,7 @@ import player.Player;
 import notification.NotificationManager;
 import eventSystem.RandomEventManager;
 import java.io.Serializable;
-
 public class GameState implements Serializable {
-    private static final long serialVersionUID = 1L;
     private Farm farm;
     private Player player;
     private NotificationManager notificationManager;
