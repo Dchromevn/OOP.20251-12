@@ -240,20 +240,20 @@ public class PlayerController {
         	notificationManager.addNotification(e.getMessage(),NotificationType.ERROR, farm.getCurrentDay());
         }
     }
-    public void saveGameCommand() {
+    public void saveGameCommand(String filename) {
         try {
             GameState state = new GameState(this.farm, this.player, this.notificationManager,this.eventManager);
-            gameSaveManager.saveGame(state);
-            notificationManager.addNotification("Save successfully.", NotificationType.SUCCESS, farm.getCurrentDay());
+            gameSaveManager.saveGame(state, filename);
+            notificationManager.addNotification("Save successfully." + filename, NotificationType.SUCCESS, farm.getCurrentDay());
 
         } catch (IOException e) {
             notificationManager.addNotification("Save failed: " + e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
         }
     }
 
-    public void loadGameCommand() {
+    public void loadGameCommand(String filename) {
         try {
-            GameState loadState = gameSaveManager.loadGame();
+            GameState loadState = gameSaveManager.loadGame(filename);
             this.farm = loadState.getFarm();
             this.player = loadState.getPlayer();
             this.notificationManager = loadState.getNotificationManager();
