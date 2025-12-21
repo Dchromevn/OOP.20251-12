@@ -1,12 +1,13 @@
 package core;
+import java.io.Serializable;
 
 import utility.Point;
 import eventSystem.RandomEventManager;
 import java.util.ArrayList;
 import java.util.List;
 import eventSystem.GameEvent;
-
-public class Farm {
+import exceptions.*;
+public class Farm implements Serializable  {
     private FarmCell[][] grid;
     private int width;
     private int height;
@@ -28,8 +29,7 @@ public class Farm {
     }
     public FarmCell getCell(int x, int y){
         if(!isValidPosition(x,y)){
-            System.out.println("Invalid position");
-            return null;
+        	throw new InvalidPositionException("Invalid position: "+x+ ", "+y);
         }
         return grid[y][x];
     }

@@ -2,12 +2,14 @@ package app;
 
 import controller.*;
 import core.Farm;
+import core.GameState;
 import eventSystem.RandomEventManager;
 import notification.Notification;
 import notification.NotificationManager;
 import player.Player;
 import resourceManagement.ResourceManager;
 import resourceManagement.Store;
+import save.GameSaveManager;
 import utility.*;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +23,7 @@ public class Main {
         Farm farm = new Farm(5, 5);// 5x5 farm
         ResourceManager shopLogic = new ResourceManager();
         NotificationManager notificationManager= new NotificationManager();
-        PlayerController controller = new PlayerController(player, farm, notificationManager,shopLogic);
+        PlayerController controller = new PlayerController(player, farm, notificationManager,shopLogic,eventManager);
         Store store=new Store(controller);
         System.out.println("Welcome to SmartFarm!");
 
@@ -39,6 +41,8 @@ public class Main {
             System.out.println("10. View Plant Status");
             System.out.println("11. Recycle Crop");
             System.out.println("12. Recover Crop");
+            System.out.println("13. Save game");
+            System.out.println("14. Continue game");
 
 
             System.out.println("0. Exit");
@@ -105,7 +109,7 @@ public class Main {
                     break;
 
                 case 5:
-                    store.openStore(scanner,player);
+                    store.showStoreDialog();
                     break;
                 case 6:
                     controller.displayInventory();
@@ -161,6 +165,15 @@ public class Main {
                 	int cy = scanner.nextInt();
                 	controller.cureCrop(new Point(cx, cy));
                 	break;
+                case 13:
+                	System.out.println("Saving game...");
+                    controller.saveGameCommand("smartfarm_save"); 
+                    break;
+
+                case 14:
+                	System.out.println("Loading saved game...");
+                    controller.loadGameCommand("smartfarm_save");
+                    break;
                 default:
                     System.out.println("Invalid choice.");
             }

@@ -1,9 +1,10 @@
 package core;
+import java.io.Serializable;
 
 import utility.Point;
 import exceptions.*;
 
-public class FarmCell {
+public class FarmCell implements Serializable {
     private Point position;
     private Crop crop;
     public FarmCell(Point position){

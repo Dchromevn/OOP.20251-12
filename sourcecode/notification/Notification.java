@@ -2,8 +2,8 @@ package notification;
 
 import utility.NotificationType;
 import java.time.LocalDateTime;
-
-public class Notification {
+import java.io.Serializable;
+public class Notification implements Serializable  {
     private String message;
     private NotificationType type;
     private LocalDateTime timestamp;

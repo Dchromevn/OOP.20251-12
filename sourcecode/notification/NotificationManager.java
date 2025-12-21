@@ -1,14 +1,14 @@
 package notification;
 
 import utility.NotificationType;
-
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class NotificationManager {
+public class NotificationManager implements Serializable {
     private LinkedList<Notification> notifications;
-    private static final int HISTORY_LIMIT = 25;
+    private static final int HISTORY_LIMIT = 100;
     public NotificationManager(){
         this.notifications=new LinkedList<>();
     }
