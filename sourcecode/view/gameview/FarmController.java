@@ -6,20 +6,22 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
-
+import javafx.stage.Stage;
 import controller.PlayerController;
 import core.*;
 import notification.NotificationManager;
 import player.Player;
 import utility.CropType;
 import utility.Point;
+import view.menuview.*;
 
 public class FarmController {
 
     @FXML private AnchorPane rootPane;
+    @FXML private StackPane customExitPane;
     @FXML private Pane farmPane;
     @FXML private Button advanceDayButton;
-
+    @FXML private Button saveExitButton;
     // Buttons
     @FXML private Button statusButton, seedsButton, waterButton, fertilizerButton, equipmentButton, storeButton, infoButton;
 
@@ -242,4 +244,26 @@ public class FarmController {
     @FXML private void handleSeedsButton() { uiManager.showAlert("Info", "Buy seeds in store", Alert.AlertType.INFORMATION); }
     @FXML private void handleEquipmentButton() { handleStatusButton(); }
     @FXML private void handleInfoButton() { uiManager.showAlert("Guide", "Plant -> Water -> Harvest", Alert.AlertType.INFORMATION); }
+    @FXML public void handleSaveAndExit() {
+    	if (playerController != null) {
+    		playerController.saveGameCommand("smartfarm_save");
+    	}
+    	SceneNavigator.loadMainMenu();
+    	((Stage) rootPane.getScene().getWindow()).close();
+    }
+    @FXML
+    public void confirmExitOnClose(javafx.stage.WindowEvent event) {
+        // Consume the close event so the window doesn't close immediately
+        event.consume(); 
+        // Show your beautiful custom CSS pane
+        if (customExitPane != null) {
+            customExitPane.setVisible(true);
+        }
+    }
+    @FXML
+    public void closeExitPane() {
+        if (customExitPane != null) {
+            customExitPane.setVisible(false);
+        }
+    }
 }
