@@ -14,7 +14,6 @@ public class Main extends Application {
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.MAIN_MENU));
         Parent root = loader.load();
-        
         primaryStage.setTitle("Smart Farm");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

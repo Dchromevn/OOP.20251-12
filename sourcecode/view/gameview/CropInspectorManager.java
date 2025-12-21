@@ -99,6 +99,10 @@ public class CropInspectorManager {
                 playerController.fertilizeCrop(new Point(x, y), 5);
                 refresh(overlay, cell, x, y);
             }));
+            actionButtons.getChildren().add(createStyledButton("Medicine","#9370DB",() ->{
+            	playerController.cureCrop(new Point(x,y));
+                refresh(overlay,cell,x,y);
+            }));
 
             // Cây đã chín: Hiện thêm nút Harvest
             if (crop.isHarvestable()) {
