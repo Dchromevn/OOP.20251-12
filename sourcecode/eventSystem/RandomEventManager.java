@@ -9,9 +9,9 @@ public class RandomEventManager {
         int roll = random.nextInt(100);
         if (roll < 30) {
             return new Rain();
-        } else if (roll < 45) {
+        } else if (roll < 40) {
             return new Drought();
-        } else if (roll < 55) {
+        } else if (roll < 45) {
             return new PestAttack();
         } else {
             return null;
