@@ -60,7 +60,7 @@ public class SceneNavigator {
                     farm = pc.getFarm();
                     player = pc.getPlayer();
                     nm = pc.getNotificationManager();
-                    nm.clearNotifications(); 
+
                     nm.addNotification("Welcome back!", NotificationType.SUCCESS, farm.getCurrentDay());
                 
                 }

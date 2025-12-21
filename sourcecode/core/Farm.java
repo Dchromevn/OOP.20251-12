@@ -59,14 +59,8 @@ public class Farm implements Serializable  {
     public int getCropCount() {
         return getAllCrops().size();
     }
-    public int getEmptyCellCount() {
-        return getEmptyCells().size();
-    }
     public boolean isValidPosition(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
-    }
-    public boolean isValidPosition(Point position) {
-        return isValidPosition(position.getX(), position.getY());
     }
     public List<Crop> getAllCrops(){
         List<Crop> crop= new ArrayList<>();
@@ -80,15 +74,7 @@ public class Farm implements Serializable  {
         }
         return crop;
     }
-    public List<Crop> getDamagedCrops(){
-        List<Crop> damaged =new ArrayList<>();
-        for (Crop crop : getAllCrops()){
-            if(crop.isDamaged()&& !crop.isDead()){
-                damaged.add(crop);
-            }
-        }
-        return damaged;
-    }
+
     public List<FarmCell> getEmptyCells(){
         List<FarmCell> emptyCells =new ArrayList<>();
         for (int y=0; y<height;y++){
@@ -100,34 +86,6 @@ public class Farm implements Serializable  {
             }
         }
         return emptyCells;
-    }
-    public void applyRain(int waterAmount) {
-        List<Crop> crops = getAllCrops();
-
-        if (crops.isEmpty()) {
-            System.out.println(" Rain falls on empty farm...");
-            return;
-        }
-
-        System.out.println(" Rain! All crops gain +" + waterAmount + " water");
-
-        for (Crop crop : crops) {
-            crop.water(waterAmount);
-        }
-    }
-    public void applyDrought(int damageAmount) {
-        List<Crop> crops = getAllCrops();
-
-        if (crops.isEmpty()) {
-            System.out.println("Drought... but no crops to affect.");
-            return;
-        }
-
-        System.out.println("Drought! All crops take " + damageAmount + " damage");
-
-        for (Crop crop : crops) {
-            crop.takeDamage(damageAmount);
-        }
     }
     public String advanceDay(RandomEventManager eventManager) {
         System.out.println("Day " + currentDay + " ended.");
