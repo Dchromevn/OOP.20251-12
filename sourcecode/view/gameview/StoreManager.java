@@ -58,7 +58,7 @@ public class StoreManager {
 
         // Tiêu đề: Đổi màu chữ sang Nâu (#8B4513) cho nổi trên nền trắng
         Label title = new Label(" STORE");
-        title.setFont(Font.font("System", FontWeight.BOLD, 24));
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         title.setTextFill(Color.web("#8B4513"));
 
         // Hộp hiển thị tiền
