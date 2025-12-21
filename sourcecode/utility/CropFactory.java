@@ -1,6 +1,6 @@
 package utility;
 
-import core.*;
+import model.crops.*;
 
 public class CropFactory {
     private static int cropIdCounter = 0;

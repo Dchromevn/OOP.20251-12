@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.gameview.FarmController">
+<AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.game.FarmController">
     <children>
         <ImageView fitHeight="800.0" fitWidth="1200.0" pickOnBounds="true" preserveRatio="false">
             <image>
@@ -148,7 +148,7 @@
             <children>
                 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="380.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
                     <children>
-                        <Label text="Please save before exiting." style="-fx-font-weight: bold; -fx-font-size: 18px;" />
+                        <Label text="Please service.save before exiting." style="-fx-font-weight: bold; -fx-font-size: 18px;" />
                         <HBox alignment="CENTER" spacing="40.0">
                             <children>
                                 <Button onAction="#handleSaveAndExit" text="YES" prefWidth="90.0" style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" />

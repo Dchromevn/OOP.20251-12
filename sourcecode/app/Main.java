@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.menuview.SceneNavigator;
+import controller.menu.SceneNavigator;
 
 public class Main extends Application {
     @Override

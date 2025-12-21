@@ -1,6 +1,6 @@
 package utility;
 
-import core.Crop;
+import model.crops.Crop;
 
 public class CropStatus {
 	private final String cropName;
