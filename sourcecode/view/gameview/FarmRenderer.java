@@ -34,8 +34,8 @@ public class FarmRenderer {
     private static final double TILE_WIDTH = 90;
     private static final double TILE_HEIGHT = 45;
     private static final double IMAGE_SIZE = 150;
-    private static final double BASE_OFFSET_X = 500;
-    private static final double BASE_OFFSET_Y = 200;
+    private static final double BASE_OFFSET_X = 550;
+    private static final double BASE_OFFSET_Y = 170;
     private static final int GRID_SIZE = 5;
 
     public FarmRenderer(Pane farmPane) {

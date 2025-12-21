@@ -39,6 +39,7 @@ public class FarmController {
     private FarmRenderer farmRenderer;
     private ToolManager toolManager;
     private StoreManager storeManager;
+    private InventoryManager inventoryManager;
 
     public void initialize(Player player, Farm farm, NotificationManager notificationManager, PlayerController playerController) {
         this.player = player;
@@ -51,7 +52,7 @@ public class FarmController {
         this.farmRenderer = new FarmRenderer(farmPane);
         this.toolManager = new ToolManager(rootPane, waterButton, fertilizerButton, uiManager);
         this.storeManager = new StoreManager(rootPane, playerController, player, farmRenderer, this::updateGameUI);
-
+        this.inventoryManager = new InventoryManager(rootPane, player, farmRenderer);
         // 2. Setup ban đầu
         loadBackground();
         setupButtonAnimations();
@@ -103,7 +104,7 @@ public class FarmController {
         ContextMenu menu = new ContextMenu();
 
         if (cell.isEmpty()) {
-            Menu plantMenu = new Menu("🌱 Plant Crop");
+            Menu plantMenu = new Menu(" Plant Crop");
 
             // --- KHÔI PHỤC LOGIC HIỆN SỐ LƯỢNG HẠT GIỐNG ---
             for (CropType type : CropType.values()) {
@@ -129,13 +130,13 @@ public class FarmController {
         } else {
             Crop crop = cell.getCrop();
             // Thêm thông tin cây trồng (không bấm được, chỉ để xem)
-            MenuItem info = new MenuItem("📊 " + crop.getCropType().getCropName() + " - HP: " + crop.getHealth() + "%");
+            MenuItem info = new MenuItem( crop.getCropType().getCropName() + " - HP: " + crop.getHealth() + "%");
             info.setDisable(true);
             menu.getItems().add(info);
             menu.getItems().add(new SeparatorMenuItem());
 
             if (!crop.isDead()) {
-                MenuItem water = new MenuItem("💧 Water (10 units)");
+                MenuItem water = new MenuItem(" Water (10 units)");
                 water.setOnAction(e -> {
                     boolean success = playerController.waterCrop(new Point(x, y), 10);
                     updateGameUI();
@@ -144,7 +145,7 @@ public class FarmController {
                 });
                 menu.getItems().add(water);
 
-                MenuItem fertilize = new MenuItem("🌿 Fertilize (5 units)");
+                MenuItem fertilize = new MenuItem(" Fertilize (5 units)");
                 fertilize.setOnAction(e -> {
                     boolean success = playerController.fertilizeCrop(new Point(x, y), 5);
                     updateGameUI();
@@ -155,7 +156,7 @@ public class FarmController {
             }
 
             if (cell.getCrop().isHarvestable()) {
-                MenuItem harvest = new MenuItem("🌾 Harvest");
+                MenuItem harvest = new MenuItem(" Harvest");
                 harvest.setOnAction(e -> {
                     double m1 = player.getInventory().getMoney();
                     boolean success = playerController.harvestCrop(new Point(x, y));
@@ -168,7 +169,7 @@ public class FarmController {
                 menu.getItems().add(harvest);
             }
 
-            MenuItem recycle = new MenuItem("⛏️ Recycle");
+            MenuItem recycle = new MenuItem(" Recycle");
             recycle.setOnAction(e -> {
                 playerController.recycleCrop(new Point(x, y));
                 updateGameUI();
@@ -200,7 +201,7 @@ public class FarmController {
             // --- KHÔI PHỤC LOGIC HIỂN THỊ EVENT ---
             if (eventResult != null && !eventResult.isEmpty()) {
                 // Hiện Popup cảnh báo
-                uiManager.showAlert("⚡ DAILY EVENT", eventResult, Alert.AlertType.INFORMATION);
+                uiManager.showAlert(" DAILY EVENT", eventResult, Alert.AlertType.INFORMATION);
                 // Hiện lên bảng thông báo nội dung chi tiết
                 uiManager.showNotification("Event: " + eventResult, farm.getCurrentDay());
             } else {
@@ -237,7 +238,7 @@ public class FarmController {
     private void setupButtonAnimations() { Button[] btns = {statusButton, seedsButton, waterButton, fertilizerButton, equipmentButton, storeButton, infoButton, advanceDayButton, boardButton}; for(Button b:btns) if(b!=null) { b.setOnMouseEntered(e->{b.setScaleX(1.1);b.setScaleY(1.1);}); b.setOnMouseExited(e->{b.setScaleX(1.0);b.setScaleY(1.0);}); } }
     private void animateButton(Button b) { ScaleTransition st = new ScaleTransition(Duration.millis(100), b); st.setFromX(1.0); st.setFromY(1.0); st.setToX(0.9); st.setToY(0.9); st.setCycleCount(2); st.setAutoReverse(true); st.play(); }
 
-    @FXML private void handleStatusButton() { uiManager.showAlert("Status", "Money: " + player.getInventory().getMoney(), Alert.AlertType.INFORMATION); }
+    @FXML private void handleStatusButton() { inventoryManager.showStatus(); }
     @FXML private void handleSeedsButton() { uiManager.showAlert("Info", "Buy seeds in store", Alert.AlertType.INFORMATION); }
     @FXML private void handleEquipmentButton() { handleStatusButton(); }
     @FXML private void handleInfoButton() { uiManager.showAlert("Guide", "Plant -> Water -> Harvest", Alert.AlertType.INFORMATION); }
