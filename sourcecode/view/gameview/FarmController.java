@@ -187,13 +187,30 @@ public class FarmController {
     // --- BUTTON HANDLERS ---
     @FXML private void handleStoreButton() { storeManager.showStore(); }
     @FXML private void handleBoardClick() { uiManager.showLogBoard(); }
-    @FXML private void handleWaterButton() { if(toolManager.getCurrentTool() == ToolManager.ToolMode.WATER) toolManager.resetTool(); else toolManager.activateTool(ToolManager.ToolMode.WATER); }
-    @FXML private void handleFertilizerButton() { if(toolManager.getCurrentTool() == ToolManager.ToolMode.FERTILIZE) toolManager.resetTool(); else toolManager.activateTool(ToolManager.ToolMode.FERTILIZE); }
+    @FXML
+    private void handleWaterButton() {
+        if(toolManager.getCurrentTool() == ToolManager.ToolMode.WATER)
+            toolManager.resetTool(farm.getCurrentDay()); // Thêm farm.getCurrentDay()
+        else
+            toolManager.activateTool(ToolManager.ToolMode.WATER, farm.getCurrentDay()); // Thêm farm.getCurrentDay()
 
+        rootPane.requestFocus();
+    }
+
+    @FXML
+    private void handleFertilizerButton() {
+        if(toolManager.getCurrentTool() == ToolManager.ToolMode.FERTILIZE)
+            toolManager.resetTool(farm.getCurrentDay()); // Thêm farm.getCurrentDay()
+        else
+            toolManager.activateTool(ToolManager.ToolMode.FERTILIZE, farm.getCurrentDay()); // Thêm farm.getCurrentDay()
+
+        rootPane.requestFocus();
+    }
     // --- XỬ LÝ NGÀY MỚI (Đã khôi phục hiển thị chi tiết Event) ---
-    @FXML private void handleAdvanceDay() {
-        if (toolManager.getCurrentTool() != ToolManager.ToolMode.NONE) toolManager.resetTool();
-        animateButton(advanceDayButton);
+    @FXML
+    private void handleAdvanceDay() {
+        if (toolManager.getCurrentTool() != ToolManager.ToolMode.NONE)
+            toolManager.resetTool(farm.getCurrentDay());
         try {
             eventSystem.RandomEventManager eventManager = new eventSystem.RandomEventManager();
             String eventResult = farm.advanceDay(eventManager);
