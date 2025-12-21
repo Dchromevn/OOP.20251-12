@@ -12,9 +12,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.menuview.MainMenuController">
    <children>
-      <ImageView fx:id="background" fitHeight="800.0" fitWidth="1200.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ImageView fx:id="background" fitHeight="800.0" fitWidth="1200.0" pickOnBounds="true" preserveRatio="false" smooth="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
-            <Image url="@images/Background.png" />
+            <Image url="@../images/Background.png" />
          </image>
       </ImageView>
 
@@ -25,7 +25,7 @@
                   <Font name="System Bold" size="48.0" />
                </font>
             </Label>
-            <Button fx:id="btnContinue" mnemonicParsing="false" onAction="#handleStartGame" prefWidth="200.0" style="-fx-background-color: rgba(0, 0, 0, 0.6); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 30; -fx-border-radius: 30; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-cursor: hand;" text="START GAME" />
+            <Button mnemonicParsing="false" onAction="#handleStartGame" prefWidth="200.0" style="-fx-background-color: rgba(0, 0, 0, 0.6); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 30; -fx-border-radius: 30; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-cursor: hand;" text="START GAME" />
             <Button mnemonicParsing="false" onAction="#handleContinueGame" prefWidth="200.0" style="-fx-background-color: rgba(0, 0, 0, 0.6); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 30; -fx-border-radius: 30; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-cursor: hand;" text="CONTINUE" />
             <Button mnemonicParsing="false" onAction="#handleHelp" prefWidth="200.0" style="-fx-background-color: rgba(0, 0, 0, 0.6); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 30; -fx-border-radius: 30; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-cursor: hand;" text="HELP" />
             <Button mnemonicParsing="false" onAction="#handleExitRequest" prefWidth="200.0" style="-fx-background-color: rgba(0, 0, 0, 0.6); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 30; -fx-border-radius: 30; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-cursor: hand;" text="EXIT" />

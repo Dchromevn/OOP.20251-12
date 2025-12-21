@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 import java.io.File;
 
 public class MainMenuController {
-
+	@FXML private Button btnStart;
     @FXML private Button btnContinue;
     @FXML private StackPane exitPane;
     @FXML private StackPane helpPane; // Khai báo thêm helpPane
@@ -18,11 +18,13 @@ public class MainMenuController {
 
     @FXML
     public void initialize() {
-        File saveFile = new File("data/saves/smartfarm_save.dat");
+        File saveFile = new File("view/menuview/saves/smartfarm_save.dat");
         if (btnContinue != null) {
             btnContinue.setDisable(!saveFile.exists());
         }
-
+        if (btnStart != null) {
+        	btnStart.setDisable(false);
+        }
         if (background != null) {
             background.setPreserveRatio(false);
         }
