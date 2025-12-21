@@ -28,15 +28,23 @@ public class PlayerController {
     public boolean plantCrop(CropType type, Point position) {
         try {
             FarmCell cell = farm.getCell(position);
-            Crop crop = CropFactory.createCrop(type, position);
-            cell.plantCrop(crop);
+
+            // --- SỬA TẠI ĐÂY ---
+            // 1. Thực hiện trừ hạt giống TRƯỚC
+            // Nếu không đủ hạt, hàm này sẽ ném lỗi (Exception) ngay lập tức
+            // và code sẽ nhảy xuống phần catch, bỏ qua các dòng bên dưới.
             player.getInventory().removeSeed(type, 1);
+
+            // 2. Sau khi trừ hạt thành công thì mới tạo và trồng cây
+            Crop crop = CropFactory.createCrop(type, position);
+            cell.plantCrop(crop); // <--- Dòng này phải nằm sau removeSeed
 
             return true;
 
         } catch (InvalidPositionException |
                  CellOccupiedException |
                  NotEnoughResourceException e) {
+            // Nếu có lỗi (hết hạt, ô đất có cây rồi...), thông báo và trả về false
             notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
             return false;
         }
