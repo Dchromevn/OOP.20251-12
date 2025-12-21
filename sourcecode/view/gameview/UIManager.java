@@ -18,24 +18,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIManager {
-    private Label dayLabel, moneyLabel, waterLabel, fertilizerLabel, boardLabel;
+    private Label dayLabel, moneyLabel, waterLabel, fertilizerLabel, medicineLabel,boardLabel;
     private AnchorPane rootPane;
     private List<String> notificationHistory = new ArrayList<>();
 
-    public UIManager(AnchorPane rootPane, Label day, Label money, Label water, Label fer, Label board) {
+    public UIManager(AnchorPane rootPane, Label day, Label money, Label water, Label fer,Label med, Label board) {
         this.rootPane = rootPane;
         this.dayLabel = day;
         this.moneyLabel = money;
         this.waterLabel = water;
         this.fertilizerLabel = fer;
         this.boardLabel = board;
+        this.medicineLabel = med;
     }
 
-    public void updateHUD(int day, double money, int water, int fertilizer) {
+    public void updateHUD(int day, double money, int water, int fertilizer, int medicine) {
         if (dayLabel != null) dayLabel.setText("Day " + day);
         if (moneyLabel != null) moneyLabel.setText("$" + (int)money);
         if (waterLabel != null) waterLabel.setText("Water: " + water);
         if (fertilizerLabel != null) fertilizerLabel.setText("Fer: " + fertilizer);
+        if (medicineLabel != null) medicineLabel.setText("Med: " + fertilizer);
+
     }
 
     public void showNotification(String message, int currentDay) {

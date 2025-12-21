@@ -27,7 +27,7 @@ public class FarmController {
     @FXML private Button statusButton, seedsButton, waterButton, fertilizerButton, equipmentButton, storeButton, infoButton;
 
     // Các thành phần UI hiển thị thông số
-    @FXML private Label dayLabel, moneyLabel, waterLabel, fertilizerLabel, boardLabel;
+    @FXML private Label dayLabel, moneyLabel, waterLabel, fertilizerLabel, medicineLabel,boardLabel;
     @FXML private Button boardButton;
 
     // Đối tượng lõi của trò chơi
@@ -53,7 +53,7 @@ public class FarmController {
         this.playerController = playerController;
 
 
-        this.uiManager = new UIManager(rootPane, dayLabel, moneyLabel, waterLabel, fertilizerLabel, boardLabel);
+        this.uiManager = new UIManager(rootPane, dayLabel, moneyLabel, waterLabel, fertilizerLabel, medicineLabel,boardLabel);
         this.farmRenderer = new FarmRenderer(farmPane);
         this.toolManager = new ToolManager(rootPane, waterButton, fertilizerButton, uiManager);
         this.storeManager = new StoreManager(rootPane, playerController, player, farmRenderer, this::updateGameUI);
@@ -72,7 +72,7 @@ public class FarmController {
     // --- CẬP NHẬT LẠI TOÀN BỘ GIAO DIỆN ---
     public void updateGameUI() {
         uiManager.updateHUD(farm.getCurrentDay(), player.getInventory().getMoney(),
-                player.getInventory().getWater(), player.getInventory().getFertilizer());
+                player.getInventory().getWater(), player.getInventory().getFertilizer(), player.getInventory().getMedicine());
         farmRenderer.renderGrid(farm, this::handleTileClick, selectedCell);
     }
 
