@@ -135,21 +135,6 @@
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="equipmentButton" onAction="#handleEquipmentButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
-                    <graphic><ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"><image><Image url="@../images/Inventory.png" /></image></ImageView></graphic>
-
-                <Button fx:id="infoButton" mnemonicParsing="false" onAction="#handleInfoButton" prefHeight="80.0" prefWidth="80.0"
-                        style="-fx-background-color: transparent; -fx-cursor: hand; -fx-focus-color: transparent; -fx-faint-focus-color: transparent;">
-                    <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../images/Help.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                                </Button>
-                
             </children>
         </VBox>
 
