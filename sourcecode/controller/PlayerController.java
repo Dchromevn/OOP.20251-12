@@ -233,17 +233,6 @@ public class PlayerController {
         }
     }
 
-    public void showCropStatus(Point position) {
-        try {
-            FarmCell cell = farm.getCell(position);
-            Crop crop = cell.requireCrop();
-            CropStatus status = crop.getStatus();
-            String indentedStatus = status.toString().lines() .map(line -> "\t" + line).collect(Collectors.joining("\n"));
-            notificationManager.addNotification("Crop status at " +position + ":\n "+ indentedStatus,NotificationType.INFO,farm.getCurrentDay());
-        } catch (InvalidPositionException |IllegalStateException e) {
-        	notificationManager.addNotification(e.getMessage(),NotificationType.ERROR, farm.getCurrentDay());
-        }
-    }
     public void saveGameCommand(String filename) {
         try {
             GameState state = new GameState(this.farm, this.player, this.notificationManager,this.eventManager);
@@ -270,12 +259,5 @@ public class PlayerController {
         } catch (IOException | ClassNotFoundException e) {
         	notificationManager.addNotification("Load failed: " + e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
         }
-    }
-    public void displayInventory() {
-        player.getInventory().showInventory();
-    }
-
-    public void printFarmStatus() {
-        farm.printFarm();
     }
 }
