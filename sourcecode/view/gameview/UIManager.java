@@ -65,7 +65,7 @@ public class UIManager {
         boardBox.setStyle("-fx-background-color: #FDF5E6; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 15, 0, 0, 0); -fx-border-color: #8B4513; -fx-border-width: 3; -fx-border-radius: 15;");
 
         // HEADER: Font Arial
-        Label title = new Label("FARM JOURNAL");
+        Label title = new Label("NOTIFICATION");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 32));
         title.setTextFill(Color.web("#5D4037"));
         title.setUnderline(true);
@@ -93,7 +93,7 @@ public class UIManager {
             }
         });
 
-        Button closeBtn = new Button("Close Journal");
+        Button closeBtn = new Button("Close");
         closeBtn.setPrefWidth(200);
         // BUTTON: Font Arial
         closeBtn.setStyle("-fx-background-color: #8B4513; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 10; -fx-cursor: hand;");

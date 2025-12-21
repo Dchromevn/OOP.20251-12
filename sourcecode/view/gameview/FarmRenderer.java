@@ -121,7 +121,6 @@ public class FarmRenderer {
         String suffix = "Mature";
         if (crop.isDead()) suffix = "Dead";
         else if (crop.isHarvestable()) {
-            if (typeName.equals("Pumpkin")) return "Pumpkin-Harvestable";
             suffix = "Harvestable";
         } else {
             String stage = crop.getCurrentStage().toString();

@@ -22,26 +22,29 @@ public class FarmController {
     @FXML private Pane farmPane;
     @FXML private Button advanceDayButton;
     @FXML private Button saveExitButton;
-    // Buttons
+
+    // Các nút chức năng trên HUD
     @FXML private Button statusButton, seedsButton, waterButton, fertilizerButton, equipmentButton, storeButton, infoButton;
 
-    // UI Components
+    // Các thành phần UI hiển thị thông số
     @FXML private Label dayLabel, moneyLabel, waterLabel, fertilizerLabel, boardLabel;
     @FXML private Button boardButton;
 
-    // Game Core
+    // Đối tượng lõi của trò chơi
     private Player player;
     private Farm farm;
     private NotificationManager notificationManager;
     private PlayerController playerController;
     private Point selectedCell = null;
 
-    // --- SUB-CONTROLLERS (MANAGERS) ---
+    // --- CÁC LỚP QUẢN LÝ PHÂN HỆ (MANAGERS) ---
     private UIManager uiManager;
     private FarmRenderer farmRenderer;
     private ToolManager toolManager;
     private StoreManager storeManager;
     private InventoryManager inventoryManager;
+    private CropInspectorManager cropInspectorManager; // Quản lý xem chi tiết cây
+    private PlantMenuManager plantMenuManager;       // Quản lý menu trồng cây mới
 
     public void initialize(Player player, Farm farm, NotificationManager notificationManager, PlayerController playerController) {
         this.player = player;
@@ -49,30 +52,35 @@ public class FarmController {
         this.notificationManager = notificationManager;
         this.playerController = playerController;
 
-        // 1. Khởi tạo các Manager
+
         this.uiManager = new UIManager(rootPane, dayLabel, moneyLabel, waterLabel, fertilizerLabel, boardLabel);
         this.farmRenderer = new FarmRenderer(farmPane);
         this.toolManager = new ToolManager(rootPane, waterButton, fertilizerButton, uiManager);
         this.storeManager = new StoreManager(rootPane, playerController, player, farmRenderer, this::updateGameUI);
         this.inventoryManager = new InventoryManager(rootPane, player, farmRenderer);
-        // 2. Setup ban đầu
+
+        this.cropInspectorManager = new CropInspectorManager(rootPane, playerController, farmRenderer, this::updateGameUI);
+        this.plantMenuManager = new PlantMenuManager(rootPane, playerController, player, farmRenderer, this::updateGameUI);
+
+
         loadBackground();
         setupButtonAnimations();
         updateGameUI();
         uiManager.showNotification("Welcome Farmer!", farm.getCurrentDay());
     }
 
-    // --- REFRESH TOÀN BỘ UI ---
+    // --- CẬP NHẬT LẠI TOÀN BỘ GIAO DIỆN ---
     public void updateGameUI() {
-        uiManager.updateHUD(farm.getCurrentDay(), player.getInventory().getMoney(), player.getInventory().getWater(), player.getInventory().getFertilizer());
+        uiManager.updateHUD(farm.getCurrentDay(), player.getInventory().getMoney(),
+                player.getInventory().getWater(), player.getInventory().getFertilizer());
         farmRenderer.renderGrid(farm, this::handleTileClick, selectedCell);
     }
 
-    // --- XỬ LÝ CLICK Ô ĐẤT ---
+    // --- XỬ LÝ KHI CLICK VÀO Ô ĐẤT ---
     private void handleTileClick(int col, int row, double screenX, double screenY) {
         FarmCell cell = farm.getCell(col, row);
 
-        // A. NẾU ĐANG CẦM CÔNG CỤ
+        // A. NẾU ĐANG TRONG CHẾ ĐỘ SỬ DỤNG CÔNG CỤ NHANH (Tưới nước/Bón phân từ HUD)
         if (toolManager.getCurrentTool() != ToolManager.ToolMode.NONE) {
             if (cell.isEmpty()) { uiManager.showAlert("Invalid", "Empty land!", Alert.AlertType.WARNING); return; }
             if (cell.getCrop().isDead()) { uiManager.showAlert("Invalid", "Crop is dead!", Alert.AlertType.WARNING); return; }
@@ -92,121 +100,44 @@ public class FarmController {
             updateGameUI();
             uiManager.showNotification(msg, farm.getCurrentDay());
         }
-        // B. CHUỘT THƯỜNG -> MENU
+        // B. CHẾ ĐỘ CHUỘT THƯỜNG -> MỞ CÁC CỬA SỔ TƯƠNG TÁC POPUP
         else {
             selectedCell = new Point(col, row);
-            updateGameUI(); // Highlight ô vừa chọn
-            showCellMenu(col, row, screenX, screenY); // Truyền tọa độ chuột để hiện menu đúng chỗ
+            updateGameUI(); // Highlight ô được chọn
+
+            if (!cell.isEmpty()) {
+                // Nếu có cây: Mở cửa sổ chi tiết (Health, Water, Harvest...) thay vì ContextMenu
+                cropInspectorManager.showInspector(cell, col, row);
+            } else {
+                // Nếu đất trống: Mở cửa sổ chọn hạt giống để trồng theo phong cách Store
+                plantMenuManager.showPlantMenu(col, row);
+            }
         }
     }
 
-    // --- CONTEXT MENU (Đã khôi phục hiển thị số hạt giống) ---
-    private void showCellMenu(int x, int y, double screenX, double screenY) {
-        FarmCell cell = farm.getCell(x, y);
-        ContextMenu menu = new ContextMenu();
-
-        if (cell.isEmpty()) {
-            Menu plantMenu = new Menu(" Plant Crop");
-
-            // --- KHÔI PHỤC LOGIC HIỆN SỐ LƯỢNG HẠT GIỐNG ---
-            for (CropType type : CropType.values()) {
-                int currentSeeds = player.getInventory().getSeedCount(type);
-                // Hiển thị tên cây + số lượng còn lại
-                MenuItem item = new MenuItem(type.getCropName() + " (Left: " + currentSeeds + ")");
-
-                item.setOnAction(e -> {
-                    boolean success = playerController.plantCrop(type, new Point(x, y));
-                    updateGameUI();
-                    if (success) {
-                        uiManager.showNotification("Planted " + type.getCropName(), farm.getCurrentDay());
-                    } else {
-                        if (player.getInventory().getSeedCount(type) <= 0)
-                            uiManager.showNotification("Out of seeds!", farm.getCurrentDay());
-                        else
-                            uiManager.showNotification("Cannot plant here!", farm.getCurrentDay());
-                    }
-                });
-                plantMenu.getItems().add(item);
-            }
-            menu.getItems().add(plantMenu);
-        } else {
-            Crop crop = cell.getCrop();
-            // Thêm thông tin cây trồng (không bấm được, chỉ để xem)
-            MenuItem info = new MenuItem( crop.getCropType().getCropName() + " - HP: " + crop.getHealth() + "%");
-            info.setDisable(true);
-            menu.getItems().add(info);
-            menu.getItems().add(new SeparatorMenuItem());
-
-            if (!crop.isDead()) {
-                MenuItem water = new MenuItem(" Water (10 units)");
-                water.setOnAction(e -> {
-                    boolean success = playerController.waterCrop(new Point(x, y), 10);
-                    updateGameUI();
-                    if(success) uiManager.showNotification("Watered (-10)", farm.getCurrentDay());
-                    else uiManager.showNotification("Not enough water!", farm.getCurrentDay());
-                });
-                menu.getItems().add(water);
-
-                MenuItem fertilize = new MenuItem(" Fertilize (5 units)");
-                fertilize.setOnAction(e -> {
-                    boolean success = playerController.fertilizeCrop(new Point(x, y), 5);
-                    updateGameUI();
-                    if(success) uiManager.showNotification("Fertilized (-5)", farm.getCurrentDay());
-                    else uiManager.showNotification("Not enough fertilizer!", farm.getCurrentDay());
-                });
-                menu.getItems().add(fertilize);
-            }
-
-            if (cell.getCrop().isHarvestable()) {
-                MenuItem harvest = new MenuItem(" Harvest");
-                harvest.setOnAction(e -> {
-                    double m1 = player.getInventory().getMoney();
-                    boolean success = playerController.harvestCrop(new Point(x, y));
-                    updateGameUI();
-                    if(success) {
-                        double m2 = player.getInventory().getMoney();
-                        uiManager.showNotification("Harvested! (+$" + (int)(m2-m1) + ")", farm.getCurrentDay());
-                    }
-                });
-                menu.getItems().add(harvest);
-            }
-
-            MenuItem recycle = new MenuItem(" Recycle");
-            recycle.setOnAction(e -> {
-                playerController.recycleCrop(new Point(x, y));
-                updateGameUI();
-                uiManager.showNotification("Recycled crop", farm.getCurrentDay());
-            });
-            menu.getItems().add(recycle);
-        }
-
-        // Hiện Menu ngay tại vị trí chuột click
-        menu.show(farmPane, screenX, screenY);
-    }
-
-    // --- BUTTON HANDLERS ---
+    // --- XỬ LÝ CÁC NÚT BẤM TRÊN HUD ---
     @FXML private void handleStoreButton() { storeManager.showStore(); }
     @FXML private void handleBoardClick() { uiManager.showLogBoard(); }
+
     @FXML
     private void handleWaterButton() {
         if(toolManager.getCurrentTool() == ToolManager.ToolMode.WATER)
-            toolManager.resetTool(farm.getCurrentDay()); // Thêm farm.getCurrentDay()
+            toolManager.resetTool(farm.getCurrentDay());
         else
-            toolManager.activateTool(ToolManager.ToolMode.WATER, farm.getCurrentDay()); // Thêm farm.getCurrentDay()
-
+            toolManager.activateTool(ToolManager.ToolMode.WATER, farm.getCurrentDay());
         rootPane.requestFocus();
     }
 
     @FXML
     private void handleFertilizerButton() {
         if(toolManager.getCurrentTool() == ToolManager.ToolMode.FERTILIZE)
-            toolManager.resetTool(farm.getCurrentDay()); // Thêm farm.getCurrentDay()
+            toolManager.resetTool(farm.getCurrentDay());
         else
-            toolManager.activateTool(ToolManager.ToolMode.FERTILIZE, farm.getCurrentDay()); // Thêm farm.getCurrentDay()
-
+            toolManager.activateTool(ToolManager.ToolMode.FERTILIZE, farm.getCurrentDay());
         rootPane.requestFocus();
     }
-    // --- XỬ LÝ NGÀY MỚI (Đã khôi phục hiển thị chi tiết Event) ---
+
+    // --- XỬ LÝ KHI KẾT THÚC NGÀY (ADVANCE DAY) ---
     @FXML
     private void handleAdvanceDay() {
         if (toolManager.getCurrentTool() != ToolManager.ToolMode.NONE)
@@ -215,19 +146,16 @@ public class FarmController {
             eventSystem.RandomEventManager eventManager = new eventSystem.RandomEventManager();
             String eventResult = farm.advanceDay(eventManager);
 
-            updateGameUI(); // Cập nhật lại UI sau khi qua ngày
+            updateGameUI();
 
-            // --- KHÔI PHỤC LOGIC HIỂN THỊ EVENT ---
             if (eventResult != null && !eventResult.isEmpty()) {
-                // Hiện Popup cảnh báo
                 uiManager.showAlert(" DAILY EVENT", eventResult, Alert.AlertType.INFORMATION);
-                // Hiện lên bảng thông báo nội dung chi tiết
                 uiManager.showNotification("Event: " + eventResult, farm.getCurrentDay());
             } else {
                 uiManager.showNotification("New day started!", farm.getCurrentDay());
             }
 
-            // Kiểm tra cây chết
+            // Thông báo nếu có cây bị chết trong đêm
             long deadCount = farm.getAllCrops().stream().filter(Crop::isDead).count();
             if (deadCount > 0) {
                 uiManager.showAlert("⚠️ WARNING", "There are " + deadCount + " dead crops!", Alert.AlertType.WARNING);
@@ -236,16 +164,13 @@ public class FarmController {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // --- HELPERS ---
+    // --- CÁC PHƯƠNG THỨC HỖ TRỢ (HELPERS) ---
     private void loadBackground() {
         try {
-            // Load ảnh nền dùng renderer để lấy ảnh từ cache
             Image bgImage = farmRenderer.loadImage("Background");
             if (bgImage != null) {
                 BackgroundImage bgi = new BackgroundImage(
-                        bgImage,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundRepeat.NO_REPEAT,
+                        bgImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                         BackgroundPosition.CENTER,
                         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
                 );
@@ -254,29 +179,38 @@ public class FarmController {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    private void setupButtonAnimations() { Button[] btns = {statusButton, seedsButton, waterButton, fertilizerButton, equipmentButton, storeButton, infoButton, advanceDayButton, boardButton}; for(Button b:btns) if(b!=null) { b.setOnMouseEntered(e->{b.setScaleX(1.1);b.setScaleY(1.1);}); b.setOnMouseExited(e->{b.setScaleX(1.0);b.setScaleY(1.0);}); } }
-    private void animateButton(Button b) { ScaleTransition st = new ScaleTransition(Duration.millis(100), b); st.setFromX(1.0); st.setFromY(1.0); st.setToX(0.9); st.setToY(0.9); st.setCycleCount(2); st.setAutoReverse(true); st.play(); }
+    private void setupButtonAnimations() {
+        Button[] btns = {statusButton, seedsButton, waterButton, fertilizerButton,
+                equipmentButton, storeButton, infoButton, advanceDayButton, boardButton};
+        for(Button b : btns) {
+            if(b != null) {
+                b.setOnMouseEntered(e -> { b.setScaleX(1.1); b.setScaleY(1.1); });
+                b.setOnMouseExited(e -> { b.setScaleX(1.0); b.setScaleY(1.0); });
+            }
+        }
+    }
 
     @FXML private void handleStatusButton() { inventoryManager.showStatus(); }
     @FXML private void handleSeedsButton() { uiManager.showAlert("Info", "Buy seeds in store", Alert.AlertType.INFORMATION); }
     @FXML private void handleEquipmentButton() { handleStatusButton(); }
     @FXML private void handleInfoButton() { uiManager.showAlert("Guide", "Plant -> Water -> Harvest", Alert.AlertType.INFORMATION); }
+
     @FXML public void handleSaveAndExit() {
-    	if (playerController != null) {
-    		playerController.saveGameCommand("smartfarm_save");
-    	}
-    	SceneNavigator.loadMainMenu();
-    	((Stage) rootPane.getScene().getWindow()).close();
+        if (playerController != null) {
+            playerController.saveGameCommand("smartfarm_save");
+        }
+        SceneNavigator.loadMainMenu();
+        ((Stage) rootPane.getScene().getWindow()).close();
     }
+
     @FXML
     public void confirmExitOnClose(javafx.stage.WindowEvent event) {
-        // Consume the close event so the window doesn't close immediately
-        event.consume(); 
-        // Show your beautiful custom CSS pane
+        event.consume();
         if (customExitPane != null) {
             customExitPane.setVisible(true);
         }
     }
+
     @FXML
     public void closeExitPane() {
         if (customExitPane != null) {
