@@ -15,7 +15,6 @@ import java.io.IOException;
 
 public class SceneNavigator {
     public static final String MAIN_MENU = "/view/menuview/MainMenu.fxml";
-    // Make sure this path matches your actual game fxml file name
     public static final String GAME_VIEW = "/view/gameview/GameMenu.fxml";
 
     private static Stage mainStage;
@@ -24,42 +23,60 @@ public class SceneNavigator {
         mainStage = stage;
     }
 
+    public static void loadMainMenu() {
+        try {
+            FXMLLoader loader = new FXMLLoader(SceneNavigator.class.getResource(MAIN_MENU));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Smart Farm");
+            stage.setScene(new Scene(root));
+            
+            // Cập nhật lại Stage chính của ứng dụng
+            setMainStage(stage);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    // --- 3. SPECIFIC GAME NAVIGATOR (For Start/Continue) ---
-    // This fixes the error in MainMenuController
     public static void loadGameScene(boolean isNewGame) {
         try {
             Farm farm = new Farm(5, 5);
             Player player = new Player();
             NotificationManager nm = new NotificationManager();
             ResourceManager shop = new ResourceManager();
-            RandomEventManager event = new RandomEventManager();
-            PlayerController pc = new PlayerController(player, farm, nm, shop, event);
-            // 1. Tải file FXML cho màn hình Game
+            RandomEventManager randomEvent = new RandomEventManager(); // Đổi tên để tránh trùng lặp
+            PlayerController pc = new PlayerController(player, farm, nm, shop, randomEvent);
+
             FXMLLoader loader = new FXMLLoader(SceneNavigator.class.getResource(GAME_VIEW));
             Parent root = loader.load();
 
-            // 2. Thiết lập chế độ chơi cho GameController
             FarmController controller = loader.getController();
             if (controller != null) {
-                controller.initialize(player,farm,nm,pc); 
+                controller.initialize(player, farm, nm, pc); 
                 if (!isNewGame) {
                     pc.loadGameCommand("smartfarm_save");
-                    // Refresh UI after loading
                     controller.updateGameUI(); 
                 }
             }
 
-            // 3. TẠO CỬA SỔ MỚI (STAGE MỚI)
             Stage gameStage = new Stage();
             gameStage.setTitle("Smart Farm - Game Play");
             gameStage.setScene(new Scene(root));
             gameStage.setResizable(false);
-            // 4. Hiển thị cửa sổ mới
+
+            // --- QUAN TRỌNG: XỬ LÝ DẤU X QUAY VỀ MENU ---
+            gameStage.setOnCloseRequest(windowEvent -> {
+                if (controller != null) {
+                    // Gọi hàm confirmExitOnClose bạn đã viết trong FarmController
+                    // Hàm này sẽ gọi SceneNavigator.loadMainMenu() nếu chọn YES/NO
+                    controller.confirmExitOnClose(windowEvent);
+                }
+            });
+
             gameStage.show();
 
-            // 5. (Tùy chọn) Đóng cửa sổ Menu chính nếu bạn muốn
-             if (mainStage != null) {
+            if (mainStage != null) {
                 mainStage.close();
             }
 
