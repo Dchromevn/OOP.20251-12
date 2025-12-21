@@ -12,10 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="1200.0"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="view.gameview.FarmController">
+<AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.gameview.FarmController">
     <children>
         <!-- Background -->
         <ImageView fitHeight="800.0" fitWidth="1200.0" pickOnBounds="true" preserveRatio="false">
@@ -42,7 +39,7 @@
 
                         <VBox alignment="CENTER" prefHeight="714.0" prefWidth="950.0" spacing="3.0">
                             <padding>
-                                <Insets top="150.0" right="35" bottom="0.0" left="0.0"/>
+                                <Insets bottom="0.0" left="0.0" right="35" top="150.0" />
                             </padding>
                             <children>
                                 <Label fx:id="dayLabel" text="Day 1" textFill="#5a3a22">
@@ -80,9 +77,7 @@
                 </StackPane>
 
                 <!-- Notification Board -->
-                <Button fx:id="boardButton" layoutX="740.0" layoutY="100.0" mnemonicParsing="false"
-                        onAction="#handleBoardClick"
-                        style="-fx-background-color: transparent; -fx-cursor: hand;">
+                <Button fx:id="boardButton" layoutX="740.0" layoutY="100.0" mnemonicParsing="false" onAction="#handleBoardClick" style="-fx-background-color: transparent; -fx-cursor: hand;">
                     <graphic>
                         <StackPane>
                             <children>
@@ -93,10 +88,7 @@
                                 </ImageView>
 
                                 <!-- Notification Text -->
-                                <Label fx:id="boardLabel" alignment="CENTER"
-                                       prefHeight="150.0" prefWidth="250.0"
-                                       text="" textAlignment="CENTER"
-                                       textFill="#d35400" wrapText="true">
+                                <Label fx:id="boardLabel" alignment="CENTER" prefHeight="150.0" prefWidth="250.0" text="" textAlignment="CENTER" textFill="#d35400" wrapText="true">
                                     <font>
                                         <Font name="System Bold Italic" size="14.0" />
                                     </font>
@@ -108,16 +100,51 @@
                         </StackPane>
                     </graphic>
                 </Button>
+            <Button fx:id="boardButton1" layoutX="207.0" layoutY="438.0" mnemonicParsing="false" onAction="#handleBoardClick" style="-fx-background-color: transparent; -fx-cursor: hand;">
+               <graphic>
+                  <StackPane>
+                     <children>
+                        <ImageView fitHeight="221.0" fitWidth="318.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/Water_Pod.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="boardLabel1" alignment="CENTER" prefHeight="150.0" prefWidth="250.0" text="" textAlignment="CENTER" textFill="#d35400" wrapText="true">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets top="30.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </graphic>
+            </Button>
+            <Button fx:id="boardButton2" layoutX="414.0" layoutY="604.0" mnemonicParsing="false" onAction="#handleBoardClick" style="-fx-background-color: transparent; -fx-cursor: hand;" />
+            <StackPane layoutX="380.0" layoutY="540.0">
+               <children>
+                  <ImageView fitHeight="186.0" fitWidth="224.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Fertilizer_bag.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="boardLabel2" alignment="CENTER" prefHeight="150.0" prefWidth="250.0" text="" textAlignment="CENTER" textFill="#d35400" wrapText="true">
+                     <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets top="30.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </StackPane>
 
             </children>
         </Pane>
 
         <!-- Next Day Button -->
-        <Button fx:id="advanceDayButton" layoutX="1020.0" layoutY="30.0"
-                mnemonicParsing="false" onAction="#handleAdvanceDay"
-                prefHeight="50.0" prefWidth="150.0"
-                style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 30; -fx-border-radius: 30; -fx-font-size: 16px; -fx-font-weight: bold; -fx-cursor: hand;"
-                text="NEXT DAY" textFill="WHITE">
+        <Button fx:id="advanceDayButton" layoutX="1020.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleAdvanceDay" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 30; -fx-border-radius: 30; -fx-font-size: 16px; -fx-font-weight: bold; -fx-cursor: hand;" text="NEXT DAY" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="16.0" />
             </font>
@@ -126,9 +153,7 @@
         <!-- Right Panel Buttons -->
         <VBox alignment="CENTER" layoutX="1045.0" layoutY="100.0" prefHeight="650.0" prefWidth="110.0" spacing="15.0">
             <children>
-                <Button fx:id="storeButton" mnemonicParsing="false" onAction="#handleStoreButton"
-                        prefHeight="80.0" prefWidth="80.0"
-                        style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
+                <Button fx:id="storeButton" mnemonicParsing="false" onAction="#handleStoreButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
                     <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -138,9 +163,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="waterButton" mnemonicParsing="false" onAction="#handleWaterButton"
-                        prefHeight="80.0" prefWidth="80.0"
-                        style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
+                <Button fx:id="waterButton" mnemonicParsing="false" onAction="#handleWaterButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
                     <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -150,9 +173,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="fertilizerButton" mnemonicParsing="false" onAction="#handleFertilizerButton"
-                        prefHeight="80.0" prefWidth="80.0"
-                        style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
+                <Button fx:id="fertilizerButton" mnemonicParsing="false" onAction="#handleFertilizerButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
                     <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -162,9 +183,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="equipmentButton" mnemonicParsing="false" onAction="#handleEquipmentButton"
-                        prefHeight="80.0" prefWidth="80.0"
-                        style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
+                <Button fx:id="equipmentButton" mnemonicParsing="false" onAction="#handleEquipmentButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
                     <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -174,9 +193,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="infoButton" mnemonicParsing="false" onAction="#handleInfoButton"
-                        prefHeight="80.0" prefWidth="80.0"
-                        style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
+                <Button fx:id="infoButton" mnemonicParsing="false" onAction="#handleInfoButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
                     <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                             <image>
