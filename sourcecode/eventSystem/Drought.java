@@ -4,6 +4,8 @@ import core.Crop;
 import core.Farm;
 import utility.NotificationType;
 
+import java.util.List;
+
 public class Drought extends GameEvent{
     public Drought(){
         super("Drought", NotificationType.EVENT);
