@@ -26,7 +26,9 @@
         <Pane fx:id="uiLayerPane" mouseTransparent="false" pickOnBounds="false" prefHeight="800.0" prefWidth="1200.0">
             <children>
 
-                <Button fx:id="waterButton" layoutX="300.0" layoutY="430.0" mnemonicParsing="false" onAction="#handleWaterButton" style="-fx-background-color: transparent; -fx-cursor: hand; -fx-focus-color: transparent;">
+                <Button fx:id="waterButton" layoutX="300.0" layoutY="430.0" mnemonicParsing="false" onAction="#handleWaterButton"
+                        focusTraversable="false"
+                        style="-fx-background-color: transparent; -fx-cursor: hand; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-background-insets: 0; -fx-padding: 0;">
                     <graphic>
                         <ImageView fitHeight="245.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -39,7 +41,9 @@
                     </tooltip>
                 </Button>
 
-                <Button fx:id="fertilizerButton" layoutX="420.0" layoutY="510.0" mnemonicParsing="false" onAction="#handleFertilizerButton" style="-fx-background-color: transparent; -fx-cursor: hand; -fx-focus-color: transparent;">
+                <Button fx:id="fertilizerButton" layoutX="420.0" layoutY="510.0" mnemonicParsing="false" onAction="#handleFertilizerButton"
+                        focusTraversable="false"
+                        style="-fx-background-color: transparent; -fx-cursor: hand; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-background-insets: 0; -fx-padding: 0;">
                     <graphic>
                         <ImageView fitHeight="150.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -51,7 +55,6 @@
                         <Tooltip text="Fertilizer" />
                     </tooltip>
                 </Button>
-
                 <StackPane layoutX="-253.0" layoutY="-202.0" mouseTransparent="true">
                     <children>
                         <ImageView fitHeight="714.0" fitWidth="950.0" pickOnBounds="true" preserveRatio="true">
@@ -132,9 +135,11 @@
 
         <VBox alignment="CENTER" layoutX="1045.0" layoutY="100.0" prefHeight="650.0" prefWidth="110.0" spacing="15.0">
             <children>
-                <Button fx:id="storeButton" mnemonicParsing="false" onAction="#handleStoreButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
+
+                <Button fx:id="storeButton" mnemonicParsing="false" onAction="#handleStoreButton" prefHeight="80.0" prefWidth="80.0"
+                        style="-fx-background-color: transparent; -fx-cursor: hand; -fx-focus-color: transparent; -fx-faint-focus-color: transparent;">
                     <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../images/Store.png" />
                             </image>
@@ -142,9 +147,10 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="equipmentButton" mnemonicParsing="false" onAction="#handleEquipmentButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
+                <Button fx:id="equipmentButton" mnemonicParsing="false" onAction="#handleEquipmentButton" prefHeight="80.0" prefWidth="80.0"
+                        style="-fx-background-color: transparent; -fx-cursor: hand; -fx-focus-color: transparent; -fx-faint-focus-color: transparent;">
                     <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../images/Inventory.png" />
                             </image>
@@ -152,15 +158,17 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="infoButton" mnemonicParsing="false" onAction="#handleInfoButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: white; -fx-border-width: 2px; -fx-background-radius: 50; -fx-border-radius: 50; -fx-cursor: hand;">
+                <Button fx:id="infoButton" mnemonicParsing="false" onAction="#handleInfoButton" prefHeight="80.0" prefWidth="80.0"
+                        style="-fx-background-color: transparent; -fx-cursor: hand; -fx-focus-color: transparent; -fx-faint-focus-color: transparent;">
                     <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/Information-Display.png" />
+                                <Image url="@../images/Help.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </Button>
+
             </children>
         </VBox>
     </children>
