@@ -10,7 +10,7 @@ import java.io.IOException;
 public class SceneNavigator {
 
     // --- 1. DEFINE YOUR VIEW PATHS ---
-    public static final String MAIN_MENU = "/menuview/MainMenu.fxml";
+    public static final String MAIN_MENU = "/menuview/GameMenu.fxml";
     // Make sure this path matches your actual game fxml file name
     public static final String GAME_VIEW = "/menuview/GameView.fxml";
 

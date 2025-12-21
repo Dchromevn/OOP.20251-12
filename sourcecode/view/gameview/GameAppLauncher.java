@@ -29,7 +29,7 @@ public class GameAppLauncher extends Application {
             PlayerController pc = new PlayerController(player, farm, nm, shop,event);
 
             // Load giao diện
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameview/MainMenu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameview/GameMenu.fxml"));
             Parent root = loader.load();
 
             // Cấu hình Controller
