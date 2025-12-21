@@ -190,9 +190,9 @@ public class FarmController {
         }
     }
 
-    @FXML private void handleStatusButton() { inventoryManager.showStatus(); }
+    @FXML private void handleInventoryButton() { inventoryManager.showStatus(); }
     @FXML private void handleSeedsButton() { uiManager.showAlert("Info", "Buy seeds in store", Alert.AlertType.INFORMATION); }
-    @FXML private void handleEquipmentButton() { handleStatusButton(); }
+    @FXML private void handleEquipmentButton() { handleInventoryButton(); }
     @FXML private void handleInfoButton() { uiManager.showAlert("Guide", "Plant -> Water -> Harvest", Alert.AlertType.INFORMATION); }
 
     @FXML public void handleSaveAndExit() {

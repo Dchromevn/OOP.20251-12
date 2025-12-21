@@ -53,14 +53,14 @@
       </StackPane>
       <StackPane fx:id="helpPane" style="-fx-background-color: rgba(0, 0, 0, 0.7);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0); -fx-padding: 20;">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0); -fx-padding: 20;">
                <children>
                   <Label text="HOW TO PLAY" textFill="#8B4513">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label text="1. Plant seeds to grow crops.&#10;2. Water them daily.&#10;3. Harvest and sell for coins!" textAlignment="CENTER" wrapText="true">
+                  <Label text="The primary aim of this project is to apply Object-Oriented Programming (OOP) principles to design and visualize a dynamic farming system. It demonstrates the practical use of encapsulation, inheritance, and polymorphism to model real-world interactions between crops, the environment, and player resources.&#10;&#10;1. Plant seeds to grow crops.&#10;2. Water and fertilize them daily.&#10;3. Harvest and sell for coins!&#10;4. Buy supplies with your profits. &#10;5. Watch out for random events! &#10;Use medicine for damaged crops." textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
