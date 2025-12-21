@@ -10,9 +10,11 @@ import player.Player;
 import controller.PlayerController;
 import notification.NotificationManager;
 import resourceManagement.ResourceManager;
+import utility.NotificationType;
 import eventSystem.RandomEventManager;
 import java.io.IOException;
-
+import notification.*;
+import utility.NotificationType;
 public class SceneNavigator {
     public static final String MAIN_MENU = "/view/menuview/MainMenu.fxml";
     public static final String GAME_VIEW = "/view/gameview/GameMenu.fxml";
@@ -53,23 +55,25 @@ public class SceneNavigator {
 
             FarmController controller = loader.getController();
             if (controller != null) {
-                controller.initialize(player, farm, nm, pc); 
                 if (!isNewGame) {
                     pc.loadGameCommand("smartfarm_save");
-                    controller.updateGameUI(); 
+                    farm = pc.getFarm();
+                    player = pc.getPlayer();
+                    nm = pc.getNotificationManager();
+                    nm.clearNotifications(); 
+                    nm.addNotification("Welcome back!", NotificationType.SUCCESS, farm.getCurrentDay());
+                
                 }
+                controller.initialize(player,farm,nm,pc);
+                controller.updateGameUI(); 
             }
 
             Stage gameStage = new Stage();
             gameStage.setTitle("Smart Farm - Game Play");
             gameStage.setScene(new Scene(root));
             gameStage.setResizable(false);
-
-            // --- QUAN TRỌNG: XỬ LÝ DẤU X QUAY VỀ MENU ---
             gameStage.setOnCloseRequest(windowEvent -> {
                 if (controller != null) {
-                    // Gọi hàm confirmExitOnClose bạn đã viết trong FarmController
-                    // Hàm này sẽ gọi SceneNavigator.loadMainMenu() nếu chọn YES/NO
                     controller.confirmExitOnClose(windowEvent);
                 }
             });

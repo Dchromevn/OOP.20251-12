@@ -2,7 +2,7 @@ package save;
 import java.io.*;
 import core.GameState;
 public class GameSaveManager {
-    private static final String SAVE_FOLDER = "data/saves/";
+    private static final String SAVE_FOLDER = "sourcecode/view/menuview/saves/";
     private static final String FILE_EXTENSION = ".dat";
 
     public GameSaveManager() {
