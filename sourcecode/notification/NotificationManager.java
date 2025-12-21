@@ -55,5 +55,11 @@ public class NotificationManager implements Serializable {
     public int getUnreadCount() {
         return (int) notifications.stream().filter(n -> !n.isRead()).count();
     }
+
+    public void clearNotifications() {
+        if (notifications != null) {
+            notifications.clear();
+        }
+    }
 }
 

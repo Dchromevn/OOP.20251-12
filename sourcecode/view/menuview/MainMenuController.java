@@ -18,7 +18,7 @@ public class MainMenuController {
 
     @FXML
     public void initialize() {
-        File saveFile = new File("view/menuview/saves/smartfarm_save.dat");
+        File saveFile = new File("sourcecode/view/menuview/saves/smartfarm_save.dat");
         if (btnContinue != null) {
             btnContinue.setDisable(!saveFile.exists());
         }
