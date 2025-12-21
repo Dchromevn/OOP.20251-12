@@ -31,9 +31,9 @@ public class FarmRenderer {
     }
 
     // Cấu hình Grid
-    private static final double TILE_WIDTH = 100;
-    private static final double TILE_HEIGHT = 50;
-    private static final double IMAGE_SIZE = 280;
+    private static final double TILE_WIDTH = 90;
+    private static final double TILE_HEIGHT = 45;
+    private static final double IMAGE_SIZE = 150;
     private static final double BASE_OFFSET_X = 500;
     private static final double BASE_OFFSET_Y = 200;
     private static final int GRID_SIZE = 5;
@@ -119,7 +119,6 @@ public class FarmRenderer {
         String suffix = "Mature";
         if (crop.isDead()) suffix = "Dead";
         else if (crop.isHarvestable()) {
-            if (typeName.equals("Pumpkin")) return "Pumpkin-Harvestable";
             suffix = "Harvestable";
         } else {
             String stage = crop.getCurrentStage().toString();

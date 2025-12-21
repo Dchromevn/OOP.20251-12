@@ -5,7 +5,7 @@ public class Player implements Serializable  {
     private Inventory inventory;
 
     public Player() {
-        this.inventory = new Inventory(500, 100, 50);
+        this.inventory = new Inventory(500, 200, 100);
     }
     public Inventory getInventory() {
         return inventory;

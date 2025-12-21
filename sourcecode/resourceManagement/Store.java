@@ -22,7 +22,7 @@ public class Store {
     public void showStoreDialog() {
         // 1. Tạo hộp thoại (Dialog)
         Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("🏪 Farm Shop");
+        dialog.setTitle("Farm Shop");
         dialog.setHeaderText("Welcome to the Store!");
 
         // Lấy thông tin tiền từ controller (giả định controller có hàm getPlayer)
@@ -36,7 +36,7 @@ public class Store {
         content.setPrefWidth(400);
 
         // --- MỤC: SEEDS (HẠT GIỐNG) ---
-        Label lblSeeds = new Label("🌱 SEEDS");
+        Label lblSeeds = new Label("SEEDS");
         lblSeeds.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         content.getChildren().add(lblSeeds);
 
@@ -52,32 +52,26 @@ public class Store {
         content.getChildren().add(new Separator());
 
         // --- MỤC: RESOURCES (VẬT TƯ) ---
-        Label lblRes = new Label("💧 SUPPLIES");
+        Label lblRes = new Label("SUPPLIES");
         lblRes.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         content.getChildren().add(lblRes);
-
-        // Nước
         content.getChildren().add(createItemRow(
                 "Water (25 units)",
                 "$2",
                 () -> controller.buyWater(1) // Mua 1 gói (25 đơn vị)
         ));
 
-        // Phân bón
         content.getChildren().add(createItemRow(
                 "Fertilizer (25 units)",
                 "$3",
                 () -> controller.buyFertilizer(1)
         ));
-
-        // Thuốc
         content.getChildren().add(createItemRow(
                 "Medicine",
                 "$50",
                 () -> controller.buyMedicine(1)
         ));
 
-        // 3. Đưa nội dung vào Dialog
         ScrollPane scrollPane = new ScrollPane(content);
         scrollPane.setFitToWidth(true);
         scrollPane.setPrefHeight(400);
@@ -85,11 +79,11 @@ public class Store {
         dialog.getDialogPane().setContent(scrollPane);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
 
-        // 4. Hiển thị
+
         dialog.showAndWait();
     }
 
-    // Hàm hỗ trợ tạo 1 dòng sản phẩm: [Tên ...... Giá [Button Buy]]
+
     private HBox createItemRow(String name, String price, Runnable buyAction) {
         HBox row = new HBox(10);
         row.setAlignment(Pos.CENTER_LEFT);
@@ -103,7 +97,7 @@ public class Store {
         priceLabel.setPrefWidth(80);
 
         Button buyBtn = new Button("Buy");
-        buyBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand;");
+        buyBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: black; -fx-cursor: hand;");
 
         buyBtn.setOnAction(e -> {
             buyAction.run();
