@@ -60,7 +60,7 @@ public class FarmController {
     }
 
     // --- REFRESH TOÀN BỘ UI ---
-    private void updateGameUI() {
+    public void updateGameUI() {
         uiManager.updateHUD(farm.getCurrentDay(), player.getInventory().getMoney(), player.getInventory().getWater(), player.getInventory().getFertilizer());
         farmRenderer.renderGrid(farm, this::handleTileClick, selectedCell);
     }
