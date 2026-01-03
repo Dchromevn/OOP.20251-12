@@ -110,7 +110,7 @@ public class StoreManager {
         Button closeBtn = new Button("Close");
         closeBtn.setPrefWidth(120);
         closeBtn.setStyle(
-                "-fx-background-color: #5bc0de; " +
+                "-fx-background-color: #d9534f; " +
                         "-fx-text-fill: white; " +
                         "-fx-font-weight: bold; " +
                         "-fx-background-radius: 10; " +
