@@ -99,7 +99,7 @@ public class UIManager {
         Button closeBtn = new Button("Close");
         closeBtn.setPrefWidth(200);
         // BUTTON: Font Arial
-        closeBtn.setStyle("-fx-background-color: #8B4513; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 10; -fx-cursor: hand;");
+        closeBtn.setStyle("-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 10; -fx-cursor: hand;");
         closeBtn.setOnAction(e -> rootPane.getChildren().remove(overlay));
 
         boardBox.getChildren().addAll(title, listView, closeBtn);
