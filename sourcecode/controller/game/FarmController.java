@@ -192,7 +192,6 @@ public class FarmController {
     @FXML private void handleSeedsButton() { uiManager.showAlert("Info", "Buy seeds in store", Alert.AlertType.INFORMATION); }
     @FXML private void handleEquipmentButton() { handleStatusButton(); }
     @FXML private void handleInfoButton() { uiManager.showAlert("Guide", "Plant -> Water -> Harvest", Alert.AlertType.INFORMATION); }
-
     @FXML public void handleSaveAndExit() {
         if (playerController != null) {
             playerController.saveGameCommand("smartfarm_save");

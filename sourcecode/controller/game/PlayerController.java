@@ -37,10 +37,7 @@ public class PlayerController {
 
             return true;
 
-        } catch (InvalidPositionException |
-                 CellOccupiedException |
-                 NotEnoughResourceException e) {
-            // Nếu có lỗi (hết hạt, ô đất có cây rồi...), thông báo và trả về false
+        } catch (InvalidPositionException |CellOccupiedException |NotEnoughResourceException e) {
             notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
             return false;
         }
@@ -49,32 +46,22 @@ public class PlayerController {
         try {
             FarmCell cell = farm.getCell(position);
             Crop crop = cell.requireCrop();
-
             if (crop.isHarvestable()) {
-                notificationManager.addNotification(
-                        crop.getCropType().getCropName() + " is harvestable. Cannot water",
-                        NotificationType.WARNING,
-                        farm.getCurrentDay()
-                );
+                notificationManager.addNotification(crop.getCropType().getCropName() + " is harvestable. Cannot water",NotificationType.WARNING,farm.getCurrentDay());
                 return false;
             }
-            
             if (crop.isDead()) {
-                notificationManager.addNotification(
-                        "Cannot water dead crop! Recycle it instead.",
-                        NotificationType.WARNING,
-                        farm.getCurrentDay()
-                );
+                notificationManager.addNotification("Cannot water dead crop! Recycle it instead.",NotificationType.WARNING,farm.getCurrentDay());
                 return false;
             }
-
+            if (crop.isWaterFull()) {
+            	notificationManager.addNotification(crop.getCropType().getCropName() +" is fully watered!", NotificationType.WARNING, farm.getCurrentDay());
+            	return false;
+            }
             player.getInventory().useWater(amount);
             crop.water(amount);
             return true;
-
-        } catch (InvalidPositionException |
-                 NotEnoughResourceException |
-                 IllegalStateException e) {
+        } catch (InvalidPositionException |NotEnoughResourceException e) {
             notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
             return false;
         }
@@ -86,59 +73,39 @@ public class PlayerController {
             Crop crop = cell.requireCrop();
 
             if (crop.isHarvestable()) {
-                notificationManager.addNotification(
-                        crop.getCropType().getCropName() + " is harvestable. Cannot fertilize",
-                        NotificationType.WARNING,
-                        farm.getCurrentDay()
-                );
+                notificationManager.addNotification(crop.getCropType().getCropName() + " is harvestable. Cannot fertilize",NotificationType.WARNING,farm.getCurrentDay());
                 return false;
             }
-            
             if (crop.isDead()) {
-                notificationManager.addNotification(
-                        "Cannot fertilize dead crop! Recycle it instead.",
-                        NotificationType.WARNING,
-                        farm.getCurrentDay()
-                );
+                notificationManager.addNotification("Cannot fertilize dead crop! Recycle it instead.",NotificationType.WARNING,farm.getCurrentDay());
                 return false;
             }
-
+            if (crop.isWaterFull()) {
+            	notificationManager.addNotification(crop.getCropType().getCropName() +" is fully fertilized!", NotificationType.WARNING, farm.getCurrentDay());
+            	return false;
+            }
             player.getInventory().useFertilizer(amount);
             crop.fertilize(amount);
             return true;
-
-        } catch (InvalidPositionException |
-                 NotEnoughResourceException |
-                 IllegalStateException e) {
+        } catch (InvalidPositionException | NotEnoughResourceException e) {
             notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
             return false;
         }
     }
-
     public boolean harvestCrop(Point position) {
         try {
             FarmCell cell = farm.getCell(position);
             Crop crop = cell.requireCrop();
             if (!crop.isHarvestable()) {
-                notificationManager.addNotification(
-                        crop.getCropType().getCropName() + " is not ready for harvesting",
-                        NotificationType.WARNING,
-                        farm.getCurrentDay()
-                );
+                notificationManager.addNotification(crop.getCropType().getCropName() + " is not ready for harvesting", NotificationType.WARNING,farm.getCurrentDay());
                 return false;
             }
             int moneyEarned = crop.harvest();
             player.getInventory().earnMoney(moneyEarned);
             cell.removeCrop();
-            notificationManager.addNotification(
-                "Harvested " + crop.getCropType().getCropName() + " (+" + moneyEarned + "$)", 
-                NotificationType.SUCCESS, 
-                farm.getCurrentDay()
-            );
-
+            notificationManager.addNotification("Harvested " + crop.getCropType().getCropName() + " (+" + moneyEarned + "$)", NotificationType.SUCCESS, farm.getCurrentDay() );
             return true;
-
-        } catch (InvalidPositionException | IllegalStateException e) {
+        } catch (InvalidPositionException e) {
             notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
             return false;
         }
@@ -170,7 +137,7 @@ public class PlayerController {
             
             return true;
 
-        } catch (NotEnoughResourceException | IllegalStateException | InvalidPositionException e) {
+        } catch (NotEnoughResourceException | InvalidPositionException e) {
             notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
             return false;
         }
@@ -178,11 +145,7 @@ public class PlayerController {
     public void buySeed(CropType type, int amount) {
         try {
             shop.sellSeedToPlayer(player.getInventory(), type, amount);
-            notificationManager.addNotification(
-                    "Purchased " + amount + " " + type.getCropName() + " seeds",
-                    NotificationType.SUCCESS,
-                    farm.getCurrentDay()
-            );
+            notificationManager.addNotification("Purchased " + amount + " " + type.getCropName() + " seeds", NotificationType.SUCCESS,farm.getCurrentDay());
         } catch (NotEnoughResourceException e) {
             notificationManager.addNotification("Failed to buy seeds: Not enough money", NotificationType.ERROR, farm.getCurrentDay());
         }
