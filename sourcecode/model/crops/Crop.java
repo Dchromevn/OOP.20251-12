@@ -200,6 +200,12 @@ public abstract class Crop extends Entity {
     	System.out.println(cropType.getCropName() +" recovered "+ amount + " % health");
     	return true;
     }
+     public boolean isWaterFull() {
+    	 return this.waterLevel >= this.maxWaterLevel;
+     }
+     public boolean isFertilizerFull() {
+    	 return this.fertilizerLevel >= this.maxFertilizerLevel;
+     }
     @Override
     public String toString() {
         return String.format(

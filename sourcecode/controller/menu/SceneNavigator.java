@@ -31,8 +31,7 @@ public class SceneNavigator {
             Stage stage = new Stage();
             stage.setTitle("Smart Farm");
             stage.setScene(new Scene(root));
-            
-            // Cập nhật lại Stage chính của ứng dụng
+            stage.setResizable(false); 
             setMainStage(stage);
             stage.show();
         } catch (IOException e) {
