@@ -4,23 +4,22 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.StackPane;
 import javafx.scene.image.ImageView;
-
-import java.io.File;
-
+import service.save.GameSaveManager;
 public class MainMenuController {
 	@FXML private Button btnStart;
     @FXML private Button btnContinue;
     @FXML private StackPane exitPane;
     @FXML private StackPane helpPane; 
     @FXML private ImageView background;
-
+    private GameSaveManager saveManager;
     @FXML
     public void initialize() {
-        File saveFile = new File("sourcecode/view/menuview/saves/smartfarm_save.dat");
+    	saveManager = new GameSaveManager();
         if (btnContinue != null) {
-            btnContinue.setDisable(!saveFile.exists());
+            btnContinue.setDisable(!saveManager.saveExists(GameSaveManager.DEFAULT_SAVE));
         }
         if (btnStart != null) {
         	btnStart.setDisable(false);
@@ -36,6 +35,14 @@ public class MainMenuController {
 
     @FXML
     public void handleContinueGame(ActionEvent event) {
+    	if(!saveManager.saveExists(GameSaveManager.DEFAULT_SAVE)) {
+    		Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Continue Failed");
+            alert.setContentText("Save file no longer exists!");
+            alert.showAndWait();
+            btnContinue.setDisable(true);
+            return;
+    	}
         SceneNavigator.loadGameScene(false); 
     }
     @FXML
@@ -52,7 +59,9 @@ public class MainMenuController {
     }
     @FXML
     public void handleExitRequest(ActionEvent event) {
-        if (exitPane != null) exitPane.setVisible(true);
+        if (exitPane != null) {
+        	exitPane.setVisible(true);
+        }
     }
     @FXML
     public void confirmExit(ActionEvent event) {
@@ -60,6 +69,8 @@ public class MainMenuController {
     }
     @FXML
     public void cancelExit(ActionEvent event) {
-        if (exitPane != null) exitPane.setVisible(false);
+        if (exitPane != null) {
+        	exitPane.setVisible(false);
+        }
     }
 }

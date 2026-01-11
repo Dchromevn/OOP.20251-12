@@ -11,8 +11,9 @@ import model.crops.Crop;
 import model.notification.NotificationManager;
 import model.player.Player;
 import service.eventSystem.RandomEventManager;
+import service.save.GameSaveManager;
 import utility.Point;
-
+import java.io.IOException;
 public class FarmController {
 
     @FXML private AnchorPane rootPane;
@@ -33,8 +34,10 @@ public class FarmController {
     private Farm farm;
     private NotificationManager notificationManager;
     private PlayerController playerController;
+    private RandomEventManager eventManager;
     private Point selectedCell = null;
 
+    private GameSaveManager saveManager;
     // --- CÁC LỚP QUẢN LÝ PHÂN HỆ (MANAGERS) ---
     private UIManager uiManager;
     private FarmRenderer farmRenderer;
@@ -44,13 +47,14 @@ public class FarmController {
     private CropInspectorManager cropInspectorManager; // Quản lý xem chi tiết cây
     private PlantMenuManager plantMenuManager;       // Quản lý menu trồng cây mới
 
-    public void initialize(Player player, Farm farm, NotificationManager notificationManager, PlayerController playerController) {
+    public void initialize(Player player, Farm farm, NotificationManager notificationManager, PlayerController playerController, RandomEventManager eventManager) {
         this.player = player;
         this.farm = farm;
         this.notificationManager = notificationManager;
         this.playerController = playerController;
-
-
+        this.eventManager = eventManager;
+        
+        this.saveManager = new GameSaveManager();
         this.uiManager = new UIManager(rootPane, dayLabel, moneyLabel, waterLabel, fertilizerLabel, medicineLabel,boardLabel);
         this.farmRenderer = new FarmRenderer(farmPane);
         this.toolManager = new ToolManager(rootPane, waterButton, fertilizerButton, uiManager);
@@ -193,13 +197,23 @@ public class FarmController {
     @FXML private void handleEquipmentButton() { handleStatusButton(); }
     @FXML private void handleInfoButton() { uiManager.showAlert("Guide", "Plant -> Water -> Harvest", Alert.AlertType.INFORMATION); }
     @FXML public void handleSaveAndExit() {
-        if (playerController != null) {
-            playerController.saveGameCommand("smartfarm_save");
+    	try {
+            // Tạo GameState và save trực tiếp
+            GameState state = new GameState(farm, player, notificationManager, eventManager);
+            saveManager.saveGame(state, GameSaveManager.DEFAULT_SAVE);
+           
+        } catch (IOException e) {
+            // Save failed → Alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Save Failed");
+            alert.setContentText("Could not save game: " + e.getMessage());
+            alert.showAndWait();
+            e.printStackTrace();
+            return; 
         }
-        SceneNavigator.loadMainMenu();
+    	SceneNavigator.loadMainMenu();
         ((Stage) rootPane.getScene().getWindow()).close();
     }
-
     @FXML
     public void confirmExitOnClose(javafx.stage.WindowEvent event) {
         event.consume();
@@ -207,7 +221,6 @@ public class FarmController {
             customExitPane.setVisible(true);
         }
     }
-
     @FXML
     public void closeExitPane() {
         if (customExitPane != null) {

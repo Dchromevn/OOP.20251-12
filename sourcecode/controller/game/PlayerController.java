@@ -8,22 +8,16 @@ import utility.*;
 import model.exceptions.*;
 import model.resourceManagement.ResourceManager;
 import service.eventSystem.RandomEventManager;
-import service.save.GameSaveManager;
-import java.io.*;
 public class PlayerController {
     private Player player;
     private Farm farm;
     private ResourceManager shop;
     private NotificationManager notificationManager;
-    private GameSaveManager gameSaveManager;
-    private RandomEventManager eventManager;
     public PlayerController(Player player, Farm farm, NotificationManager notificationManager, ResourceManager shop, RandomEventManager eventManager) {
         this.player = player;
         this.farm = farm;
         this.notificationManager = notificationManager;
         this.shop = shop;
-        this.gameSaveManager = new GameSaveManager();
-        this.eventManager = eventManager;
     }
     public Farm getFarm() { return this.farm; }
     public Player getPlayer() { return this.player; }
@@ -80,7 +74,7 @@ public class PlayerController {
                 notificationManager.addNotification("Cannot fertilize dead crop! Recycle it instead.",NotificationType.WARNING,farm.getCurrentDay());
                 return false;
             }
-            if (crop.isWaterFull()) {
+            if (crop.isFertilizerFull()) {
             	notificationManager.addNotification(crop.getCropType().getCropName() +" is fully fertilized!", NotificationType.WARNING, farm.getCurrentDay());
             	return false;
             }
@@ -193,34 +187,6 @@ public class PlayerController {
         } catch (InvalidPositionException | IllegalStateException e) {
             notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
 
-        }
-    }
-
-    public void saveGameCommand(String filename) {
-        try {
-            GameState state = new GameState(this.farm, this.player, this.notificationManager,this.eventManager);
-            gameSaveManager.saveGame(state, filename);
-            notificationManager.addNotification("Save successfully." + filename, NotificationType.SUCCESS, farm.getCurrentDay());
-
-        } catch (IOException e) {
-            notificationManager.addNotification("Save failed: " + e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
-        }
-    }
-
-    public void loadGameCommand(String filename) {
-        try {
-            GameState loadState = gameSaveManager.loadGame(filename);
-            this.farm = loadState.getFarm();
-            this.player = loadState.getPlayer();
-            this.notificationManager = loadState.getNotificationManager();
-            this.eventManager = loadState.getEventManager();
-            notificationManager.addNotification("Welcome back! " , NotificationType.SUCCESS, farm.getCurrentDay());
-            
-
-        } catch (FileNotFoundException e) {
-            notificationManager.addNotification("Cannot find saved game.", NotificationType.WARNING, farm.getCurrentDay());
-        } catch (IOException | ClassNotFoundException e) {
-        	notificationManager.addNotification("Load failed: " + e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
         }
     }
 }

@@ -33,7 +33,7 @@ public class GameAppLauncher extends Application {
 
             // Cấu hình Controller
             FarmController controller = loader.getController();
-            controller.initialize(player, farm, nm, pc);
+            controller.initialize(player, farm, nm, pc,event);
 
             // Hiển thị cửa sổ
             primaryStage.setTitle("Smart Farm - Isometric Test");
