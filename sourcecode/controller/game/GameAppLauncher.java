@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import model.core.Farm;
 import model.player.Player;
 import model.notification.NotificationManager;
-import model.resourceManagement.ResourceManager; // 1. Import thêm cái này
+import model.resourceManagement.Store; // 1. Import thêm cái này
 import service.eventSystem.RandomEventManager;
 public class GameAppLauncher extends Application {
 
@@ -21,7 +21,7 @@ public class GameAppLauncher extends Application {
             NotificationManager nm = new NotificationManager();
 
             // 2. SỬA LỖI TẠI ĐÂY: Khởi tạo ResourceManager
-            ResourceManager shop = new ResourceManager();
+            Store shop = new Store();
             RandomEventManager event= new RandomEventManager();
 
             // 3. Truyền 'shop' vào PlayerController thay vì để null
