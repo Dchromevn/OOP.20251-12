@@ -13,15 +13,24 @@ public class PlayerController {
     private Farm farm;
     private Store shop;
     private NotificationManager notificationManager;
-    public PlayerController(Player player, Farm farm, NotificationManager notificationManager, Store shop, RandomEventManager eventManager) {
+    private UIManager uiManager;
+    public PlayerController(Player player, Farm farm, NotificationManager notificationManager, Store shop, RandomEventManager eventManager,UIManager uiManager) {
         this.player = player;
         this.farm = farm;
         this.notificationManager = notificationManager;
         this.shop = shop;
+        this.uiManager = uiManager;
+    }
+    public void setUIManager(UIManager uiManager) {
+        if (this.uiManager != null) {
+            throw new IllegalStateException("UIManager already set!");
+        }
+        this.uiManager = uiManager;
     }
     public Farm getFarm() { return this.farm; }
     public Player getPlayer() { return this.player; }
     public NotificationManager getNotificationManager() { return this.notificationManager; }
+
     public boolean plantCrop(CropType type, Point position) {
         try {
             FarmCell cell = farm.getCell(position);
@@ -97,7 +106,12 @@ public class PlayerController {
             int moneyEarned = crop.harvest();
             player.getInventory().earnMoney(moneyEarned);
             cell.removeCrop();
-            notificationManager.addNotification("Harvested " + crop.getCropType().getCropName() + " (+" + moneyEarned + "$)", NotificationType.SUCCESS, farm.getCurrentDay() );
+            String message = "Harvested " + crop.getCropType().getCropName() + " (+" + moneyEarned + "$)";
+            notificationManager.addNotification(message, NotificationType.SUCCESS, farm.getCurrentDay());
+            if(uiManager != null) {
+                uiManager.showNotification(message,farm.getCurrentDay());
+
+            }
             return true;
         } catch (InvalidPositionException e) {
             notificationManager.addNotification(e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());

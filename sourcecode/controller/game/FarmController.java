@@ -53,7 +53,7 @@ public class FarmController {
         this.notificationManager = notificationManager;
         this.playerController = playerController;
         this.eventManager = eventManager;
-        
+        this.uiManager = new UIManager(rootPane, dayLabel, moneyLabel, waterLabel, fertilizerLabel, medicineLabel, boardLabel);
         this.saveManager = new GameSaveManager();
         this.uiManager = new UIManager(rootPane, dayLabel, moneyLabel, waterLabel, fertilizerLabel, medicineLabel,boardLabel);
         this.farmRenderer = new FarmRenderer(farmPane);
@@ -64,7 +64,7 @@ public class FarmController {
         this.cropInspectorManager = new CropInspectorManager(rootPane, playerController, farmRenderer, this::updateGameUI);
         this.plantMenuManager = new PlantMenuManager(rootPane, playerController, player, farmRenderer, this::updateGameUI);
 
-
+        playerController.setUIManager(uiManager);
         loadBackground();
         setupButtonAnimations();
         updateGameUI();

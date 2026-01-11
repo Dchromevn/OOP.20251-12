@@ -16,7 +16,7 @@ import utility.NotificationType;
 import service.eventSystem.RandomEventManager;
 import java.io.IOException;
 import service.save.GameSaveManager;
-
+import controller.game.UIManager;
 public class SceneNavigator {
     public static final String MAIN_MENU = "/view/menuview/MainMenu.fxml";
     public static final String GAME_VIEW = "/view/gameview/GameMenu.fxml";
@@ -68,7 +68,7 @@ public class SceneNavigator {
         		}
         	}
         	Store shop = new Store();
-        	PlayerController pc = new PlayerController(player, farm, nm, shop, randomEvent);
+        	PlayerController pc = new PlayerController(player, farm, nm, shop, randomEvent,null);
 
             FXMLLoader loader = new FXMLLoader(SceneNavigator.class.getResource(GAME_VIEW));
             Parent root = loader.load();
