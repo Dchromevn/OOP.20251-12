@@ -11,7 +11,7 @@ import model.core.GameState;
 import model.player.Player;
 import controller.game.PlayerController;
 import model.notification.NotificationManager;
-import model.resourceManagement.ResourceManager;
+import model.resourceManagement.Store;
 import utility.NotificationType;
 import service.eventSystem.RandomEventManager;
 import java.io.IOException;
@@ -67,7 +67,7 @@ public class SceneNavigator {
                     return ;
         		}
         	}
-        	ResourceManager shop = new ResourceManager();
+        	Store shop = new Store();
         	PlayerController pc = new PlayerController(player, farm, nm, shop, randomEvent);
 
             FXMLLoader loader = new FXMLLoader(SceneNavigator.class.getResource(GAME_VIEW));

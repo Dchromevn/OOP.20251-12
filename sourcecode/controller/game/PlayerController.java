@@ -6,14 +6,14 @@ import model.notification.NotificationManager;
 import model.player.*;
 import utility.*;
 import model.exceptions.*;
-import model.resourceManagement.ResourceManager;
+import model.resourceManagement.*;
 import service.eventSystem.RandomEventManager;
 public class PlayerController {
     private Player player;
     private Farm farm;
-    private ResourceManager shop;
+    private Store shop;
     private NotificationManager notificationManager;
-    public PlayerController(Player player, Farm farm, NotificationManager notificationManager, ResourceManager shop, RandomEventManager eventManager) {
+    public PlayerController(Player player, Farm farm, NotificationManager notificationManager, Store shop, RandomEventManager eventManager) {
         this.player = player;
         this.farm = farm;
         this.notificationManager = notificationManager;
@@ -136,41 +136,20 @@ public class PlayerController {
             return false;
         }
     }
-    public void buySeed(CropType type, int amount) {
+    public boolean buyItem(StoreItem item, int amount) {
         try {
-            shop.sellSeedToPlayer(player.getInventory(), type, amount);
-            notificationManager.addNotification("Purchased " + amount + " " + type.getCropName() + " seeds", NotificationType.SUCCESS,farm.getCurrentDay());
+            shop.sellToPlayer(item, player.getInventory(), amount);
+            
+            String message = "Purchased " + amount + " " + item.getName();
+            notificationManager.addNotification(message, NotificationType.SUCCESS, farm.getCurrentDay());
+            return true;
+            
         } catch (NotEnoughResourceException e) {
-            notificationManager.addNotification("Failed to buy seeds: Not enough money", NotificationType.ERROR, farm.getCurrentDay());
+            notificationManager.addNotification("Failed to buy " + item.getName() + ": " + e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
+            return false;
         }
     }
-
-    public void buyWater(int amount) {
-        try {
-            shop.sellWaterToPlayer(player.getInventory(), amount);
-            notificationManager.addNotification("Bought " + amount + " water units", NotificationType.SUCCESS, farm.getCurrentDay());
-        } catch (NotEnoughResourceException e) {
-            notificationManager.addNotification("Failed to buy water: Not enough money", NotificationType.ERROR, farm.getCurrentDay());
-        }
-    }
-
-    public void buyFertilizer(int amount) {
-        try {
-            shop.sellFertilizerToPlayer(player.getInventory(), amount);
-            notificationManager.addNotification("Bought " + amount + " fertilizer units", NotificationType.SUCCESS, farm.getCurrentDay());
-        } catch (NotEnoughResourceException e) {
-            notificationManager.addNotification("Failed to buy fertilizer: Not enough money", NotificationType.ERROR, farm.getCurrentDay());
-        }
-    }
-
-    public void buyMedicine(int amount) {
-        try {
-            shop.sellMedicineToPLayer(player.getInventory(), amount);
-            notificationManager.addNotification("Bought " + amount + " medicine.", NotificationType.SUCCESS, farm.getCurrentDay());
-        } catch (NotEnoughResourceException e) {
-            notificationManager.addNotification("Failed to buy medicine: " + e.getMessage(), NotificationType.ERROR, farm.getCurrentDay());
-        }
-    }
+   
 
     public void recycleCrop(Point position) {
         try {
