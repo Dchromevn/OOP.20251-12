@@ -7,7 +7,7 @@ public class MedicineItem extends StoreItem{
 	}
 	@Override
 	public void applyToInventory(Inventory inventory, int amount) {
-		inventory.gainWater(amount);
+		inventory.gainMedicine(amount);
 	}
 
 }
