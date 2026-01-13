@@ -12,15 +12,15 @@ import java.io.IOException;
 
 public class Main extends Application {
     @Override
-    public void start(Stage stage) {
+    public void start(Stage primaryStage) {
     	try {
-        SceneNavigator.setMainStage(stage);
+        SceneNavigator.setMainStage(primaryStage);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.MAIN_MENU));
         Parent root = loader.load();
-        stage.setTitle("Smart Farm");
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.show();
+        primaryStage.setTitle("Smart Farm");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
+        primaryStage.show();
     	} catch (IOException e) {
     		Alert alert = new Alert(Alert.AlertType.ERROR);
     		alert.setTitle("Startup Error");

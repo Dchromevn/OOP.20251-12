@@ -8,6 +8,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.core.*;
 import model.crops.Crop;
+import model.exceptions.InvalidPositionException;
 import model.notification.NotificationManager;
 import model.player.Player;
 import service.eventSystem.RandomEventManager;
@@ -79,42 +80,45 @@ public class FarmController {
     }
 
     // --- XỬ LÝ KHI CLICK VÀO Ô ĐẤT ---
-    private void handleTileClick(int col, int row, double screenX, double screenY) {
-        FarmCell cell = farm.getCell(col, row);
-
-        // A. NẾU ĐANG TRONG CHẾ ĐỘ SỬ DỤNG CÔNG CỤ NHANH (Tưới nước/Bón phân từ HUD)
-        if (toolManager.getCurrentTool() != ToolManager.ToolMode.NONE) {
-            if (cell.isEmpty()) { uiManager.showAlert("Invalid", "Empty land!", Alert.AlertType.WARNING); return; }
-            if (cell.getCrop().isDead()) { uiManager.showAlert("Invalid", "Crop is dead!", Alert.AlertType.WARNING); return; }
-
-            int amount = toolManager.getToolAmount();
-            boolean success = false;
-            String msg = "";
-
-            if (toolManager.getCurrentTool() == ToolManager.ToolMode.WATER) {
-                success = playerController.waterCrop(new Point(col, row), amount);
-                msg = success ? "Used " + amount + " Water" : "Not enough water!";
-            } else if (toolManager.getCurrentTool() == ToolManager.ToolMode.FERTILIZE) {
-                success = playerController.fertilizeCrop(new Point(col, row), amount);
-                msg = success ? "Used " + amount + " Fert" : "Not enough fertilizer!";
-            }
-
-            updateGameUI();
-            uiManager.showNotification(msg, farm.getCurrentDay());
-        }
-        // B. CHẾ ĐỘ CHUỘT THƯỜNG -> MỞ CÁC CỬA SỔ TƯƠNG TÁC POPUP
-        else {
-            selectedCell = new Point(col, row);
-            updateGameUI(); // Highlight ô được chọn
-
-            if (!cell.isEmpty()) {
-                // Nếu có cây: Mở cửa sổ chi tiết (Health, Water, Harvest...) thay vì ContextMenu
-                cropInspectorManager.showInspector(cell, col, row);
-            } else {
-                // Nếu đất trống: Mở cửa sổ chọn hạt giống để trồng theo phong cách Store
-                plantMenuManager.showPlantMenu(col, row);
-            }
-        }
+    private void handleTileClick(int col, int row, double screenX, double screenY){
+    	try {
+	        FarmCell cell = farm.getCell(col, row);
+	        // A. NẾU ĐANG TRONG CHẾ ĐỘ SỬ DỤNG CÔNG CỤ NHANH (Tưới nước/Bón phân từ HUD)
+	        if (toolManager.getCurrentTool() != ToolManager.ToolMode.NONE) {
+	            if (cell.isEmpty()) { uiManager.showAlert("Invalid", "Empty land!", Alert.AlertType.WARNING); return; }
+	            if (cell.getCrop().isDead()) { uiManager.showAlert("Invalid", "Crop is dead!", Alert.AlertType.WARNING); return; }
+	
+	            int amount = toolManager.getToolAmount();
+	            boolean success = false;
+	            String msg = "";
+	
+	            if (toolManager.getCurrentTool() == ToolManager.ToolMode.WATER) {
+	                success = playerController.waterCrop(new Point(col, row), amount);
+	                msg = success ? "Used " + amount + " Water" : "Not enough water!";
+	            } else if (toolManager.getCurrentTool() == ToolManager.ToolMode.FERTILIZE) {
+	                success = playerController.fertilizeCrop(new Point(col, row), amount);
+	                msg = success ? "Used " + amount + " Fert" : "Not enough fertilizer!";
+	            }
+	
+	            updateGameUI();
+	            uiManager.showNotification(msg, farm.getCurrentDay());
+	        }
+	        // B. CHẾ ĐỘ CHUỘT THƯỜNG -> MỞ CÁC CỬA SỔ TƯƠNG TÁC POPUP
+	        else {
+	            selectedCell = new Point(col, row);
+	            updateGameUI(); // Highlight ô được chọn
+	
+	            if (!cell.isEmpty()) {
+	                // Nếu có cây: Mở cửa sổ chi tiết (Health, Water, Harvest...) thay vì ContextMenu
+	                cropInspectorManager.showInspector(cell, col, row);
+	            } else {
+	                // Nếu đất trống: Mở cửa sổ chọn hạt giống để trồng theo phong cách Store
+	                plantMenuManager.showPlantMenu(col, row);
+	            }
+	        }
+    	} catch (InvalidPositionException e) {
+		
+    	}
     }
 
     // --- XỬ LÝ CÁC NÚT BẤM TRÊN HUD ---
@@ -160,7 +164,7 @@ public class FarmController {
             // Thông báo nếu có cây bị chết trong đêm
             long deadCount = farm.getAllCrops().stream().filter(Crop::isDead).count();
             if (deadCount > 0) {
-                uiManager.showAlert("⚠️ WARNING", "There are " + deadCount + " dead crops!", Alert.AlertType.WARNING);
+                uiManager.showAlert("WARNING", "There are " + deadCount + " dead crops!", Alert.AlertType.WARNING);
                 uiManager.showNotification("Warning: " + deadCount + " crops died!", farm.getCurrentDay());
             }
         } catch (Exception e) { e.printStackTrace(); }
@@ -198,12 +202,10 @@ public class FarmController {
     @FXML private void handleInfoButton() { uiManager.showAlert("Guide", "Plant -> Water -> Harvest", Alert.AlertType.INFORMATION); }
     @FXML public void handleSaveAndExit() {
     	try {
-            // Tạo GameState và save trực tiếp
             GameState state = new GameState(farm, player, notificationManager, eventManager);
             saveManager.saveGame(state, GameSaveManager.DEFAULT_SAVE);
            
         } catch (IOException e) {
-            // Save failed → Alert
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Save Failed");
             alert.setContentText("Could not save game: " + e.getMessage());
