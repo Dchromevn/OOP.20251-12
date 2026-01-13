@@ -93,11 +93,11 @@ public class StoreManager {
         }
 
         // 2. Other Items (Phân bón, Nước, Thuốc)
-        grid.add(createShopItem("Fertilizer", 3, "Fertilizer_Bag_Sell", () -> {
+        grid.add(createShopItem("Fertilizer(25 units)", 3, "Fertilizer_Bag_Sell", () -> {
             playerController.buyItem(new FertilizerItem(),1); storeMoneyLabel.setText("$" + player.getInventory().getMoney()); if(onPurchaseCallback != null) onPurchaseCallback.run();
         }), col, row); col++; if (col > 2) { col = 0; row++; }
 
-        grid.add(createShopItem("Water", 2, "Water", () -> {
+        grid.add(createShopItem("Water(25 units)", 2, "Water", () -> {
             playerController.buyItem(new WaterItem(),1); storeMoneyLabel.setText("$" + player.getInventory().getMoney()); if(onPurchaseCallback != null) onPurchaseCallback.run();
         }), col, row); col++; if (col > 2) { col = 0; row++; }
 
