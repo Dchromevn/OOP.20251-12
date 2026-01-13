@@ -200,7 +200,7 @@ public class FarmController {
     @FXML private void handleSeedsButton() { uiManager.showAlert("Info", "Buy seeds in store", Alert.AlertType.INFORMATION); }
     @FXML private void handleEquipmentButton() { handleStatusButton(); }
     @FXML private void handleInfoButton() { uiManager.showAlert("Guide", "Plant -> Water -> Harvest", Alert.AlertType.INFORMATION); }
-    @FXML public void handleSaveAndExit() {
+    @FXML private void handleSaveAndExit() {
     	try {
             GameState state = new GameState(farm, player, notificationManager, eventManager);
             saveManager.saveGame(state, GameSaveManager.DEFAULT_SAVE);
@@ -217,16 +217,16 @@ public class FarmController {
         ((Stage) rootPane.getScene().getWindow()).close();
     }
     @FXML
+    private void closeExitPane() {
+        if (customExitPane != null) {
+            customExitPane.setVisible(false);
+        }
+    }
+    @FXML
     public void confirmExitOnClose(javafx.stage.WindowEvent event) {
         event.consume();
         if (customExitPane != null) {
             customExitPane.setVisible(true);
-        }
-    }
-    @FXML
-    public void closeExitPane() {
-        if (customExitPane != null) {
-            customExitPane.setVisible(false);
         }
     }
 }

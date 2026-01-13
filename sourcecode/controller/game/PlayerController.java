@@ -21,7 +21,7 @@ public class PlayerController {
         this.shop = shop;
         this.uiManager = uiManager;
     }
-    public void setUIManager(UIManager uiManager) {
+    protected void setUIManager(UIManager uiManager) {
         if (this.uiManager != null) {
             throw new IllegalStateException("UIManager already set!");
         }
