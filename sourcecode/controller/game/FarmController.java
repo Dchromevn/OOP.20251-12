@@ -116,9 +116,8 @@ public class FarmController {
 	                plantMenuManager.showPlantMenu(col, row);
 	            }
 	        }
-    	} catch (InvalidPositionException e) {
-		
-    	}
+    	} catch (InvalidPositionException e) {e.printStackTrace();}
+    	
     }
 
     // --- XỬ LÝ CÁC NÚT BẤM TRÊN HUD ---
