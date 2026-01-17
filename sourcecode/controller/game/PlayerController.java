@@ -40,8 +40,8 @@ public class PlayerController {
             FarmCell cell = farm.getCell(position);
             player.getInventory().removeSeed(type, 1);
             Crop crop = CropFactory.createCrop(type, position);
-            cell.plantCrop(crop); 
-
+            cell.plantCrop(crop);
+            notifyFeedback("Successfully planted " + type.getCropName(), NotificationType.SUCCESS);
             return true;
 
         } catch (InvalidPositionException |CellOccupiedException |NotEnoughResourceException e) {
@@ -67,6 +67,7 @@ public class PlayerController {
             }
             player.getInventory().useWater(amount);
             crop.water(amount);
+            notifyFeedback("Watered " + crop.getCropType().getCropName() + " (+" + amount + " water)", NotificationType.SUCCESS);
             return true;
         } catch (InvalidPositionException |NotEnoughResourceException e) {
             notifyFeedback(e.getMessage(), NotificationType.ERROR);
@@ -93,9 +94,10 @@ public class PlayerController {
             }
             player.getInventory().useFertilizer(amount);
             crop.fertilize(amount);
+            notifyFeedback("Fertilized " + crop.getCropType().getCropName() + " (+" + amount + " fertilizer)", NotificationType.SUCCESS);
             return true;
         } catch (InvalidPositionException | NotEnoughResourceException e) {
-        	notifyFeedback(e.getMessage(), NotificationType.ERROR);
+            notifyFeedback(e.getMessage(), NotificationType.ERROR);
             return false;
         }
     }
@@ -116,7 +118,7 @@ public class PlayerController {
             return true;
         } catch (InvalidPositionException e) {
         	notifyFeedback(e.getMessage(), NotificationType.ERROR);
-            return false;
+           return false;
         }
     }
     public boolean cureCrop(Point position) {
@@ -124,42 +126,42 @@ public class PlayerController {
             FarmCell cell = farm.getCell(position);
             Crop crop = cell.requireCrop();
             if (crop.isDead()) {
-            	notifyFeedback("Cannot cure dead crop! Recycle it.", NotificationType.WARNING);
+                notifyFeedback("Cannot cure dead crop! Recycle it.", NotificationType.WARNING);
                 return false;
             }
             if (crop.getHealth() >= 100) {
-            	notifyFeedback("Crop is already healthy!", NotificationType.WARNING);
+                notifyFeedback("Crop is already healthy!", NotificationType.WARNING);
                 return false;
             }
             player.getInventory().useMedicine(1);
 
-            int remainingMeds = player.getInventory().getMedicine(); 
-            
+            int remainingMeds = player.getInventory().getMedicine();
+
             crop.recoverHealth(30);
 
             notifyFeedback("Used Medicine on " + crop.getCropType().getCropName() +" (Left: " + remainingMeds + ")",NotificationType.SUCCESS);
-            
+
             return true;
 
         } catch (NotEnoughResourceException | InvalidPositionException e) {
-        	notifyFeedback(e.getMessage(), NotificationType.ERROR);
+            notifyFeedback(e.getMessage(), NotificationType.ERROR);
             return false;
         }
     }
     public boolean buyItem(StoreItem item, int amount) {
         try {
             shop.sellToPlayer(item, player.getInventory(), amount);
-            
+
             String message = "Purchased " + amount + " " + item.getName();
             notifyFeedback(message, NotificationType.SUCCESS);
             return true;
-            
+
         } catch (NotEnoughResourceException e) {
-        	notifyFeedback("Failed to buy " + item.getName() + ": " + e.getMessage(), NotificationType.ERROR);
+            notifyFeedback("Failed to buy " + item.getName() + ": " + e.getMessage(), NotificationType.ERROR);
             return false;
         }
     }
-   
+
 
     public void recycleCrop(Point position) {
         try {
@@ -171,10 +173,10 @@ public class PlayerController {
                 cell.removeCrop();
                 notifyFeedback("Recycled crop. Gained " + fertilizerGained + " fertilizer.", NotificationType.SUCCESS);
             } else {
-            	notifyFeedback("Crop is still healthy, cannot recycle.", NotificationType.WARNING);
+                notifyFeedback("Crop is still healthy, cannot recycle.", NotificationType.WARNING);
             }
         } catch (InvalidPositionException e) {
-        	notifyFeedback(e.getMessage(), NotificationType.ERROR);
+            notifyFeedback(e.getMessage(), NotificationType.ERROR);
 
         }
     }
