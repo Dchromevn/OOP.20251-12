@@ -31,7 +31,7 @@ public class UIManager {
         this.boardLabel = board;
         this.medicineLabel = med;
     }
-
+    // bảng hiện thị thông tin
     public void updateHUD(int day, double money, int water, int fertilizer, int medicine) {
         if (dayLabel != null) dayLabel.setText("Day " + day);
         if (moneyLabel != null) moneyLabel.setText("$" + (int)money);
@@ -40,7 +40,7 @@ public class UIManager {
         if (medicineLabel != null) medicineLabel.setText("Med: " + fertilizer);
 
     }
-
+    // Notification board
     public void showNotification(String message, int currentDay) {
         if (boardLabel != null) {
             boardLabel.setText(message);
@@ -155,7 +155,7 @@ public class UIManager {
         st.setToX(1.0); st.setToY(1.0);
         st.play();
     }
-
+    // No Use
     public void addButtonAnimation(Button btn) {
         if (btn == null) return;
         btn.setOnMouseEntered(e -> {

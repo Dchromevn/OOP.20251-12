@@ -39,14 +39,14 @@ public class FarmController {
     private Point selectedCell = null;
 
     private GameSaveManager saveManager;
-    // --- CÁC LỚP QUẢN LÝ PHÂN HỆ (MANAGERS) ---
+    // Các lớp gọi ra
     private UIManager uiManager;
     private FarmRenderer farmRenderer;
     private ToolManager toolManager;
     private StoreManager storeManager;
     private InventoryManager inventoryManager;
-    private CropInspectorManager cropInspectorManager; // Quản lý xem chi tiết cây
-    private PlantMenuManager plantMenuManager;       // Quản lý menu trồng cây mới
+    private CropInspectorManager cropInspectorManager;
+    private PlantMenuManager plantMenuManager;
 
     public void initialize(Player player, Farm farm, NotificationManager notificationManager, PlayerController playerController, RandomEventManager eventManager) {
         this.player = player;
@@ -72,38 +72,46 @@ public class FarmController {
         uiManager.showNotification("Welcome Farmer!", farm.getCurrentDay());
     }
 
-    // --- CẬP NHẬT LẠI TOÀN BỘ GIAO DIỆN ---
+    //Cập nhật các chỉ số
     public void updateGameUI() {
         uiManager.updateHUD(farm.getCurrentDay(), player.getInventory().getMoney(),
                 player.getInventory().getWater(), player.getInventory().getFertilizer(), player.getInventory().getMedicine());
         farmRenderer.renderGrid(farm, this::handleTileClick, selectedCell);
     }
 
-    // --- XỬ LÝ KHI CLICK VÀO Ô ĐẤT ---
+    // Tương tác khi click ô đất
     private void handleTileClick(int col, int row, double screenX, double screenY){
     	try {
 	        FarmCell cell = farm.getCell(col, row);
-	        // A. NẾU ĐANG TRONG CHẾ ĐỘ SỬ DỤNG CÔNG CỤ NHANH (Tưới nước/Bón phân từ HUD)
+	        // TH đang cầm tools
 	        if (toolManager.getCurrentTool() != ToolManager.ToolMode.NONE) {
 	            if (cell.isEmpty()) { uiManager.showAlert("Invalid", "Empty land!", Alert.AlertType.WARNING); return; }
 	            if (cell.getCrop().isDead()) { uiManager.showAlert("Invalid", "Crop is dead!", Alert.AlertType.WARNING); return; }
-	
+                Crop crop = cell.getCrop();
 	            int amount = toolManager.getToolAmount();
 	            boolean success = false;
 	            String msg = "";
-	
-	            if (toolManager.getCurrentTool() == ToolManager.ToolMode.WATER) {
-	                success = playerController.waterCrop(new Point(col, row), amount);
-	                msg = success ? "Used " + amount + " Water" : "Not enough water!";
-	            } else if (toolManager.getCurrentTool() == ToolManager.ToolMode.FERTILIZE) {
-	                success = playerController.fertilizeCrop(new Point(col, row), amount);
-	                msg = success ? "Used " + amount + " Fert" : "Not enough fertilizer!";
-	            }
+
+                if (toolManager.getCurrentTool() == ToolManager.ToolMode.WATER) {
+                    if (crop.isWaterFull()) {
+                        msg = "This crop is already fully hydrated!";
+                    } else {
+                        success = playerController.waterCrop(new Point(col, row), amount);
+                        msg = success ? "Successfully used " + amount + " Water" : "Not enough water in inventory!";
+                    }
+                } else if (toolManager.getCurrentTool() == ToolManager.ToolMode.FERTILIZE) {
+                    if (crop.isFertilizerFull()) {
+                        msg = "This crop cannot take more fertilizer!";
+                    } else {
+                        success = playerController.fertilizeCrop(new Point(col, row), amount);
+                        msg = success ? "Successfully used " + amount + " Fertilizer" : "Not enough fertilizer in inventory!";
+                    }
+                }
 	
 	            updateGameUI();
 	            uiManager.showNotification(msg, farm.getCurrentDay());
 	        }
-	        // B. CHẾ ĐỘ CHUỘT THƯỜNG -> MỞ CÁC CỬA SỔ TƯƠNG TÁC POPUP
+	        // TH đang ko làm gì
 	        else {
 	            selectedCell = new Point(col, row);
 	            updateGameUI(); // Highlight ô được chọn
@@ -120,7 +128,7 @@ public class FarmController {
     	
     }
 
-    // --- XỬ LÝ CÁC NÚT BẤM TRÊN HUD ---
+    // Các nút bấm
     @FXML private void handleStoreButton() { storeManager.showStore(); }
     @FXML private void handleBoardClick() { uiManager.showLogBoard(); }
 
@@ -142,7 +150,7 @@ public class FarmController {
         rootPane.requestFocus();
     }
 
-    // --- XỬ LÝ KHI KẾT THÚC NGÀY (ADVANCE DAY) ---
+    // Xử lý khi advance day
     @FXML
     private void handleAdvanceDay() {
         if (toolManager.getCurrentTool() != ToolManager.ToolMode.NONE)
@@ -169,7 +177,7 @@ public class FarmController {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // --- CÁC PHƯƠNG THỨC HỖ TRỢ (HELPERS) ---
+    // Phương thức hỗ trợ khác
     private void loadBackground() {
         try {
             Image bgImage = farmRenderer.loadImage("Background");
@@ -196,9 +204,7 @@ public class FarmController {
     }
 
     @FXML private void handleStatusButton() { inventoryManager.showStatus(); }
-    @FXML private void handleSeedsButton() { uiManager.showAlert("Info", "Buy seeds in store", Alert.AlertType.INFORMATION); }
     @FXML private void handleEquipmentButton() { handleStatusButton(); }
-    @FXML private void handleInfoButton() { uiManager.showAlert("Guide", "Plant -> Water -> Harvest", Alert.AlertType.INFORMATION); }
     @FXML private void handleSaveAndExit() {
     	try {
             GameState state = new GameState(farm, player, notificationManager, eventManager);

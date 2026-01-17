@@ -36,17 +36,15 @@ public class ToolManager {
         this.uiManager = ui;
     }
 
-    // --- SỬA: Thêm tham số currentDay ---
     public void activateTool(ToolMode mode, int currentDay) {
         showCustomInputDialog(mode, currentDay);
     }
 
-    // --- SỬA: Thêm tham số currentDay để truyền vào thông báo ---
     private void showCustomInputDialog(ToolMode mode, int currentDay) {
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
-        overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
-
+        overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());// lớp phủ mờ để mở ra dialog
+        //dialog nhập số
         VBox dialogBox = new VBox(20);
         dialogBox.setAlignment(Pos.CENTER);
         dialogBox.setMaxSize(400, 300);
@@ -70,7 +68,7 @@ public class ToolManager {
         HBox buttonBox = new HBox(20); buttonBox.setAlignment(Pos.CENTER);
         Button btnOk = createStyledButton("CONFIRM", "#4CAF50");
         Button btnCancel = createStyledButton("CANCEL", "#CD5C5C");
-
+        //catch số liệu
         btnOk.setOnAction(e -> {
             try {
                 int amount = Integer.parseInt(inputField.getText());
@@ -78,12 +76,13 @@ public class ToolManager {
                 this.currentTool = mode;
                 this.toolAmount = amount;
                 rootPane.setCursor(Cursor.CROSSHAIR);
-
+                //chốt số lượng amount
 
 
                 updateToolVisuals();
                 rootPane.getChildren().remove(overlay);
                 rootPane.requestFocus();
+                // trả lại focus cho màn hình và thoát ra
             } catch (NumberFormatException ex) {
                 uiManager.showAlert("Error", "Please enter a valid number!", Alert.AlertType.ERROR);
             }
@@ -104,8 +103,7 @@ public class ToolManager {
         btn.setPrefWidth(100);
         return btn;
     }
-
-    // --- SỬA: Thêm tham số currentDay ---
+    // reset bỏ dụng cụ
     public void resetTool(int currentDay) {
         this.currentTool = ToolMode.NONE;
         this.toolAmount = 0;
@@ -113,7 +111,7 @@ public class ToolManager {
 
         updateToolVisuals();
     }
-
+    // cho biết đang dùng tool nào bằng cách phóng to làm sáng viền
     private void updateToolVisuals() {
         waterBtn.setEffect(null); waterBtn.setScaleX(1.0); waterBtn.setScaleY(1.0);
         fertilizerBtn.setEffect(null); fertilizerBtn.setScaleX(1.0); fertilizerBtn.setScaleY(1.0);
