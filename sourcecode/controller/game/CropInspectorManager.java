@@ -131,7 +131,7 @@ public class CropInspectorManager {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), container);
         st.setFromX(0.7); st.setFromY(0.7); st.setToX(1.0); st.setToY(1.0); st.play();
     }
-
+    // Phương thức bổ trợ hiện thì Stat của cây
     private HBox createStatRow(String label, String value, Color color) {
         HBox row = new HBox(10);
         Label lblLabel = new Label(label);
