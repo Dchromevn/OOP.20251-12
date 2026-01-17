@@ -28,8 +28,8 @@ public class PlayerController {
         this.uiManager = uiManager;
     }
     private void notifyFeedback(String message, NotificationType type) {
-        notificationManager.addNotification(message,type,farm.getCurrentDay());
-        uiManager.showNotification(message,farm.getCurrentDay());
+    	notificationManager.addNotification(message,type,farm.getCurrentDay());
+    	uiManager.showNotification(message,farm.getCurrentDay());
     }
     public Farm getFarm() { return this.farm; }
     public Player getPlayer() { return this.player; }
@@ -62,8 +62,8 @@ public class PlayerController {
                 return false;
             }
             if (crop.isWaterFull()) {
-                notifyFeedback(crop.getCropType().getCropName() +" is fully watered!", NotificationType.WARNING);
-                return false;
+            	notifyFeedback(crop.getCropType().getCropName() +" is fully watered!", NotificationType.WARNING);
+            	return false;
             }
             player.getInventory().useWater(amount);
             crop.water(amount);
@@ -81,16 +81,16 @@ public class PlayerController {
             Crop crop = cell.requireCrop();
 
             if (crop.isHarvestable()) {
-                notifyFeedback(crop.getCropType().getCropName() + " is harvestable. Cannot fertilize",NotificationType.WARNING);
+            	notifyFeedback(crop.getCropType().getCropName() + " is harvestable. Cannot fertilize",NotificationType.WARNING);
                 return false;
             }
             if (crop.isDead()) {
-                notifyFeedback("Cannot fertilize dead crop! Recycle it instead.",NotificationType.WARNING);
+            	notifyFeedback("Cannot fertilize dead crop! Recycle it instead.",NotificationType.WARNING);
                 return false;
             }
             if (crop.isFertilizerFull()) {
-                notifyFeedback(crop.getCropType().getCropName() +" is fully fertilized!", NotificationType.WARNING);
-                return false;
+            	notifyFeedback(crop.getCropType().getCropName() +" is fully fertilized!", NotificationType.WARNING);
+            	return false;
             }
             player.getInventory().useFertilizer(amount);
             crop.fertilize(amount);
@@ -106,7 +106,7 @@ public class PlayerController {
             FarmCell cell = farm.getCell(position);
             Crop crop = cell.requireCrop();
             if (!crop.isHarvestable()) {
-                notifyFeedback(crop.getCropType().getCropName() + " is not ready for harvesting", NotificationType.WARNING);
+            	notifyFeedback(crop.getCropType().getCropName() + " is not ready for harvesting", NotificationType.WARNING);
                 return false;
             }
             int moneyEarned = crop.harvest();
@@ -114,11 +114,11 @@ public class PlayerController {
             cell.removeCrop();
             String message = "Harvested " + crop.getCropType().getCropName() + " (+" + moneyEarned + "$)";
             notifyFeedback(message, NotificationType.SUCCESS);
-
+            
             return true;
         } catch (InvalidPositionException e) {
-            notifyFeedback(e.getMessage(), NotificationType.ERROR);
-            return false;
+        	notifyFeedback(e.getMessage(), NotificationType.ERROR);
+           return false;
         }
     }
     public boolean cureCrop(Point position) {
