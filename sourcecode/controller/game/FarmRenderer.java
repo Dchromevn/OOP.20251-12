@@ -26,7 +26,7 @@ public class FarmRenderer {
     private Pane farmPane;
     private final Map<String, Image> imageCache = new HashMap<>();
 
-    // --- Interface để xử lý click chuột (Nhận thêm tọa độ màn hình) ---
+    // Interface xử lý khi click chuột
     public interface TileClickHandler {
         void onClick(int col, int row, double screenX, double screenY);
     }
@@ -45,14 +45,13 @@ public class FarmRenderer {
         this.farmPane = farmPane;
     }
 
-    // Cập nhật tham số thành TileClickHandler
     public void renderGrid(Farm farm, TileClickHandler onTileClick, Point selectedCell) {
-        farmPane.getChildren().clear();
+        farmPane.getChildren().clear();// xóa hình ảnh
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
             	try {
 	            	FarmCell cell = farm.getCell(col, row);
-	                StackPane tile = createIsometricTile(row, col, cell, onTileClick);
+	                StackPane tile = createIsometricTile(row, col, cell, onTileClick);// create new for new day
 	
 	                double x = (col - row) * (TILE_WIDTH / 2) + BASE_OFFSET_X;
 	                double y = (col + row) * (TILE_HEIGHT / 2) + BASE_OFFSET_Y;
@@ -73,7 +72,7 @@ public class FarmRenderer {
             }
      	}
     }
-
+    // tạo ra hình ảnh các crop
     private StackPane createIsometricTile(int row, int col, FarmCell cell, TileClickHandler onTileClick) {
         StackPane tile = new StackPane();
         tile.setPrefSize(TILE_WIDTH, TILE_HEIGHT * 2);
@@ -90,16 +89,16 @@ public class FarmRenderer {
         visual.setMouseTransparent(true);
 
         if (cell.isEmpty()) visual.setImage(loadImage("Land"));
-        else visual.setImage(loadImage(getCropImageName(cell.getCrop())));
+        else visual.setImage(loadImage(getCropImageName(cell.getCrop())));// hm gọi ra hình ảnh các crop khi mà thay đổi stage
 
         tile.getChildren().addAll(hitbox, visual);
         if (!cell.isEmpty()) addCropOverlays(tile, cell.getCrop());
-
+        // làm sáng ô đất để người dùng dễ pht hiện
         ColorAdjust br = new ColorAdjust(); br.setBrightness(0.3);
         hitbox.setOnMouseEntered(e -> visual.setEffect(br));
         hitbox.setOnMouseExited(e -> visual.setEffect(null));
 
-        // --- QUAN TRỌNG: Truyền tọa độ màn hình khi click ---
+        // Truyền tọa độ khi click
         hitbox.setOnMouseClicked(e -> onTileClick.onClick(col, row, e.getScreenX(), e.getScreenY()));
 
         return tile;
@@ -111,16 +110,10 @@ public class FarmRenderer {
         overlay.setAlignment(Pos.CENTER);
         overlay.setMouseTransparent(true);
         overlay.setTranslateY(-110);
-        if (crop.getWaterLevel() < 30) {
-            ImageView waterIcon = new ImageView(loadImage("Water_Pod"));
-            waterIcon.setFitWidth(25); waterIcon.setFitHeight(25);
-            FadeTransition fade = new FadeTransition(Duration.seconds(0.5), waterIcon);
-            fade.setFromValue(1.0); fade.setToValue(0.2); fade.setCycleCount(Animation.INDEFINITE); fade.setAutoReverse(true); fade.play();
-            overlay.getChildren().add(waterIcon);
-        }
+
         tile.getChildren().add(overlay);
     }
-
+    // method để lấy tên ảnh
     private String getCropImageName(Crop crop) {
         String typeStr = crop.getCropType().toString();
         String typeName = typeStr.substring(0, 1).toUpperCase() + typeStr.substring(1).toLowerCase();
@@ -135,7 +128,7 @@ public class FarmRenderer {
         }
         return typeName + "_" + suffix;
     }
-
+    // Load images từ data
     public Image loadImage(String fileName) {
         String baseName = fileName.contains(".") ? fileName.substring(0, fileName.lastIndexOf(".")) : fileName;
         if (imageCache.containsKey(baseName)) return imageCache.get(baseName);

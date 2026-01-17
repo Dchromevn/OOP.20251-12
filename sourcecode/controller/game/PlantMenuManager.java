@@ -31,13 +31,11 @@ public class PlantMenuManager {
 
     public void showPlantMenu(int x, int y) {
         if (rootPane == null) return;
-
-        // 1. LỚP NỀN TỐI (Overlay)
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
         overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 
-        // 2. KHUNG CHỌN HẠT GIỐNG (Main Box)
+        // Khung chọn hạt giống
         VBox container = new VBox(20);
         container.setAlignment(Pos.TOP_CENTER);
         container.setMaxSize(500, 450);
@@ -48,7 +46,7 @@ public class PlantMenuManager {
                         "-fx-padding: 25;"
         );
 
-        // Header
+        // Hiển thị chữ
         Label title = new Label("SELECT SEED TO PLANT");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 22));
         title.setTextFill(Color.web("#8B4513"));

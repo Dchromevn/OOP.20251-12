@@ -30,12 +30,12 @@ public class StoreManager {
     public void showStore() {
         if (rootPane == null) return;
 
-        // 1. LỚP NỀN TỐI (Overlay) - Theo mẫu: rgba 0.7
+        //Lớp nền giống như khi view Help
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
         overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 
-        // 2. KHUNG STORE (Main Box) - Theo mẫu: Trắng, Bo tròn 20, Đổ bóng
+        // Khung store
         VBox shop = new VBox(15);
         shop.setAlignment(Pos.TOP_CENTER);
         shop.setMaxSize(550, 500);
@@ -46,15 +46,12 @@ public class StoreManager {
                         "-fx-padding: 20;"
         );
 
-        // --- HEADER ---
         HBox header = new HBox(15);
         header.setAlignment(Pos.CENTER);
 
-        // Icon Store
+        // Hình ảnh đại diện cửa hàng
         ImageView storeIcon = new ImageView(renderer.loadImage("Store"));
         storeIcon.setFitWidth(50); storeIcon.setFitHeight(50);
-
-        // Tiêu đề: Đổi màu chữ sang Nâu (#8B4513) cho nổi trên nền trắng
         Label title = new Label(" STORE");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         title.setTextFill(Color.web("#8B4513"));
@@ -74,7 +71,7 @@ public class StoreManager {
         moneyBox.getChildren().addAll(moneyIcon, storeMoneyLabel);
         header.getChildren().addAll(storeIcon, title, moneyBox);
 
-        // --- GRID SẢN PHẨM ---
+        // Grid sản phẩm
         GridPane grid = new GridPane();
         grid.setHgap(15);
         grid.setVgap(15);
@@ -105,8 +102,7 @@ public class StoreManager {
             playerController.buyItem(new MedicineItem(),1); storeMoneyLabel.setText("$" + player.getInventory().getMoney()); if(onPurchaseCallback != null) onPurchaseCallback.run();
         }), col, row);
 
-        // --- NÚT CLOSE ---
-        // Style theo mẫu: Xanh dương, chữ trắng, bo tròn 10
+        // Nút close
         Button closeBtn = new Button("Close");
         closeBtn.setPrefWidth(120);
         closeBtn.setStyle(
@@ -131,10 +127,10 @@ public class StoreManager {
     private VBox createShopItem(String name, int price, String imageName, Runnable onBuy) {
         VBox card = new VBox(5);
         card.setAlignment(Pos.CENTER);
-        card.setPrefSize(130, 180); // Tăng kích thước thẻ lên xíu cho vừa nút to
+        card.setPrefSize(130, 180);
         card.setStyle("-fx-background-color: #F5DEB3; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2);");
 
-        // 1. Ảnh và Tên
+        // Images của item
         ImageView img = new ImageView(renderer.loadImage(imageName));
         img.setFitWidth(50);
         img.setFitHeight(50);
@@ -146,20 +142,20 @@ public class StoreManager {
         Label priceLabel = new Label("$" + price);
         priceLabel.setTextFill(Color.DARKRED);
 
-        // 2. TẠO NÚT MUA VỚI STYLE MỚI CỦA BẠN
+        // Buy button
         Button buyBtn = new Button("BUY");
 
-        // Set kích thước cố định cho nhỏ gọn (Rộng 70, Cao 25)
+        // Set kích thước button
         buyBtn.setPrefSize(70, 25);
 
         buyBtn.setStyle(
                 "-fx-background-color: rgba(0, 0, 0, 0.5); " +
                         "-fx-border-color: white; " +
-                        "-fx-border-width: 1.5px; " +  // Giảm viền xuống 1.5px cho đỡ thô
+                        "-fx-border-width: 1.5px; " +
                         "-fx-background-radius: 30; " +
                         "-fx-border-radius: 30; " +
                         "-fx-text-fill: white; " +
-                        "-fx-font-size: 11px; " +      // Giảm chữ xuống 11px
+                        "-fx-font-size: 11px; " +
                         "-fx-font-weight: bold; " +
                         "-fx-cursor: hand;"
         );

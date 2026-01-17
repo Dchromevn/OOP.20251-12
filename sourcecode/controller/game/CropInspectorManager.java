@@ -31,12 +31,11 @@ public class CropInspectorManager {
         if (cell.isEmpty() || rootPane == null) return;
         Crop crop = cell.getCrop();
 
-        // 1. Lớp nền tối (Overlay)
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
         overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 
-        // 2. Khung nội dung chính (Style giống StoreManager)
+        // Khung nội dung custom
         VBox container = new VBox(15);
         container.setAlignment(Pos.TOP_CENTER);
         container.setMaxSize(420, 500);
@@ -47,7 +46,7 @@ public class CropInspectorManager {
                         "-fx-padding: 25;"
         );
 
-        // --- XỬ LÝ HÌNH ẢNH THEO GIAI ĐOẠN ---
+        // Xử lý theo ừng giao đoạn của crop
         String typeName = crop.getCropType().toString();
         typeName = typeName.substring(0, 1).toUpperCase() + typeName.substring(1).toLowerCase();
 
@@ -72,7 +71,7 @@ public class CropInspectorManager {
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         titleLabel.setTextFill(Color.web("#8B4513"));
 
-        // --- BẢNG THÔNG SỐ (STATS) ---
+        // Thông số của crop
         VBox statsBox = new VBox(8);
         statsBox.setStyle("-fx-background-color: #f4f4f4; -fx-padding: 15; -fx-background-radius: 10;");
 
@@ -83,7 +82,7 @@ public class CropInspectorManager {
                 createStatRow("Days to Harvest:", crop.getDaysHarvest() + " days", Color.DARKGREEN)
         );
 
-        // --- HÀNH ĐỘNG (ACTIONS) ---
+        // Các button bổ trợ
         HBox actionButtons = new HBox(10);
         actionButtons.setAlignment(Pos.CENTER);
 
@@ -111,7 +110,7 @@ public class CropInspectorManager {
                 }));
             }
         } else {
-            // Cây đã chết: CHỈ hiện nút Recycle
+            // Cây đã chết thì chỉ hiện nút Recycle
             actionButtons.getChildren().add(createStyledButton("Recycle", "#d9534f", () -> {
                 playerController.recycleCrop(new Point(x, y));
                 close(overlay);
